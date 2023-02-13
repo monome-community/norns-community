@@ -1,0 +1,81 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>norns.community</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet"> -->
+	<style>
+    @font-face {
+      font-family: 'Roboto Mono'; font-style: normal; font-weight: 400;
+      src: local(''),
+        url('../include/roboto-mono-v21-latin-regular.woff2') format('woff2'),
+        url('../include/roboto-mono-v21-latin-regular.woff') format('woff'); }
+    body {background-color:#222; max-width:800px; color:#fff; 
+      font-family: 'Roboto Mono', monospace; font-size: 0.8em;}
+    code {font-size: 1.6em; color:#999;}
+    h1 {font-weight:bold; font-size: 1em; margin-top:2em;}
+    hr {margin-top: 4em; border: none; background-color: #555; color: #555; height: 1px;}
+		a {color:#aaa;}
+		a:hover {color:#ccc;}
+    img {max-width:100%;}
+	</style>
+</head>
+<body>
+	<div style="margin:20px">
+    <p>norns.community</p>
+    <p><a href="/">index</a> &mdash; <a href="/authors">authors</a> &mdash; <a href="/matrix">matrix</a></p>
+    <hr/>
+
+<p>norns.community site generator</p>
+<ul>
+<li>fetches community catalog and parses into a static index, matrix tag search, and collected documentation</li>
+</ul>
+<h1>TODO</h1>
+<ul>
+<li>write up contribution guidelines
+<ul>
+<li>where docs go (/readme.md or /doc/index.md) (optional)</li>
+<li>where screenshots go (/image.png or /doc/image.png) (optional)</li>
+</ul>
+</li>
+<li>create fallback collection of images from norns.community for static hosting</li>
+<li>github actions setup
+<ul>
+<li>bash or python, generates static site from community.json (fetched)</li>
+</ul>
+</li>
+<li>migrate tag filter (search) to use community.json (local copy, so that the site can be &quot;downloaded&quot; for offline viewing)</li>
+</ul>
+<h1>navigation/content proposition:</h1>
+<h2>each page has the same header:</h2>
+<ul>
+<li>short header: title, link to main norns docs navigation</li>
+<li>navigation: index, author, matrix</li>
+</ul>
+<h2>index</h2>
+<ul>
+<li>simple list of all scripts:</li>
+</ul>
+<pre><code>[name](local doc) - [author](author filter page) - description
+</code></pre>
+<h2>author</h2>
+<ul>
+<li>simple list of scripts written by author:</li>
+</ul>
+<pre><code>[name](local doc) - description
+</code></pre>
+<h2>doc</h2>
+<ul>
+<li>full meta-data from catalog.json</li>
+<li>screenshot</li>
+<li>scrape of doc</li>
+</ul>
+<h2>matrix (filter? search?) @eigen 's choice locator</h2>
+<ul>
+<li>i'd like to restyle this and put all the checkboxes at the top, in a big condensed list</li>
+</ul>
+	</div>
+</body>
+</html>

@@ -11,7 +11,6 @@ print("entries:", len(cat['entries']))
 
 print(">> generating index.md")
 f = open('index.md','w')
-f.write("# norns.community\n")
 for e in cat['entries']:
     f.write('['+e['project_name']+'](/'+e['project_name']+') - ['
             +e['author']+'](/'+e['author']+') - '

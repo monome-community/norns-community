@@ -1,4 +1,3 @@
-# norns.community
 [3d](/3d) - [Jordan Besly (eigen)](/Jordan Besly (eigen)) - pure Lua 3d lib for norns  
 [4-big-knobs](/4-big-knobs) - [David Kettler (21echoes)](/David Kettler (21echoes)) - send control voltages out of crow  
 [abacus](/abacus) - [Zack Scholl (infinitedigits)](/Zack Scholl (infinitedigits)) - sequence rows of beats with samples  

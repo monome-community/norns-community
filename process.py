@@ -14,11 +14,12 @@ a = {}
 print(">> generating index.md")
 f = open('index.md','w')
 for e in cat['entries']:
-    f.write('['+e['project_name']+'](/'+e['project_name']+') - ['
+    if isinstance(e['author'],str):
+        f.write('['+e['project_name']+'](/'+e['project_name']+') - ['
             +e['author']+'](/'+e['author']+') - '
             +e['description']+"  \n")
     # generate authors list
-    a.setdefault(e['author'],[]).append(e)
+        a.setdefault(e['author'],[]).append(e)
     # TODO generate script page here
 f.write('\n---\n\ncontributors\n\n')
 for k,v in sorted(a.items()):

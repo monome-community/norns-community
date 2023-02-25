@@ -1,5 +1,5 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Pull community.json & Deploy
+name: monome community workflow
 
 on:
   # Runs on pushes targeting the default branch

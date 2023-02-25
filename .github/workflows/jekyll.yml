@@ -4,7 +4,7 @@
 # documentation.
 
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: Deploy Jekyll site to Pages
+name: monome community build & deploy
 
 on:
   # Runs on pushes targeting the default branch
@@ -41,7 +41,7 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
-      - name: monome-community build.sh
+      - name: "|||||||| monome community build.sh ||||||||"
         run: ./build.sh
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default

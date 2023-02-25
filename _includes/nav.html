@@ -1,0 +1,7 @@
+<nav class="container">
+  {% for item in site.data.nav.items %}
+  <span{% if item.url == page.url %} class="active"{% endif %}>
+    <a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
+  </span>
+  {% endfor %}
+</nav>

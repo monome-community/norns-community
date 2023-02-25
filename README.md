@@ -2,6 +2,18 @@ norns.community site generator
 
 - fetches community catalog and parses into a static index, matrix tag search, and collected documentation
 
+# setup instructions
+
+1. clone repository to your computer
+2. install [ruby](https://www.ruby-lang.org/en/) and [bundle](https://bundler.io/)
+3. using a shell, navigate to the `norns-community` directory with `cd`
+4. in the directory execute: `bundle install`
+5. then execute: `bundle exec jekyll serve --baseurl ''`
+6. if you're going to be working on this alot, save the above command as an alias
+6. you can now visit [http://127.0.0.1:4000](http://127.0.0.1:4000) in your browser
+
+(this site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64-darwin21]`)
+
 # TODO
 
 - write up contribution guidelines

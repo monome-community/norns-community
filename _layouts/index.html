@@ -1,0 +1,10 @@
+---
+layout: abstract
+---
+{% for item in site.data.community.entries %}
+<h1>{{ item.project_name }}</h1>
+<p><a href="{{ item.project_url }}">{{ item.project_url }}</a></p><p>{{ item.author }}</p>
+<p>{{ item.description }}</p>
+<p><a href="{{ item.discussion_url }}">{{ item.discussion_url }}</a></p>
+<p><a href="{{ item.documentation_url }}">{{ item.documentation_url }}</a></p>
+{% endfor %}

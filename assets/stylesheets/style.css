@@ -1,0 +1,45 @@
+body {
+  background-color: #222;
+  max-width: 800px;
+  color: #fff; 
+  font-family: "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.8em;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 1em;
+  margin-top: 2em;
+}
+
+.active {
+  font-weight: 800;
+}
+
+code {
+  font-size: 1.6em; color:#999;
+}
+
+
+a,
+a:link,
+a:active {
+  color:#aaa;
+}
+
+a:hover,
+a:visited {
+  color:#ccc;
+}
+
+hr {
+  margin-top: 4em;
+  border: none;
+  background-color: #555;
+  color: #555;
+  height: 1px;
+}
+
+img {
+  max-width:100%;
+}

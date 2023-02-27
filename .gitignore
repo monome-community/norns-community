@@ -1,6 +1,7 @@
 # monome
 _data/community.json
 _pages/authors
+_pages/projects
 
 # jekyll
 _site

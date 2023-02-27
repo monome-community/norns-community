@@ -1,0 +1,20 @@
+---
+layout: abstract
+---
+<h1>{{ page.title }}</h1>
+<ul>
+  <li>project_url: <a href="{{ page.raw_community_project_url }}">{{ page.raw_community_project_url }}</a></li>
+  {% if page.authors.size > 1 %}
+    <li>authors:
+      <ul>
+        {% for author in page.authors %}
+        <li><a href="/authors/{{ author }}">{{ author }}</a></li>
+        {% endfor %}
+      </ul>
+  {% else %}
+    <li>author: <a href="/authors/{{ page.authors }}">{{ page.authors }}</a></li>
+  {% endif %}
+  <li>description: {{ page.raw_community_description }}</li>
+  <li>discussion_url: <a href="{{ page.raw_community_discussion_url }}">{{ page.raw_community_discussion_url }}</a></li>
+  <li>documentation_url: <a href="{{ page.raw_community_documentation_url }}">{{ page.raw_community_documentation_url }}</a></li>
+</ul>

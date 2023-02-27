@@ -20,7 +20,6 @@ code {
   font-size: 1.6em; color:#999;
 }
 
-
 a,
 a:link,
 a:active {
@@ -42,4 +41,21 @@ hr {
 
 img {
   max-width:100%;
+}
+
+ul {
+  margin-top: 0;
+}
+
+ul li {
+  margin-bottom: .5em;
+}
+
+ul li ul {
+  padding-top: .5em;
+  padding-left: 1em;
+}
+
+ul li ul li {
+  margin-bottom: .5em;
 }

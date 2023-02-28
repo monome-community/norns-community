@@ -11,8 +11,9 @@ this build script uses:
 import json
 import re
 import os
+import subprocess
 
-community_path = '_data/community.json'
+community_path = './community.json'
 pages_path = '_pages'
 authors_path = pages_path + '/authors'
 projects_path = pages_path + '/projects'
@@ -28,13 +29,17 @@ def log(msg):
 def sanitize(str):
   return re.sub('[^a-zA-Z0-9\-_]', '', str)
 
-log('attempting to parse catalog at ./' + community_path + '...')
+log('attempting to parse catalog at ' + community_path + '...')
 if not os.path.exists(community_path):
   log('error. ' + community_path + ' not found. is there a problem with ./01-curl.sh?')
   log('aborting...')
   exit()
 else:
   community = json.load(open(community_path, 'r'))
+log('done.')
+
+log('copying community.json to ./_data for jekyll...')
+subprocess.Popen('cp ./community.json ./_data/community.json', shell=True)
 log('done.')
 
 log('pre-processing authors & projects...')

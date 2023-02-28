@@ -1,15 +1,17 @@
 #!/bin/bash
 
-# nuke the authors & projects directories
+TARGETS=(
+  "./_data/community.json"
+  "./community.json"
+  "./index.md"
+  "./_pages/projects"
+  "./_pages/authors"
+)
 
-echo ">> nuking ./_pages/authors..."
-rm -rf _pages/authors
-echo ">> done."
+printf ">> deleting any files generated from a previous build..."
+for TARGET in "${TARGETS[@]}"; do
+  printf ">> - $TARGET"
+  rm -rf "$TARGET"
+done
 
-echo ">> nuking ./_pages/projects..."
-rm -rf _pages/projects
-echo ">> done."
-
-echo ">> nuking ./index.md..."
-rm -rf index.md
-echo ">> done."
+printf ">> done."

@@ -10,7 +10,7 @@ TARGETS=(
 
 printf ">> deleting any files generated from a previous build..."
 for TARGET in "${TARGETS[@]}"; do
-  printf ">> - $TARGET"
+  printf "%s\n" ">> - $TARGET"
   rm -rf "$TARGET"
 done
 

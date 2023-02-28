@@ -6,6 +6,16 @@ build the authors and entry/project pages.
 this build script uses:
  - "entries" when operating directly on community.json.
  - "projects" when operating user-facing pages.
+
+todo:
+ - refactor project:
+   - move authors to project['author']
+   - add description to project['description']
+ - index page:
+   - sorted (requires project refactor)
+ - search page
+ - tags
+ - other things...
 '''
 
 import json
@@ -77,6 +87,11 @@ authors.sort()
 log(str(len(authors)) + ' authors found.')
 log('done.')
 
+log('sorting projects...')
+projects = dict(sorted(projects.items()))
+log(str(len(projects)) + ' authors found.')
+log('done.')
+
 log('raw output of authors & projects for debugging:')
 print(authors, projects)
 log('done.')
@@ -130,7 +145,7 @@ for entry in community['entries']:
   fp.write('redirect_from:\n')
   for author in projects[sanitized_project_name]:
     fp.write(' - /authors/' + author + '/' + sanitized_project_name + '\n')
-  # raw data form community json
+  # raw data from community json
   if 'author' in entry:
     fp.write('raw_community_json_author: ' + entry['author'] + '\n')
   if 'project_name' in entry:
@@ -143,6 +158,10 @@ for entry in community['entries']:
     fp.write('raw_community_discussion_url: ' + entry['discussion_url'] + '\n')
   if 'documentation_url' in entry:
     fp.write('raw_community_documentation_url: ' + entry['documentation_url'] + '\n')
+  if 'tags' in entry:
+    fp.write('raw_community_tags:\n')
+    for tag in entry['tags']:
+      fp.write(' - ' + tag + '\n')
   fp.write('---\n')
   fp.close()
 log('done.')

@@ -7,10 +7,10 @@ body {
   color: #fff;
 }
 
-h1, h2, h3, h4, h5, h6, p, code, pre, li, ul, ol, a {
+h1, h2, h3, h4, h5, h6, p, code, pre, li, nav {
   /* keep all fonts the same size */
-  font-size: 1rem;
-  line-height: 1.5rem;
+  font-size: 0.8em;
+  line-height: 1.2em;
 }
 
 h1, h2, h3, h4, h5, h6, .active {
@@ -33,7 +33,7 @@ a:visited {
 }
 
 hr {
-  margin: 1rem 0;
+  margin: 0.8em 0;
   border: none;
   background-color: #555;
   color: #555;
@@ -47,7 +47,7 @@ img {
 /* negative space */
 
 h1, h2, h3, h4, h5, h6, p, ul, ol {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.8em 0;
   padding: 0;
 }
 
@@ -56,31 +56,31 @@ nav, section, footer {
 }
 
 nav {
-  margin: 1rem 1rem 2rem 1rem;
+  margin: 0.8em 0.8em 1.6em 0.8em;
 }
 
 section {
-  margin: 1rem;
+  margin: 0.8em;
 }
 
 footer {
-  margin: 2rem 1rem 1rem 1rem;
+  margin: 1.6em 0.8em 0.8em 0.8em;
 }
 
 section ul, section ol {
-  padding: 0 0 0 1rem;
+  padding: 0 0 0 0.8em;
 }
 
 ul li {
-  margin: 0 0 .5rem 0;
+  margin: 0 0 .5em 0;
 }
 
 ul li ul {
   margin: 0;
-  padding-top: .5rem;
-  padding-left: 1rem;
+  padding-top: .5em;
+  padding-left: 0.8em;
 }
 
 ul li ul li {
-  margin-bottom: .5rem;
+  margin-bottom: .5em;
 }

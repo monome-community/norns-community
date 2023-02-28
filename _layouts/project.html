@@ -17,4 +17,11 @@ layout: abstract
   <li>description: {{ page.raw_community_description }}</li>
   <li>discussion_url: <a href="{{ page.raw_community_discussion_url }}">{{ page.raw_community_discussion_url }}</a></li>
   <li>documentation_url: <a href="{{ page.raw_community_documentation_url }}">{{ page.raw_community_documentation_url }}</a></li>
+  <li>tags:
+    <ul>
+      {% for tag in page.raw_community_tags %}
+      <li><a href="/tags/{{ tag }}">{{ tag }}</a></li>
+      {% endfor %}
+    </ul>
+  </li>
 </ul>

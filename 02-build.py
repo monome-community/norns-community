@@ -108,7 +108,7 @@ log('done.')
 
 log('building authors pages...')
 for author in authors:
-  print('author: ' + author)
+  log('author: ' + author)
   fp = open(authors_path + '/' + author + '.md', 'w')
   fp.write('---\n')
   fp.write('layout: author\n')
@@ -123,11 +123,11 @@ for author in authors:
   fp.close()
 log('done.')
 
-print('>> building project pages...')
+log('building project pages...')
 for entry in community['entries']:
   project_name = entry['project_name']
   sanitized_project_name = sanitize(project_name)
-  print('project: ' + project_name)
+  log('project: ' + project_name)
   # write the project front matter
   fp = open(projects_path + '/' + sanitized_project_name + '.md', 'w')
   fp.write('---\n')
@@ -166,7 +166,7 @@ for entry in community['entries']:
   fp.close()
 log('done.')
 
-print('building the index page...')
+log('building the index page...')
 fp = open('index.md', 'w')
 fp.write('---\n')
 fp.write('layout: index\n')

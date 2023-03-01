@@ -12,7 +12,7 @@ todo:
    - move authors to project['author']
    - add description to project['description']
  - index page:
-   - sorted (requires project refactor)
+   - sorted (requires project dict refactor)
  - search page
  - tags
  - other things...
@@ -28,7 +28,7 @@ pages_path = '_pages'
 authors_path = pages_path + '/authors'
 projects_path = pages_path + '/projects'
 community = {} # the raw community.json, parsed to a dict
-projects = {}  # santized entries dict with author assoications
+projects = {}  # santized entries dict with author assosciations
 authors = []   # list of all authors
 
 # log a message

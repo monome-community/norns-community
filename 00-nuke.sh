@@ -2,10 +2,10 @@
 
 TARGETS=(
   "./_data/community.json"
+  "./_data/authors.yml"
   "./community.json"
   "./index.md"
   "./_pages/projects"
-  "./_pages/authors"
 )
 
 printf ">> deleting any files generated from a previous build..."

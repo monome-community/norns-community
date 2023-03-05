@@ -5,13 +5,10 @@ body {
   font-family: "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   background-color: #222;
   color: #fff;
-}
-
-h1, h2, h3, h4, h5, h6, p, code, pre, li, nav {
-  /* keep all fonts the same size */
   font-size: 0.8em;
   line-height: 1.2em;
 }
+
 
 h1, h2, h3, h4, h5, h6, .active {
   font-weight: 800;

@@ -11,11 +11,11 @@ todo:
  - refactor project:
    - move authors to project['author']
    - add description to project['description']
+   - sanitized and display names for project name and author name
  - index page:
    - sorted (requires project dict refactor)
  - search page
  - community tags -> jekyll tags
- - single authors page, #anchors only
  - other things...
 '''
 
@@ -26,7 +26,7 @@ import subprocess
 
 community_path = './community.json'
 pages_path = '_pages'
-authors_path = pages_path + '/authors'
+authors_yml_path = '_data/authors.yml'
 projects_path = pages_path + '/projects'
 community = {} # the raw community.json, parsed to a dict
 projects = {}  # santized entries dict with author assosciations
@@ -40,6 +40,12 @@ def log(msg):
 def sanitize(str):
   return re.sub('[^a-zA-Z0-9\-_]', '', str)
 
+
+
+
+# PARSE
+# PARSE
+# PARSE
 log('attempting to parse catalog at ' + community_path + '...')
 if not os.path.exists(community_path):
   log('error. ' + community_path + ' not found. is there a problem with ./01-curl.sh?')
@@ -53,6 +59,13 @@ log('copying community.json to ./_data for jekyll...')
 subprocess.Popen('cp ./community.json ./_data/community.json', shell=True)
 log('done.')
 
+
+
+
+
+# PRE-PROCESSING
+# PRE-PROCESSING
+# PRE-PROCESSING
 log('pre-processing authors & projects...')
 for entry in community['entries']:
   project_name = ''
@@ -97,33 +110,37 @@ log('raw output of authors & projects for debugging:')
 print(authors, projects)
 log('done.')
 
-log('making authors directory...')
-if not os.path.exists(authors_path):
-  os.mkdir(authors_path)
-log('done.')
-
 log('making projects directory...')
 if not os.path.exists(projects_path):
   os.mkdir(projects_path)
 log('done.')
 
-log('building authors pages...')
+
+
+
+# AUTHOR PAGE
+# AUTHOR PAGE
+# AUTHOR PAGE
+log('building ' + authors_yml_path +'...')
+fp = open(authors_yml_path, 'w')
 for author in authors:
-  log('author: ' + author)
-  fp = open(authors_path + '/' + author + '.md', 'w')
-  fp.write('---\n')
-  fp.write('layout: author\n')
-  fp.write('title: ' + author + '\n')
-  fp.write('permalink: /authors/' + author + '\n')
-  # get all projects that this author is associated with
-  fp.write('projects:\n')
+  log(author)
+  fp.write('- author: ' + author + '\n\n')
+   # get all projects that this author is associated with
+  fp.write('  projects:\n\n')
   for project in projects:
     if author in projects[project]:
-      fp.write(' - ' + project + '\n')
-  fp.write('---\n')
-  fp.close()
+      fp.write('    - name: ' + project + '\n')
+      fp.write('      url: ' + project + '\n\n')
+fp.close()
 log('done.')
 
+
+
+
+# PROJECT PAGES
+# PROJECT PAGES
+# PROJECT PAGES
 log('building project pages...')
 for entry in community['entries']:
   project_name = entry['project_name']
@@ -167,6 +184,12 @@ for entry in community['entries']:
   fp.close()
 log('done.')
 
+
+
+
+# INDEX PAGE
+# INDEX PAGE
+# INDEX PAGE
 log('building the index page...')
 fp = open('index.md', 'w')
 fp.write('---\n')
@@ -179,7 +202,7 @@ for entry in community['entries']:
   fragment_1 = '[' + project_name + '](/projects/' + sanitized_project_name + ')'
   fragment_2 = ''
   for author in projects[sanitized_project_name]:
-    fragment_2 = fragment_2 + '[' + author + '](/authors/' + author + ') '
+    fragment_2 = fragment_2 + '[' + author + '](/author#' + author + ') '
   fragment_3 = entry['description']
   fp.write('- ' + fragment_1 + ' - ' + fragment_2 + ' - ' + fragment_3 + '\n')
 fp.close()

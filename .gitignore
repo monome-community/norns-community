@@ -3,7 +3,6 @@ community.json
 index.md
 _data/authors.yml
 _pages/projects
-_pages/author.md
 
 # jekyll
 _site

@@ -14,7 +14,8 @@ todo:
  - index page:
    - sorted (requires project dict refactor)
  - search page
- - tags
+ - community tags -> jekyll tags
+ - single authors page, #anchors only
  - other things...
 '''
 

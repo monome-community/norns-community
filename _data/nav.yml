@@ -3,5 +3,8 @@ items:
 - title: home
   url: /
 
+- title: author
+  url: /author
+
 - title: search
   url: /search

@@ -11,11 +11,11 @@ layout: abstract
     <li>authors:
       <ul>
         {% for author in page.authors %}
-        <li><a href="/authors/{{ author }}">{{ author }}</a></li>
+        <li><a href="/author#{{ author }}">{{ author }}</a></li>
         {% endfor %}
       </ul>
   {% else %}
-    <li>author: <a href="/authors/{{ page.authors }}">{{ page.authors }}</a></li>
+    <li>author: <a href="/author#{{ page.authors }}">{{ page.authors }}</a></li>
   {% endif %}
   <li>description: {{ page.description }}</li>
   <li>discussion_url: <a href="{{ page.discussion_url }}">{{ page.discussion_url }}</a></li>

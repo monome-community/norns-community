@@ -1,6 +1,6 @@
 ---
 title: eduscript
-description: "i love a dang eduscript" - @dndrks
+description: "i love a dang eduscript - @dndrks"
 published: true
 date: 2021-10-18T21:04:47.793Z
 tags: 

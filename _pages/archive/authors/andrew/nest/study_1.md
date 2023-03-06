@@ -1,5 +1,5 @@
 ---
-title: study 1: nested affordances
+title: "study 1: nested affordances"
 description: 
 published: false
 date: 2021-06-14T03:32:30.273Z

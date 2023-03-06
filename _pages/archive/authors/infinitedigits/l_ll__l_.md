@@ -1,5 +1,5 @@
 ---
-title: | ||  | 
+title: "| ||  | "
 description: interact with a musical emission spectrum
 published: true
 date: 2022-09-02T13:53:54.671Z

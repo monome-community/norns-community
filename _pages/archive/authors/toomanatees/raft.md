@@ -1,6 +1,6 @@
 ---
 title: raft
-description: a scene-setting, softcut-based delay: three delay lines & noise generator & “froth” modulator!
+description: "a scene-setting, softcut-based delay: three delay lines & noise generator & 'froth' modulator!"
 published: true
 date: 2022-05-24T17:25:53.674Z
 tags: audio fx, delays + loopers

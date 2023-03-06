@@ -6,6 +6,7 @@ TARGETS=(
   "./community.json"
   "./index.md"
   "./_pages/projects"
+  "./assets/screenshots"
 )
 
 printf ">> deleting any files generated from a previous build..."

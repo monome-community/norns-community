@@ -6,10 +6,6 @@ build the authors and entry/project pages.
 this build script uses:
  - "entries" when operating directly on community.json.
  - "projects" when operating user-facing pages.
-
-todo:
- - search page
- - other things...
 '''
 
 import json
@@ -17,10 +13,11 @@ import re
 import os
 import subprocess
 
-community_path = './community.json'
-pages_path = '_pages'
-authors_yml_path = '_data/authors.yml'
-projects_path = pages_path + '/projects'
+community_json_src = 'community.json'
+screenshots_dir_src = 'screenshots'
+screenshots_dir_dist = 'assets/screenshots'
+authors_yml_dist = '_data/authors.yml'
+projects_dir_dist = '_pages/projects'
 
 
 
@@ -48,6 +45,7 @@ class Project():
   def __init__(self, entry):
     self.raw_name = entry['project_name']
     self.sanitized_name = sanitize(self.raw_name)
+    self.screenshot = '/' + screenshots_dir_dist + '/' + self.sanitized_name + '.png'
     self.permalink = '/' + self.sanitized_name
     self.authors = []
     self.description = entry['description'] if 'description' in entry else ''
@@ -77,8 +75,8 @@ class Author():
 
 class CommunityData():
 
-  def __init__(self, community_path):
-    self.community = json.load(open(community_path, 'r'))
+  def __init__(self, community_json_src):
+    self.community = json.load(open(community_json_src, 'r'))
     self.authors = {}
     self.projects = {}
 
@@ -130,13 +128,13 @@ class CommunityData():
 # SETUP
 # SETUP
 
-log('attempting to parse catalog at ' + community_path + '...')
-if not os.path.exists(community_path):
-  log('error. ' + community_path + ' not found. is there a problem with ./01-curl.sh?')
+log('attempting to parse catalog at ' + community_json_src + '...')
+if not os.path.exists(community_json_src):
+  log('error. ' + community_json_src + ' not found. is there a problem with ./01-curl.sh?')
   log('aborting...')
   exit()
 
-community_data = CommunityData(community_path)
+community_data = CommunityData(community_json_src)
 community_data.build()
 log('done.')
 
@@ -145,10 +143,18 @@ subprocess.Popen('cp ./community.json ./_data/community.json', shell=True)
 log('done.')
 
 log('making projects directory...')
-if not os.path.exists(projects_path):
-  os.mkdir(projects_path)
+if not os.path.exists(projects_dir_dist):
+  os.mkdir(projects_dir_dist)
 log('done.')
 
+log('making screenshots directory...')
+if not os.path.exists(screenshots_dir_dist):
+  os.mkdir(screenshots_dir_dist)
+log('done.')
+
+log('copying ./screenshots to ./assets/screenshots for jekyll...')
+subprocess.Popen('cp -r ' + screenshots_dir_src + '/* ' + screenshots_dir_dist, shell=True)
+log('done.')
 
 
 
@@ -173,8 +179,8 @@ log('done.')
 # AUTHOR PAGE
 # AUTHOR PAGE
 # AUTHOR PAGE
-log('building ' + authors_yml_path +'...')
-fp = open(authors_yml_path, 'w')
+log('building ' + authors_yml_dist +'...')
+fp = open(authors_yml_dist, 'w')
 for author in community_data.get_authors_in_alphabetical_order():
   fp.write('- raw_name: ' + author.raw_name + '\n')
   fp.write('  sanitized_name: ' + author.sanitized_name + '\n')
@@ -195,11 +201,12 @@ log('done.')
 log('building project pages...')
 for project in community_data.get_projects_in_alphabetical_order():
   # write the project front matter
-  fp = open(projects_path + '/' + project.sanitized_name + '.md', 'w')
+  fp = open(projects_dir_dist + '/' + project.sanitized_name + '.md', 'w')
   fp.write('---\n')
   # layout, title, and permalink are needed by jekyll
   fp.write('layout: project\n')
   fp.write('title: ' + project.raw_name + '\n')
+  fp.write('screenshot: ' + project.screenshot + '\n')
   fp.write('sanitized_name: ' + project.sanitized_name + '\n')
   fp.write('permalink: ' + project.permalink + '\n')
   fp.write('project_url: ' + project.project_url + '\n')

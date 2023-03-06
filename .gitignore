@@ -3,6 +3,7 @@ community.json
 index.md
 _data/authors.yml
 _pages/projects
+assets/screenshots
 
 # jekyll
 _site

@@ -2,6 +2,9 @@
 layout: abstract
 ---
 <h1>{{ page.title }}</h1>
+{% if page.screenshot %}
+  <img src="{{ page.screenshot }}" alt="{{ page.title }}" />
+{% endif %}
 <ul>
   <li>project_url: <a href="{{ page.project_url }}">{{ page.project_url }}</a></li>
   {% if page.authors.size > 1 %}

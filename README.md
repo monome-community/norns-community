@@ -10,7 +10,8 @@ norns.community site generator
 4. in the directory execute: `bundle install`
 5. then execute: `bundle exec jekyll serve --baseurl ''`
 6. if you're going to be working on this alot, save the above command as an alias
-6. you can now visit [http://127.0.0.1:4000](http://127.0.0.1:4000) in your browser
+7. pull the latest community data and build: `./00-nuke.sh && ./01-curl.sh && ./02-build.py`. this is also the main dev loop.
+8. you can now visit [http://127.0.0.1:4000](http://127.0.0.1:4000) in your browser
 
 (this site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64-darwin21]`)
 

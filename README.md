@@ -1,8 +1,23 @@
-norns.community site generator
+# TODO
 
-- fetches community catalog and parses into a static index, matrix tag search, and collected documentation
+- write up contribution guidelines
+  - where docs go (/readme.md or /doc/index.md) (optional)
+- migrate tag filter (search) to use community.json (local copy, so that the site can be "downloaded" for offline viewing)
+- add `/tag/arc`, `/tag/sequencer`, etc. layout and pages for jekyll
+- fallbacks for screenshots (presently only checks in ./assets/screenshots)
 
-# setup instructions
+# norns.community site generator
+
+fetches the [community catalog](https://github.com/monome/norns-community) and parses into a static site with matrix tag search and collected documentation.
+
+# contributing your script
+
+1. add screenshots to `./screenshots`. (note: screenshots were archived from the original [norns.community](https://norns.community) site on february 5, 2023.)
+
+
+# development setup instructions
+
+if you want to help maintain this site, you can run it locally and test your changes before submitting a pull request.
 
 1. clone repository to your computer
 2. install [ruby](https://www.ruby-lang.org/en/) and [bundle](https://bundler.io/)
@@ -15,33 +30,11 @@ norns.community site generator
 
 (this site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64-darwin21]`)
 
-# TODO
-
-- write up contribution guidelines
-  - where docs go (/readme.md or /doc/index.md) (optional)
-  - where screenshots go (/image.png or /doc/image.png) (optional)
-- create fallback collection of images from norns.community for static hosting
-- github actions setup
-  - bash or python, generates static site from community.json (fetched)
-- migrate tag filter (search) to use community.json (local copy, so that the site can be "downloaded" for offline viewing)
-
 # navigation/content proposition:
 
 ## each page has the same header:
 - short header: title, link to main norns docs navigation
 - navigation: index, author, matrix
-
-## index
-- simple list of all scripts:
-```
-[name](local doc) - [author](author filter page) - description
-```
-
-## author
-- simple list of scripts written by author:
-```
-[name](local doc) - description
-```
 
 ## doc
 - full meta-data from catalog.json

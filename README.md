@@ -1,6 +1,7 @@
 # TODO
 
-- write up contribution guidelines
+- ABOUT page
+  - write up contribution guidelines
   - where docs go (/readme.md or /doc/index.md) (optional)
 - migrate tag filter (search) to use community.json (local copy, so that the site can be "downloaded" for offline viewing)
 - add `/tag/arc`, `/tag/sequencer`, etc. layout and pages for jekyll
@@ -32,11 +33,7 @@ if you want to help maintain this site, you can run it locally and test your cha
 
 # navigation/content proposition:
 
-## each page has the same header:
-- short header: title, link to main norns docs navigation
-- navigation: index, author, matrix
-
-## doc
+## script pages
 - full meta-data from catalog.json
 - screenshot
 - scrape of doc

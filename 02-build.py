@@ -161,12 +161,9 @@ fp.write('---\n')
 fp.write('layout: index\n')
 fp.write('---\n')
 for project in community_data.get_projects_in_alphabetical_order():
-  fragment_1 = '[' + project.raw_name + '](' + project.permalink + ')'
-  fragment_2 = ''
-  for author in project.get_authors_in_alphabetical_order():
-    fragment_2 = fragment_2 + '[' + community_data.authors[author].raw_name + '](/author#' + community_data.authors[author].sanitized_name + ') '
-  fragment_3 = project.description
-  fp.write('- ' + fragment_1 + ' - ' + fragment_2 + ' - ' + fragment_3 + '\n')
+  link = '[' + project.raw_name + '](' + project.permalink + ')'
+  description = project.description
+  fp.write('- ' + link + ' - ' + description + '\n')
 fp.close()
 log('done.')
 

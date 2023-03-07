@@ -14,7 +14,7 @@ import os
 import subprocess
 
 community_json_src = 'community.json'
-screenshots_dir_src = 'screenshots'
+screenshots_dir_src = 'archive/screenshots'
 screenshots_dir_dist = 'assets/screenshots'
 authors_yml_dist = '_data/authors.yml'
 projects_dir_dist = '_pages/projects'
@@ -33,6 +33,14 @@ def sanitize(str):
   # only allow alphanumeric, dashes, and underscores
   return re.sub('[^a-zA-Z0-9\-_]', '', str)
 
+def check_screenshot(sanitized_name):
+  screenshot_path = './' + screenshots_dir_src + '/' + sanitized_name + '.png'
+  log('checking for screenshot at ' + screenshot_path)
+  if not os.path.exists(screenshot_path):
+    log(sanitized_name + 'screenshot not found.')
+    return ''
+  else:
+    return screenshot_path
 
 
 
@@ -206,7 +214,7 @@ for project in community_data.get_projects_in_alphabetical_order():
   # layout, title, and permalink are needed by jekyll
   fp.write('layout: project\n')
   fp.write('title: ' + project.raw_name + '\n')
-  fp.write('screenshot: ' + project.screenshot + '\n')
+  fp.write('screenshot: ' + check_screenshot(project.sanitized_name) + '\n')
   fp.write('sanitized_name: ' + project.sanitized_name + '\n')
   fp.write('permalink: ' + project.permalink + '\n')
   fp.write('project_url: ' + project.project_url + '\n')

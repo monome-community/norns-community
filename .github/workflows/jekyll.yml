@@ -42,11 +42,13 @@ jobs:
         id: pages
         uses: actions/configure-pages@v3
       - name: "|||||||| monome community 00-nuke.sh ||||||||"
-        run: ./00-nuke.sh        
+        run: ./00-nuke.sh
       - name: "|||||||| monome community 01-curl.sh ||||||||"
         run: ./01-curl.sh
       - name: "|||||||| monome community 02-build.sh ||||||||"
         run: ./02-build.py
+      - name: "|||||||| monome community 03-build-gallery.sh ||||||||"
+        run: ./03-build-gallery.py
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"

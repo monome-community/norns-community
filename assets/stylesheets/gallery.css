@@ -1,0 +1,74 @@
+* {
+  text-transform: lowercase !important; }
+
+.container-fluid {
+  padding: 0; }
+
+h1 {
+  color: #424242;
+  font-style: italic;
+  border-bottom: 5px solid #424242; }
+
+h2 {
+  color: #424242;
+  font-size: 1rem;
+  border-bottom: 1px solid #424242; }
+
+.gallery-panel-link {
+  text-decoration: none;
+  color: black; }
+
+.gallery-panel {
+  background: #eeeeee;
+  padding: 10px;
+  margin-bottom: 20px; }
+  .gallery-panel .norns-screenshot-container {
+    position: relative;
+    overflow: hidden; }
+    .gallery-panel .norns-screenshot-container img {
+      display: inline-block;
+      width: 100%; }
+    .gallery-panel .norns-screenshot-container .img-norns-screenshot {
+      z-index: 50;
+      -webkit-filter: grayscale(100%);
+      filter: grayscale(100%); }
+      @media (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3 / 2), (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 1.5dppx) {
+        .gallery-panel .norns-screenshot-container .img-norns-screenshot {
+          image-rendering: -moz-crisp-edges;
+          image-rendering: crisp-edges;
+          image-rendering: pixelated; } }
+    .gallery-panel .norns-screenshot-container .img-norns-screenshot {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 100; }
+
+.gallery-panel:hover {
+  /* background: #1565c0; */
+  background: #f1ba7d;
+  color: #ffffff;
+  cursor: pointer; }
+  .gallery-panel:hover a {
+    color: #ffffff; }
+
+ul.norns-feature-container {
+  height: 24px;
+  list-style: none;
+  margin: 5px 0 0 0;
+  padding: 0; }
+  ul.norns-feature-container li {
+    float: left; }
+    ul.norns-feature-container li img {
+      height: 24px;
+      width: 27px;
+      margin-right: 5px;
+      margin-bottom: 5px; }
+  ul.norns-feature-container li.feature-kbd img,
+  ul.norns-feature-container li.feature-mouse img,
+  ul.norns-feature-container li.feature-jf img,
+  ul.norns-feature-container li.feature-16n img {
+    height: 24px;
+    width: 52px; }
+
+ul.norns-feature-io {
+  height: auto; }

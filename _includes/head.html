@@ -10,7 +10,7 @@
 {% endif %}
 <link rel="stylesheet" href="{{ "/assets/stylesheets/style.css" | relative_url }}?{{ site.time | date: '%s%N' }}">
 {% if page.additional_style %}
-<link rel="stylesheet" href="{{ "/assets/stylesheets/" | append page.additional_style | append ".css" | relative_url }}?{{ site.time | date: '%s%N' }}">
+<link rel="stylesheet" href="{{ "/assets/stylesheets/" | append: page.additional_style | append: ".css" | relative_url }}?{{ site.time | date: '%s%N' }}">
 {% endif %}
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="mask-icon" href="/mask-icon.svg" color="#ffffff">

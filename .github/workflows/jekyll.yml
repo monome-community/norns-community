@@ -48,7 +48,7 @@ jobs:
       - name: "|||||||| monome community 02-build.sh ||||||||"
         run: ./02-build.py
       - name: "|||||||| monome community 03-build-gallery.sh ||||||||"
-        run: ./03-build-gallery.py
+        run: ./03-build-gallery.sh
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"

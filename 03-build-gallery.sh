@@ -6,7 +6,7 @@ set -e
 ## ------------------------------------------------------------------------
 ## DEPS - GENRIC
 
-apt -qy install fakeroot git
+sudo apt -qy install fakeroot git
 
 # NB: to download latest release assets
 # apt -qy install golang

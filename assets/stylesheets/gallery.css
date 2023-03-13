@@ -1,3 +1,4 @@
+/* $wikiDarkGrey: #424242 */
 * {
   text-transform: lowercase !important; }
 
@@ -5,21 +6,24 @@
   padding: 0; }
 
 h1 {
-  color: #424242;
+  color: #444;
   font-style: italic;
-  border-bottom: 5px solid #424242; }
+  border-bottom: 5px solid #444; }
 
 h2 {
-  color: #424242;
+  color: #444;
   font-size: 1rem;
-  border-bottom: 1px solid #424242; }
+  border-bottom: 1px solid #444; }
+
+h3.script-name {
+  font-size: calc(0.8rem + .6vw); }
 
 .gallery-panel-link {
   text-decoration: none;
   color: black; }
 
 .gallery-panel {
-  background: #eeeeee;
+  background: #444;
   padding: 10px;
   margin-bottom: 20px; }
   .gallery-panel .norns-screenshot-container {
@@ -44,7 +48,6 @@ h2 {
       z-index: 100; }
 
 .gallery-panel:hover {
-  /* background: #1565c0; */
   background: #f1ba7d;
   color: #ffffff;
   cursor: pointer; }

@@ -36,7 +36,7 @@ cd /tmp/gallery-builder
 wget https://github.com/p3r7/norns-gallery/releases/download/$LAST_RELEASE/static-js-builder.tar.gz
 tar xzvf static-js-builder.tar.gz
 
-node target/cljsbuild/prerender/main.js/main.js --mode file --source-html "$OLDPWD/_layouts/search.html" --dest-html "$OLDPWD/_layouts/search.html" --replace-tag "<p>search goes here...</p>"
+node target/cljsbuild/prerender/main.js --mode file --source-html "$OLDPWD/_layouts/search.html" --dest-html "$OLDPWD/_layouts/search.html" --replace-tag "<p>search goes here...</p>"
 
 
 

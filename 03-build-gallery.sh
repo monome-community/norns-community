@@ -29,12 +29,16 @@ nvm install v19.6.1
 OLDPWD="$PWD"
 
 LAST_RELEASE=$(wget -O - https://api.github.com/repos/p3r7/norns-gallery/releases/latest | jq -r .name)
+LAST_TAG=$(wget -O - https://api.github.com/repos/p3r7/norns-gallery/releases/latest | jq -r .tag_name)
 
 mkdir /tmp/gallery-builder
 cd /tmp/gallery-builder
 # ghrel -p static-js-builder.tar.gz p3r7/norns-gallery
 wget https://github.com/p3r7/norns-gallery/releases/download/$LAST_RELEASE/static-js-builder.tar.gz
 tar xzvf static-js-builder.tar.gz
+
+wget https://raw.githubusercontent.com/p3r7/norns-gallery/$LAST_TAG/package.json
+npm install
 
 node target/cljsbuild/prerender/main.js --mode file --source-html "$OLDPWD/_layouts/search.html" --dest-html "$OLDPWD/_layouts/search.html" --replace-tag "<p>search goes here...</p>"
 

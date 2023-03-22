@@ -1,11 +1,13 @@
 # TODO
 
-- ABOUT page
-  - write up contribution guidelines
-  - where docs go (/readme.md or /doc/index.md) (optional)
-- migrate tag filter (search) to use community.json (local copy, so that the site can be "downloaded" for offline viewing)
+- import docs to each script (from readme.md, doc/index.md, or local static backup from wiki)
+- import conver.png for each script (from list of possible sources in repo) into the static assets folder
 - add `/tag/arc`, `/tag/sequencer`, etc. layout and pages for jekyll
 - fallbacks for screenshots (presently only checks in ./assets/screenshots)
+- ABOUT page
+  - write up contribution guidelines
+  - where docs go (/readme.md or /doc/index.md)
+  - where cover image can go (list)
 
 # norns.community site generator
 

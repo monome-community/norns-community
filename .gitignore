@@ -22,3 +22,7 @@ _site
 
 # macos
 .DS_Store
+
+# dev
+assets/screenshots_dev
+community-dev.json

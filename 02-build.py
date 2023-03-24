@@ -155,18 +155,17 @@ class Screenshots():
 
   def __init__(self, community_data: CommunityData):
     self.community_data = community_data
-    # todo: are these actually running in this order? output in the terminal suggests they are not -
     self.remote_fallbacks = {
-      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/cover.png',
-      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/GITHUB_PROJECT.png',
-      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/screenshot.png',
-      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/cover.png',
-      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/GITHUB_PROJECT.png',
-      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/screenshot.png',
+      1: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/cover.png',
+      2: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/GITHUB_PROJECT.png',
+      3: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/screenshot.png',
+      4: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/cover.png',
+      5: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/GITHUB_PROJECT.png',
+      6: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/screenshot.png'
     }
     self.local_fallbacks = {
-      './archive/screenshots/SANITIZED_NAME.png',
-      './assets/images/scriptname.png'
+      1: './archive/screenshots/SANITIZED_NAME.png',
+      2: './assets/images/scriptname.png'
     }
 
 
@@ -174,9 +173,9 @@ class Screenshots():
     for project in self.community_data.get_projects_in_alphabetical_order():
       log('#### ' + project.raw_name + ' ####')
       remote_fallback_found = False
-      # try to fetch screenshots from the remote fallbacks first
-      for fallback in self.remote_fallbacks:
-        url = fallback.replace('GITHUB_AUTHOR', project.github_author).replace('GITHUB_PROJECT', project.github_project)
+      # try remote screenshots first
+      for fallback in sorted(self.remote_fallbacks.items()):
+        url = fallback[1].replace('GITHUB_AUTHOR', project.github_author).replace('GITHUB_PROJECT', project.github_project)
         log('try ' + url)
         try:
           response = requests.get(url)
@@ -194,8 +193,8 @@ class Screenshots():
           continue
       # if remote fallbacks didn't work, try local
       if not remote_fallback_found:
-        for fallback in self.local_fallbacks:
-          path = fallback.replace('SANITIZED_NAME', project.sanitized_name)
+        for fallback in sorted(self.local_fallbacks.items()):
+          path = fallback[1].replace('SANITIZED_NAME', project.sanitized_name)
           log('try ' + path)
           if os.path.exists(path):
             log('image found!')
@@ -234,21 +233,6 @@ if not os.path.exists(tags_dir_dist):
   os.mkdir(tags_dir_dist)
 log('done.')
 
-
-
-# SCREENSHOTS
-# SCREENSHOTS
-# SCREENSHOTS
-
-log('making screenshots directory...')
-if not os.path.exists(screenshots_dir_dist):
-  os.mkdir(screenshots_dir_dist)
-log('done.')
-
-log('fetching screenshots...')
-screenshots = Screenshots(community_data)
-screenshots.fetch()
-log('done.')
 
 
 
@@ -347,6 +331,21 @@ for tag in community_data.get_deduped_tags():
 log('done.')
 
 
+
+# SCREENSHOTS
+# SCREENSHOTS
+# SCREENSHOTS
+
+log('making screenshots directory...')
+if not os.path.exists(screenshots_dir_dist):
+  os.mkdir(screenshots_dir_dist)
+log('done.')
+
+# fetch these last because they take a while
+log('fetching screenshots...')
+screenshots = Screenshots(community_data)
+screenshots.fetch()
+log('done.')
 
 # dev zone
 # project

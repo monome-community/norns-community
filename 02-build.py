@@ -227,7 +227,7 @@ for project in community_data.get_projects_in_alphabetical_order():
   fp.write('authors:\n')
   for author in project.authors:
     fp.write(' - ' + author + '\n')
-  # recirects to mitigate against link rot from wiki.js (norns.community v1.0)
+  # redirects to mitigate against link rot from wiki.js (norns.community v1.0)
   fp.write('redirect_from:\n')
   for author in project.authors:
     fp.write(' - /authors/' + author + '/' + project.sanitized_name + '\n')

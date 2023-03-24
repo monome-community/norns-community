@@ -1,0 +1,15 @@
+# monome
+community.json
+index.md
+_data/authors.yml
+_pages/projects
+assets/screenshots
+
+# jekyll
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+
+# macos
+.DS_Store

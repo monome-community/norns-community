@@ -1,0 +1,13 @@
+items:
+
+- title: index
+  url: /
+
+- title: author
+  url: /author
+
+- title: search
+  url: /search
+
+- title: about
+  url: /about

@@ -1,0 +1,6 @@
+<nav>
+  {% for item in site.data.nav.items %}
+  <a href="{{ site.baseurl }}{{ item.url }}"{% if item.url == page.url %} class="active"{% endif %}>{{ item.title }}</a>
+  {% endfor %}
+  <hr/>
+</nav>

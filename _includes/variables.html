@@ -1,0 +1,12 @@
+{%- if page.url == "/" -%}
+  {%- assign page_title = site.title | append: " | " | append: site.description -%}
+{%- elsif page.title -%}
+  {%- assign page_title = page.title | append: " | " | append: site.title -%}
+{%- else -%}
+  {%- assign page_title = site.title -%}
+{%- endif -%}
+{%- if page.excerpt -%}
+  {%- assign page_excerpt = page.excerpt | strip_html -%}
+{%- else -%}
+  {%- assign page_excerpt = site.description -%}
+{%- endif -%}

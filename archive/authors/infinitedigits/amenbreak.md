@@ -1,0 +1,94 @@
+---
+title: amenbreak
+description: a dedicated amen break script.
+published: true
+date: 2023-01-17T14:47:41.139Z
+tags: drums, samplers
+editor: markdown
+dateCreated: 2022-12-16T16:00:15.998Z
+---
+
+# amenbreak
+
+![amenbreak.png](/community/infinitedigits/amenbreak.png)
+
+![inspiration](https://user-images.githubusercontent.com/6550035/208136642-1081aa03-8e32-487a-b282-fd7130da05fc.png)
+
+a dedicated amen break script.
+
+## Requirements
+
+- norns
+- at least 200MB of disk space
+
+## Documentation
+
+### quickstart
+
+E2 amens, E3 breaks.
+
+
+### features
+
+- over 200 amen break samples (from [internet archive](https://archive.org/details/amen-breaks-compilation)), loaded into memory for instant playback
+- automatic stutter/stretch/delay effects (amen+break)
+- overdrive/decimate/degrade control (punch)
+- kick drum added to bolster kicks of pre-analyzed samples
+- edit mode allows manipulating individual slices/kick volume
+- all effects are determined by probabilities with sweet spots controlled by many different [easing functions](https://www.desmos.com/calculator/3mmmijzncm) (thanks to @dewb for pointing this out)
+- (with grid) bass engine w/ keyboard+sequencer, looped/one-shot sample player
+
+### controls
+
+there are two modes - performance and editor. 
+
+in performance mode:
+
+- K1 switches to edit mode
+- K2 switches parameters
+- K3 stops/starts
+- E1 changes volume
+- E2 changes amen/track
+- E3 changes break/punch
+
+in edit mode:
+
+- K1 switches to performance
+- K2 select slice
+- K3 auditions slice
+- E1 changes kick
+- E2 zooms
+- E3 jogs slice
+
+f*** it: 
+
+- any two keys
+
+## Grid
+
+![image](https://user-images.githubusercontent.com/6550035/212775131-2435bfc7-4a5c-4d07-9afe-a95a236b5d61.png)
+
+
+the **fx region** of the grid has the following effects in order, left-to-right and top to bottom: stretch, change volume, change pitch, delay, reverse, gate, tape stop, filter, mute
+
+if you are using the sample player you can only sync them if they have `bpm` in the title. for example, `my_sound_bpm120.wav` will process it as a 120-bpm sample. upon loading, *amenbreak* stretches the sample to keep the same pitch but match the current tempo. *note*: this only works when loading, so be careful when using samples and changing tempo.
+
+
+## Demo
+
+https://www.youtube.com/watch?v=ZbV8A3CWqr0
+
+https://www.youtube.com/watch?v=Im8riBR7_lU
+
+https://www.youtube.com/watch?v=8h3KSgyc4Gk
+
+
+## Install
+
+install with
+
+```
+;install https://github.com/schollz/amenbreak
+```
+
+https://github.com/schollz/amenbreak

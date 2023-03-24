@@ -1,0 +1,83 @@
+/* positive space */
+
+body {
+  /* modified system-default font stack: https://www.digitalocean.com/community/tutorials/css-system-font-stack */
+  font-family: "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background-color: #222;
+  color: #fff;
+  font-size: 0.8em;
+  line-height: 1.2em;
+}
+
+
+h1, h2, h3, h4, h5, h6, .active {
+  font-weight: 800;
+}
+
+code, pre {
+  color: #999;
+}
+
+a,
+a:link,
+a:active {
+  color: #aaa;
+}
+
+a:hover,
+a:visited {
+  color: #ccc;
+}
+
+hr {
+  margin: 0.8em 0;
+  border: none;
+  background-color: #555;
+  color: #555;
+  height: 1px;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* negative space */
+
+h1, h2, h3, h4, h5, h6, p, ul, ol {
+  margin: 0 0 0.8em 0;
+  padding: 0;
+}
+
+nav, section, footer {
+  max-width: 800px;
+}
+
+nav {
+  margin: 0.8em 0.8em 1.6em 0.8em;
+}
+
+section {
+  margin: 0.8em;
+}
+
+footer {
+  margin: 1.6em 0.8em 0.8em 0.8em;
+}
+
+section ul, section ol {
+  padding: 0 0 0 0.8em;
+}
+
+ul li {
+  margin: 0 0 .5em 0;
+}
+
+ul li ul {
+  margin: 0;
+  padding-top: .5em;
+  padding-left: 0.8em;
+}
+
+ul li ul li {
+  margin-bottom: .5em;
+}

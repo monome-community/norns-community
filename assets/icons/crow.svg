@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 56 49" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(1,0,0,1,-467.949,-156.198)">
+        <g id="bw_crow" transform="matrix(1,0,0,1,21.4905,-36.3951)">
+            <g transform="matrix(0.441458,0,0,1.01373,382.852,99.7468)">
+                <path d="M268.995,106.707C268.995,98.772 254.201,92.33 235.979,92.33L178.801,92.33C160.58,92.33 145.786,98.772 145.786,106.707L145.786,124.331C145.786,132.267 160.58,138.709 178.801,138.709L235.979,138.709C254.201,138.709 268.995,132.267 268.995,124.331L268.995,106.707Z" style="fill:rgb(3,0,0);stroke:black;stroke-width:1.92px;"/>
+            </g>
+            <g transform="matrix(1,0,0,1,259.16,130.9)">
+                <path d="M199.418,91.805L204.926,80.101L208.193,80.101L213.554,91.805L209.394,91.805L206.494,84.642L203.608,91.805L199.418,91.805Z" style="fill:white;fill-rule:nonzero;stroke:white;stroke-width:1px;stroke-linecap:butt;stroke-miterlimit:2;"/>
+                <path d="M216.938,91.805L222.446,80.101L225.712,80.101L231.074,91.805L226.913,91.805L224.013,84.642L221.127,91.805L216.938,91.805Z" style="fill:white;fill-rule:nonzero;stroke:white;stroke-width:1px;stroke-linecap:butt;stroke-miterlimit:2;"/>
+            </g>
+        </g>
+    </g>
+</svg>

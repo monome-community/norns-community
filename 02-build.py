@@ -6,19 +6,31 @@ build the authors and entry/project pages.
 this build script uses:
  - "entries" when operating directly on community.json.
  - "projects" when operating user-facing pages.
+
+screenshot fallback order is:
+ 1. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/cover.png
+ 2. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/GITHUB_PROJECT.png
+ 3. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/screenshot.png
+ 4. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/cover.png
+ 5. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/GITHUB_PROJECT.png
+ 6. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/screenshot.png
+ 7. ./archive/screenshot/SANITIZED_NAME.png
+ 8. <nothing>
+
+presently only projects hosted on github are supported.
 '''
 
 import json
 import re
 import os
 import subprocess
+import requests
 
 community_json_src = 'community.json'
 screenshots_dir_src = 'archive/screenshots'
 screenshots_dir_dist = 'assets/screenshots'
 authors_yml_dist = '_data/authors.yml'
 projects_dir_dist = '_pages/projects'
-
 
 
 
@@ -32,15 +44,6 @@ def log(msg):
 def sanitize(str):
   # only allow alphanumeric, dashes, and underscores
   return re.sub('[^a-zA-Z0-9\-_]', '', str)
-
-def check_screenshot(sanitized_name):
-  screenshot_path = './' + screenshots_dir_src + '/' + sanitized_name + '.png'
-  log('checking for screenshot at ' + screenshot_path)
-  if not os.path.exists(screenshot_path):
-    log(sanitized_name + 'screenshot not found.')
-    return ''
-  else:
-    return screenshot_path
 
 
 
@@ -61,6 +64,10 @@ class Project():
     self.discussion_url = entry['discussion_url'] if 'discussion_url' in entry else ''
     self.documentation_url = entry['documentation_url'] if 'documentation_url' in entry else ''
     self.tags = entry['tags'] if 'tags' in entry else ''
+    # github strings are needed build the screenshot fallback urls
+    github_strings = entry['project_url'].replace('https://github.com/', '').split('/')
+    self.github_author = github_strings[0] # sometimes author names differ from github usernames
+    self.github_project = github_strings[1] 
 
   def associate_author(self, author_raw_name):
     self.authors.append(sanitize(author_raw_name))
@@ -130,7 +137,59 @@ class CommunityData():
   def get_projects_in_alphabetical_order(self):
     return sorted(self.projects.values(), key=lambda project: project.raw_name.casefold())
 
-  
+class Screenshots():
+
+  def __init__(self, community_data: CommunityData):
+    self.community_data = community_data
+    self.remote_fallbacks = {
+      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/cover.png',
+      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/GITHUB_PROJECT.png',
+      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/screenshot.png',
+      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/cover.png',
+      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/GITHUB_PROJECT.png',
+      'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/screenshot.png',
+    }
+    self.local_fallbacks = {
+      './archive/screenshots/SANITIZED_NAME.png',
+      './assets/images/scriptname.png'
+    }
+
+
+  def fetch(self):
+    for project in self.community_data.get_projects_in_alphabetical_order():
+      log('#### ' + project.raw_name + ' ####')
+      remote_fallback_found = False
+      # try to fetch screenshots from the remote fallbacks first
+      for fallback in self.remote_fallbacks:
+        url = fallback.replace('GITHUB_AUTHOR', project.github_author).replace('GITHUB_PROJECT', project.github_project)
+        log('try ' + url)
+        try:
+          response = requests.get(url)
+          if response.status_code == 200:
+            log('image found!')
+            destination = './' + screenshots_dir_dist + '/' + project.sanitized_name + '.png'
+            with open(destination, 'wb') as f:
+              f.write(response.content)
+              log('saved to ' + destination)
+              remote_fallback_found = True
+            break
+        except requests.exceptions.RequestException as e:
+          log('request failed.')
+          log(e)
+          continue
+      # if remote fallbacks didn't work, try local
+      if not remote_fallback_found:
+        for fallback in self.local_fallbacks:
+          path = fallback.replace('SANITIZED_NAME', project.sanitized_name)
+          log('try ' + path)
+          if os.path.exists(path):
+            log('image found!')
+            command = 'cp ' + path + ' ./' + screenshots_dir_dist + '/' + project.sanitized_name + '.png'
+            log(command)
+            subprocess.Popen(command, shell=True)
+            break
+
+
 
 # SETUP
 # SETUP
@@ -155,13 +214,20 @@ if not os.path.exists(projects_dir_dist):
   os.mkdir(projects_dir_dist)
 log('done.')
 
+
+
+# SCREENSHOTS
+# SCREENSHOTS
+# SCREENSHOTS
+
 log('making screenshots directory...')
 if not os.path.exists(screenshots_dir_dist):
   os.mkdir(screenshots_dir_dist)
 log('done.')
 
-log('copying ./screenshots to ./assets/screenshots for jekyll...')
-subprocess.Popen('cp -r ' + screenshots_dir_src + '/* ' + screenshots_dir_dist, shell=True)
+log('fetching screenshots...')
+screenshots = Screenshots(community_data)
+screenshots.fetch()
 log('done.')
 
 
@@ -169,6 +235,7 @@ log('done.')
 # INDEX PAGE
 # INDEX PAGE
 # INDEX PAGE
+
 log('building the index page...')
 fp = open('index.md', 'w')
 fp.write('---\n')
@@ -183,10 +250,10 @@ log('done.')
 
 
 
+# AUTHOR PAGE
+# AUTHOR PAGE
+# AUTHOR PAGE
 
-# AUTHOR PAGE
-# AUTHOR PAGE
-# AUTHOR PAGE
 log('building ' + authors_yml_dist +'...')
 fp = open(authors_yml_dist, 'w')
 for author in community_data.get_authors_in_alphabetical_order():
@@ -202,10 +269,10 @@ log('done.')
 
 
 
+# PROJECT PAGES
+# PROJECT PAGES
+# PROJECT PAGES
 
-# PROJECT PAGES
-# PROJECT PAGES
-# PROJECT PAGES
 log('building project pages...')
 for project in community_data.get_projects_in_alphabetical_order():
   # write the project front matter
@@ -214,7 +281,7 @@ for project in community_data.get_projects_in_alphabetical_order():
   # layout, title, and permalink are needed by jekyll
   fp.write('layout: project\n')
   fp.write('title: ' + project.raw_name + '\n')
-  fp.write('screenshot: ' + check_screenshot(project.sanitized_name) + '\n')
+  fp.write('screenshot: ' + project.sanitized_name + '\n')
   fp.write('sanitized_name: ' + project.sanitized_name + '\n')
   fp.write('permalink: ' + project.permalink + '\n')
   fp.write('project_url: ' + project.project_url + '\n')

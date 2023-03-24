@@ -7,6 +7,9 @@ TARGETS=(
   "./index.md"
   "./_pages/projects"
   "./assets/screenshots"
+  "./package.json"
+  "./package-lock.json"
+  "./node_modules"
 )
 
 printf ">> deleting any files generated from a previous build..."

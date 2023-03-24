@@ -40,7 +40,7 @@ tar xzvf static-js-builder.tar.gz
 wget https://raw.githubusercontent.com/p3r7/norns-gallery/$LAST_TAG/package.json
 npm install
 
-node target/cljsbuild/prerender/main.js --mode file --source-html _layouts/search.html --dest-html _layouts/search.html --replace-tag "<p>search goes here...</p>"
+node target/cljsbuild/prerender/main.js --mode file --source-html _templates/search.html --dest-html _layouts/search.html --replace-tag "<p>search goes here...</p>"
 
 rm -rf target
 rm -f static-js-builder.tar.gz

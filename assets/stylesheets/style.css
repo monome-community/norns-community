@@ -7,6 +7,7 @@ body {
   color: #fff;
   font-size: 0.8em;
   line-height: 1.2em;
+  padding: 8px;
 }
 
 
@@ -35,6 +36,7 @@ hr {
   background-color: #555;
   color: #555;
   height: 1px;
+  opacity: 1;
 }
 
 img {

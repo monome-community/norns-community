@@ -31,6 +31,7 @@ screenshots_dir_src = 'archive/screenshots'
 screenshots_dir_dist = 'assets/screenshots'
 authors_yml_dist = '_data/authors.yml'
 projects_dir_dist = '_pages/projects'
+tags_dir_dist = '_pages/tags'
 
 
 
@@ -136,6 +137,15 @@ class CommunityData():
   # return a list of projects in alphabetical order
   def get_projects_in_alphabetical_order(self):
     return sorted(self.projects.values(), key=lambda project: project.raw_name.casefold())
+  
+  def get_deduped_tags(self):
+    tags = []
+    for project in self.projects.values():
+      for tag in project.tags:
+        if not tag in tags:
+          tags.append(tag)
+    return sorted(tags, key=lambda tag: tag.casefold())
+
 
 class Screenshots():
 
@@ -214,6 +224,11 @@ if not os.path.exists(projects_dir_dist):
   os.mkdir(projects_dir_dist)
 log('done.')
 
+log('making tags directory...')
+if not os.path.exists(tags_dir_dist):
+  os.mkdir(tags_dir_dist)
+log('done.')
+
 
 
 # SCREENSHOTS
@@ -281,7 +296,7 @@ for project in community_data.get_projects_in_alphabetical_order():
   # layout, title, and permalink are needed by jekyll
   fp.write('layout: project\n')
   fp.write('title: ' + project.raw_name + '\n')
-  fp.write('screenshot: ' + project.sanitized_name + '\n')
+  fp.write('screenshot: ' + project.sanitized_name + '.png' + '\n')
   fp.write('sanitized_name: ' + project.sanitized_name + '\n')
   fp.write('permalink: ' + project.permalink + '\n')
   fp.write('project_url: ' + project.project_url + '\n')
@@ -304,6 +319,26 @@ log('done.')
 
 
 
+# TAG PAGES
+# TAG PAGES
+# TAG PAGES
+
+log('building tag pages...')
+for tag in community_data.get_deduped_tags():
+  fp = open(tags_dir_dist + '/' + tag + '.md', 'w')
+  fp.write('---\n')
+  fp.write('layout: tag\n')
+  fp.write('title: ' + tag + '\n')
+  fp.write('permalink: /tag/' + tag + '\n')
+  fp.write('projects:\n')
+  for project in community_data.get_projects_in_alphabetical_order():
+    if tag in project.tags:
+      fp.write('  - raw_name: ' + project.raw_name + '\n')
+      fp.write('    url: ' + project.permalink + '\n')
+      fp.write('    description: ' + project.description + '\n')
+  fp.write('---\n')
+  fp.close()
+log('done.')
 
 
 

@@ -64,7 +64,11 @@ class Project():
     self.project_url = entry['project_url'] if 'project_url' in entry else ''
     self.discussion_url = entry['discussion_url'] if 'discussion_url' in entry else ''
     self.documentation_url = entry['documentation_url'] if 'documentation_url' in entry else ''
-    self.tags = entry['tags'] if 'tags' in entry else ''
+    # sanitize each tag
+    unsanitized_tags = entry['tags'] if 'tags' in entry else ''
+    self.tags = []
+    for tag in unsanitized_tags:
+      self.tags.append(sanitize(tag))
     # github strings are needed build the screenshot fallback urls
     github_strings = entry['project_url'].replace('https://github.com/', '').split('/')
     self.github_author = github_strings[0] # sometimes author names differ from github usernames
@@ -151,6 +155,7 @@ class Screenshots():
 
   def __init__(self, community_data: CommunityData):
     self.community_data = community_data
+    # todo: are these actually running in this order? output in the terminal suggests they are not -
     self.remote_fallbacks = {
       'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/cover.png',
       'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/GITHUB_PROJECT.png',
@@ -325,17 +330,18 @@ log('done.')
 
 log('building tag pages...')
 for tag in community_data.get_deduped_tags():
+  log(tag + '...')
   fp = open(tags_dir_dist + '/' + tag + '.md', 'w')
   fp.write('---\n')
   fp.write('layout: tag\n')
   fp.write('title: ' + tag + '\n')
   fp.write('permalink: /tag/' + tag + '\n')
-  fp.write('projects:\n')
+  fp.write('projects:\n\n')
   for project in community_data.get_projects_in_alphabetical_order():
     if tag in project.tags:
       fp.write('  - raw_name: ' + project.raw_name + '\n')
       fp.write('    url: ' + project.permalink + '\n')
-      fp.write('    description: ' + project.description + '\n')
+      fp.write('    description: ' + project.description + '\n\n')
   fp.write('---\n')
   fp.close()
 log('done.')

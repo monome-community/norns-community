@@ -41,7 +41,7 @@ wget https://raw.githubusercontent.com/p3r7/norns-gallery/$LAST_TAG/package.json
 npm install
 
 gzip target/cljsbuild/prod-static/public/js/compiled/app.js
-cp target/cljsbuild/prod-static/public/js/compiled/app.js.gz /assets/javascript/gallery.js.gz
+cp target/cljsbuild/prod-static/public/js/compiled/app.js.gz assets/javascript/gallery.js.gz
 
 node target/cljsbuild/prerender/main.js --mode file --source-html _templates/search.html --dest-html _layouts/search.html --replace-tag "<p>search goes here...</p>" --target-js-tag '<script src="{{ "/assets/javascript/gallery.js.gz" | relative_url }}?{{site.time | date: '%s%N'}}"></script>'
 

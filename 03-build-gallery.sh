@@ -8,10 +8,6 @@ set -e
 
 sudo apt -qy install fakeroot git wget jq
 
-# NB: to download latest release assets
-# apt -qy install golang
-# go install github.com/jreisinger/ghrel@latest
-
 
 ## ------------------------------------------------------------------------
 ## DEPS - NODE.JS
@@ -31,9 +27,6 @@ OLDPWD="$PWD"
 LAST_RELEASE=$(wget -O - https://api.github.com/repos/p3r7/norns-gallery/releases/latest | jq -r .name)
 LAST_TAG=$(wget -O - https://api.github.com/repos/p3r7/norns-gallery/releases/latest | jq -r .tag_name)
 
-# mkdir /tmp/gallery-builder
-# cd /tmp/gallery-builder
-# ghrel -p static-js-builder.tar.gz p3r7/norns-gallery
 wget https://github.com/p3r7/norns-gallery/releases/download/$LAST_RELEASE/static-js-builder.tar.gz
 tar xzvf static-js-builder.tar.gz
 

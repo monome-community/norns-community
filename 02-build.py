@@ -178,6 +178,11 @@ class Screenshots():
         url = fallback[1].replace('GITHUB_AUTHOR', project.github_author).replace('GITHUB_PROJECT', project.github_project)
         log('try ' + url)
         try:
+          # test if exists (fast)
+          response = requests.head(url)
+          if response.status_code != 200:
+            continue
+          # download (slow)
           response = requests.get(url)
           if response.status_code == 200:
             log('image found!')

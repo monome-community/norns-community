@@ -33,10 +33,10 @@ tar xzvf static-js-builder.tar.gz
 wget https://raw.githubusercontent.com/p3r7/norns-gallery/$LAST_TAG/package.json
 npm install
 
-gzip target/cljsbuild/prod-static/public/js/compiled/app.js
-cp target/cljsbuild/prod-static/public/js/compiled/app.js.gz assets/javascript/gallery.js.gz
+# gzip target/cljsbuild/prod-static/public/js/compiled/app.js
+cp target/cljsbuild/prod-static/public/js/compiled/app.js assets/javascript/gallery.js
 
-node target/cljsbuild/prerender/main.js --mode file --source-html _templates/search.html --dest-html _layouts/search.html --replace-tag "<p>search goes here...</p>" --target-js-tag '<script src="{{ "/assets/javascript/gallery.js.gz" | relative_url }}?{{site.time | date: '%s%N'}}"></script>'
+node target/cljsbuild/prerender/main.js --mode file --source-html _templates/search.html --dest-html _layouts/search.html --replace-tag "<p>search goes here...</p>" --target-js-tag '<script src="{{ "/assets/javascript/gallery.js" | relative_url }}?{{site.time | date: '%s%N'}}"></script>'
 
 rm -rf target
 rm -f static-js-builder.tar.gz

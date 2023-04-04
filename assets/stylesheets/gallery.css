@@ -15,8 +15,11 @@ h2 {
   font-size: 1rem;
   border-bottom: 1px solid #444; }
 
-h3.script-name {
-  font-size: 0.8rem }
+a.script-name {
+  /* font-size: calc(0.8rem + .6vw) */
+  font-size: calc(1.3rem);
+  color: inherit;
+  text-decoration: inherit; }
 
 .gallery-panel-link {
   text-decoration: none;
@@ -54,6 +57,9 @@ h3.script-name {
   .gallery-panel:hover a {
     color: #ffffff; }
 
+.hidden {
+  display: none !important; }
+
 ul.norns-feature-container {
   height: 24px;
   list-style: none;
@@ -75,3 +81,15 @@ ul.norns-feature-container {
 
 ul.norns-feature-io {
   height: auto; }
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+  background-color: #444 !important;
+  border: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important; }
+
+.btn-check:checked + .btn-primary {
+  background-color: #f1ba7d !important; }
+
+/*# sourceMappingURL=main.css.map */

@@ -1,6 +1,5 @@
 ---
-layout: search
-title: search
-permalink: /search
-additional_style: gallery
+layout: explore
+title: explore
+permalink: /explore
 ---

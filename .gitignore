@@ -3,16 +3,10 @@ community.json
 
 # norns-community generated files
 index.md
-_layouts/search.html
 _data/authors.yml
 _pages/projects
 _pages/tags
 assets/screenshots
-
-# node is only used for the gallery build
-node_modules
-package-lock.json
-package.json
 
 # jekyll
 _site

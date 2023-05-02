@@ -84,3 +84,73 @@ ul li ul {
 ul li ul li {
   margin-bottom: .5em;
 }
+
+/* explore */
+
+.explore nav,
+.explore section,
+.explore footer {
+  max-width: 100%
+}
+
+.projects {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+}
+
+.projects .project {
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+@media (min-width: 576px) {
+  .projects .project {
+    width: 50%;
+  }
+}
+
+@media (min-width: 992px) {
+  .projects .project {
+    width: 25%;
+  }
+  .projects .project h1 {
+    font-size: 1.2em;
+  }
+}
+
+@media (min-width: 1400px) {
+  .projects .project {
+    width: 12.5%;
+  }
+  .projects .project h1 {
+    font-size: 1em;
+  }
+}
+
+.projects .project a {
+  border: 1.6em solid transparent;
+  display: block;
+  text-decoration: none;
+  color: #fff;
+}
+
+.projects .project a:hover {
+  border: 1.6em solid #fff;
+  background: #fff;
+  color: #555;
+}
+
+.projects .project a img {
+  width: 100%;
+  height: auto;
+}
+
+.projects .project a img,
+.projects .project a h1,
+.projects .project a p {
+  margin: 0 0 0.8em 0;
+}

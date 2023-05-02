@@ -201,7 +201,7 @@ class Screenshots():
     }
     self.local_fallbacks = {
       1: './archive/screenshots/SANITIZED_NAME.png',
-      2: './assets/images/scriptname.png'
+      2: './assets/images/dust.png'
     }
 
 
@@ -381,16 +381,16 @@ log('done.')
 # SCREENSHOTS
 # SCREENSHOTS
 
-# log('making screenshots directory...')
-# if not os.path.exists(screenshots_dir_dist):
-#   os.mkdir(screenshots_dir_dist)
-# log('done.')
+log('making screenshots directory...')
+if not os.path.exists(screenshots_dir_dist):
+  os.mkdir(screenshots_dir_dist)
+log('done.')
 
 # fetch these last because they take a while
-# log('fetching screenshots...')
-# screenshots = Screenshots(community_data)
-# screenshots.fetch()
-# log('done.')
+log('fetching screenshots...')
+screenshots = Screenshots(community_data)
+screenshots.fetch()
+log('done.')
 
 # dev zone
 # project

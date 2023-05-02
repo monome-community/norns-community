@@ -1,8 +1,15 @@
 ---
 layout: abstract
 ---
-<ul>
+<div class="projects">
   {% for project in page.projects %}
-  <li><a href="{{ project.url }}">{{ project.raw_name }}</a> - {{ project.description }}</li>
+    {% assign tags = project.tags | join: ' ' %}
+    <div class="project {{ tags }}">
+      <a href="{{ project.url }}">
+        <img src="/assets/screenshots/{{ project.screenshot }}" alt="{{ project.raw_name }}" />
+        <h1>{{ project.raw_name }}</h1>
+        <p>{{ tags }}</p>
+      </a>
+    </div>
   {% endfor %}
-</ul>
+</div>

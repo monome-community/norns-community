@@ -1,24 +1,35 @@
-# TODO
+# norns.community
 
-- import docs to each script (from readme.md, doc/index.md, or local static backup from wiki)
-- import conver.png for each script (from list of possible sources in repo) into the static assets folder
-- add `/tag/arc`, `/tag/sequencer`, etc. layout and pages for jekyll
-- fallbacks for screenshots (presently only checks in ./assets/screenshots)
-- ABOUT page
-  - write up contribution guidelines
-  - where docs go (/readme.md or /doc/index.md)
-  - where cover image can go (list)
+this repository fetches our [community catalog](https://github.com/monome/norns-community) and parses into a static website.
 
-# norns.community site generator
+[this github action](https://github.com/monome-community/norns-community/actions/workflows/jekyll.yml) runs the build and then deploys via github pages.
 
-fetches the [community catalog](https://github.com/monome/norns-community) and parses into a static site with matrix tag search and collected documentation.
+screenshots are individually cached from their respective repos in the following priority order:
 
-# contributing your script
+```txt
+1. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/cover.png
+2. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/GITHUB_PROJECT.png
+3. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/screenshot.png
+4. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/cover.png
+5. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/GITHUB_PROJECT.png
+6. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/screenshot.png
+7. ./archive/screenshot/SANITIZED_NAME.png
+8. ./assets/images/dust.png
+```
 
-1. add screenshots to `./screenshots`. (note: screenshots were archived from the original [norns.community](https://norns.community) site on february 5, 2023.)
+[archived screenshots](https://github.com/monome-community/norns-community/tree/main/archive/screenshots) were archived from the original https://norns.community wiki.js site on february 5, 2023. one of our goals is to completely retire this step and push the responsibility of hosting script cover images to the authors.
 
+in practice, this means script can simply add a screenshot their repos at any of the following locations:
 
-# development setup instructions
+```txt
+./doc/cover.png
+./doc/your-script-name.png
+./doc/screenshot.png
+./cover.png
+./your-script-name.png
+```
+
+## development setup instructions
 
 if you want to help maintain this site, you can run it locally and test your changes before submitting a pull request.
 
@@ -27,19 +38,15 @@ if you want to help maintain this site, you can run it locally and test your cha
 3. using a shell, navigate to the `norns-community` directory with `cd`
 4. in the directory execute: `bundle install`
 5. then execute: `bundle exec jekyll serve --baseurl ''`
-6. if you're going to be working on this alot, save the above command as an alias
-7. pull the latest community data and build: `./00-nuke.sh && ./01-curl.sh && ./02-build.py`. this is also the main dev loop.
+6. tip: if you're going to be working on this alot, save the above command as an alias
+7. pull the latest community data and build with: `./00-nuke.sh && ./01-curl.sh && ./02-build.py`
 8. you can now visit [http://127.0.0.1:4000](http://127.0.0.1:4000) in your browser
 
-(this site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64-darwin21]`)
+this site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64-darwin21]`
 
-# navigation/content proposition:
+## todo
 
-## script pages
-- full meta-data from catalog.json
-- screenshot
-- scrape of doc
-
-## matrix (filter? search?) @eigen 's choice locator
-- i'd like to restyle this and put all the checkboxes at the top, in a big condensed list
-
+- about page
+  - write up contribution guidelines
+  - where docs go (/readme.md or /doc/index.md)
+  - where cover image can go (list)

@@ -47,16 +47,6 @@ jobs:
         run: ./01-curl.sh
       - name: "|||||||| monome community 02-build.sh ||||||||"
         run: ./02-build.py
-      - name: "|||||||| monome community 03-build-gallery.sh ||||||||"
-        run: ./03-build-gallery.sh
-      - name: Build with Jekyll
-        # Outputs to the './_site' directory by default
-        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
-        env:
-          JEKYLL_ENV: production
-      - name: Upload artifact
-        # Automatically uploads an artifact from the './_site' directory by default
-        uses: actions/upload-pages-artifact@v1
 
   # Deployment job
   deploy:

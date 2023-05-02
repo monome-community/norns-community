@@ -18,7 +18,7 @@ screenshots are loaded from the following sources, in order:
 5. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/GITHUB_PROJECT.png
 6. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/screenshot.png
 7. ./archive/screenshot/SANITIZED_NAME.png
-8. <nothing>
+8. ./assets/images/dust.png
 
 presently only projects hosted on github are supported.
 '''

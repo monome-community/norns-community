@@ -1,7 +1,7 @@
 ---
 layout: abstract
 ---
-<h1>{{ page.title }}</h1>
+<h1>tagged with "{{ page.title }}"</h1>
 <ul>
   {% for project in page.projects %}
   <li><a href="{{ project.url }}">{{ project.raw_name }}</a> - {{ project.description }}</li>

@@ -73,7 +73,7 @@ def write_explore_front_matter(fp, project):
   fp.write('  - raw_name: ' + project.raw_name + '\n')
   fp.write('    screenshot: ' + project.sanitized_name + '.png' + '\n')
   fp.write('    sanitized_name: ' + project.sanitized_name + '\n')
-  fp.write('    project_url: ' + project.project_url + '\n')
+  fp.write('    url: ' + project.permalink + '\n')
   fp.write('    description: ' + project.description + '\n')
   fp.write('    tags:\n')
   for tag in project.tags:

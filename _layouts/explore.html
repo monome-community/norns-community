@@ -1,4 +1,8 @@
 ---
 layout: abstract
 ---
-hi
+<ul>
+  {% for project in page.projects %}
+  <li><a href="{{ project.url }}">{{ project.raw_name }}</a> - {{ project.description }}</li>
+  {% endfor %}
+</ul>

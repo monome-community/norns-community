@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
 
 '''
-build the authors and entry/project pages.
+build the authors, project, tag, and explore pages.
 
-this build script uses:
- - "entries" when operating directly on community.json.
- - "projects" when operating user-facing pages.
+this script is designed to be run via github actions.
 
-screenshot fallback order is:
- 1. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/cover.png
- 2. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/GITHUB_PROJECT.png
- 3. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/screenshot.png
- 4. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/cover.png
- 5. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/GITHUB_PROJECT.png
- 6. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/screenshot.png
- 7. ./archive/screenshot/SANITIZED_NAME.png
- 8. <nothing>
+to match domain terminology, this build script uses:
+ - "entry/entries" when operating directly on community.json.
+ - "project(s)" when operating user-facing pages.
+
+screenshots are loaded from the following sources, in order:
+
+1. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/cover.png
+2. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/GITHUB_PROJECT.png
+3. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/screenshot.png
+4. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/cover.png
+5. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/GITHUB_PROJECT.png
+6. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/screenshot.png
+7. ./archive/screenshot/SANITIZED_NAME.png
+8. <nothing>
 
 presently only projects hosted on github are supported.
 '''
@@ -32,7 +35,7 @@ screenshots_dir_dist = 'assets/screenshots'
 authors_yml_dist = '_data/authors.yml'
 projects_dir_dist = '_pages/projects'
 tags_dir_dist = '_pages/tags'
-
+explore_page = '_pages/explore.md'
 
 
 # FUNCTIONS
@@ -45,6 +48,39 @@ def log(msg):
 def sanitize(str):
   # only allow alphanumeric, dashes, and underscores
   return re.sub('[^a-zA-Z0-9\-_]', '', str)
+
+def write_project_front_matter(fp, project):
+  fp.write('screenshot: ' + project.sanitized_name + '.png' + '\n')
+  fp.write('sanitized_name: ' + project.sanitized_name + '\n')
+  fp.write('project_url: ' + project.project_url + '\n')
+  fp.write('description: ' + project.description + '\n')
+  fp.write('discussion_url: ' + project.discussion_url + '\n')
+  fp.write('documentation_url: ' + project.documentation_url + '\n')
+  fp.write('tags:\n')
+  for tag in project.tags:
+    fp.write(' - ' + tag + '\n')  
+  fp.write('authors:\n')
+  for author in project.authors:
+    fp.write(' - ' + author + '\n')
+  # redirects to mitigate against link rot from wiki.js (norns.community v1.0)
+  fp.write('redirect_from:\n')
+  for author in project.authors:
+    fp.write(' - /authors/' + author + '/' + project.sanitized_name + '\n')
+
+def write_explore_front_matter(fp, project):
+  fp.write('\n') # newline for legibility only
+  # these need to be indented 4 spaces for .yml:
+  fp.write('  - raw_name: ' + project.raw_name + '\n')
+  fp.write('    screenshot: ' + project.sanitized_name + '.png' + '\n')
+  fp.write('    sanitized_name: ' + project.sanitized_name + '\n')
+  fp.write('    project_url: ' + project.project_url + '\n')
+  fp.write('    description: ' + project.description + '\n')
+  fp.write('    tags:\n')
+  for tag in project.tags:
+    fp.write('     - ' + tag + '\n')  
+  fp.write('    authors:\n')
+  for author in project.authors:
+    fp.write('     - ' + author + '\n')
 
 
 
@@ -290,23 +326,8 @@ for project in community_data.get_projects_in_alphabetical_order():
   # layout, title, and permalink are needed by jekyll
   fp.write('layout: project\n')
   fp.write('title: ' + project.raw_name + '\n')
-  fp.write('screenshot: ' + project.sanitized_name + '.png' + '\n')
-  fp.write('sanitized_name: ' + project.sanitized_name + '\n')
   fp.write('permalink: ' + project.permalink + '\n')
-  fp.write('project_url: ' + project.project_url + '\n')
-  fp.write('description: ' + project.description + '\n')
-  fp.write('discussion_url: ' + project.discussion_url + '\n')
-  fp.write('documentation_url: ' + project.documentation_url + '\n')
-  fp.write('tags:\n')
-  for tag in project.tags:
-    fp.write(' - ' + tag + '\n')  
-  fp.write('authors:\n')
-  for author in project.authors:
-    fp.write(' - ' + author + '\n')
-  # redirects to mitigate against link rot from wiki.js (norns.community v1.0)
-  fp.write('redirect_from:\n')
-  for author in project.authors:
-    fp.write(' - /authors/' + author + '/' + project.sanitized_name + '\n')
+  write_project_front_matter(fp, project)
   fp.write('---\n')
   fp.close()
 log('done.')
@@ -337,20 +358,39 @@ log('done.')
 
 
 
+# EXPLORE
+# EXPLORE
+# EXPLORE
+
+log('building explore page...')
+fp = open(explore_page, 'w')
+fp.write('---\n')
+fp.write('layout: explore\n')
+fp.write('title: explore\n')
+fp.write('permalink: explore\n')
+fp.write('projects:\n')
+for project in community_data.get_projects_in_alphabetical_order():
+  write_explore_front_matter(fp, project)
+fp.write('---\n')
+fp.close()
+log('done.')
+
+
+
 # SCREENSHOTS
 # SCREENSHOTS
 # SCREENSHOTS
 
-log('making screenshots directory...')
-if not os.path.exists(screenshots_dir_dist):
-  os.mkdir(screenshots_dir_dist)
-log('done.')
+# log('making screenshots directory...')
+# if not os.path.exists(screenshots_dir_dist):
+#   os.mkdir(screenshots_dir_dist)
+# log('done.')
 
 # fetch these last because they take a while
-log('fetching screenshots...')
-screenshots = Screenshots(community_data)
-screenshots.fetch()
-log('done.')
+# log('fetching screenshots...')
+# screenshots = Screenshots(community_data)
+# screenshots.fetch()
+# log('done.')
 
 # dev zone
 # project

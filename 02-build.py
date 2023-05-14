@@ -34,6 +34,7 @@ projects_dist = '_pages/projects'
 tags_dist = '_pages/tags'
 explore_dist = '_pages/explore.md'
 about_dist = '_pages/about.md'
+github_raw_url_template = 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main'
 
 # CLASSES
 # CLASSES
@@ -136,12 +137,12 @@ class Covers():
   def __init__(self, community_data: CommunityData):
     self.community_data = community_data
     self.remote_fallbacks = {
-      1: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/cover.png',
-      2: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/GITHUB_PROJECT.png',
-      3: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/screenshot.png',
-      4: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/cover.png',
-      5: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/GITHUB_PROJECT.png',
-      6: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/screenshot.png'
+      1: github_raw_url_template + '/doc/cover.png',
+      2: github_raw_url_template + '/doc/GITHUB_PROJECT.png',
+      3: github_raw_url_template + '/doc/screenshot.png',
+      4: github_raw_url_template + '/cover.png',
+      5: github_raw_url_template + '/GITHUB_PROJECT.png',
+      6: github_raw_url_template + '/screenshot.png'
     }
     self.local_fallbacks = {
       1: './archive/screenshots/SANITIZED_NAME.png',
@@ -193,8 +194,8 @@ class Readmes():
   def __init__(self, community_data: CommunityData):
     self.community_data = community_data
     self.remote_fallbacks = {
-      1: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/README.md',
-      2: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/index.md'
+      1: github_raw_url_template + '/README.md',
+      2: github_raw_url_template + '/doc/index.md'
     }
 
   def fetch(self):
@@ -242,6 +243,33 @@ def mkdir(path):
   if not os.path.exists(path):
     os.makedirs(path)
   log('done.')
+
+# replace both local and relative markdown image paths with raw.githubusercontent.com paths
+# works for:
+# ![alt](./image.png)
+# ![alt](/image.png)
+# ![alt](image.png)
+# ![alt](https://github.com/toneburst/bline/blob/main/screenshots/bLINE_Logo_GIF_02.gif)
+def replace_image_paths(string, absolute_url):
+    pattern = r"!\[(.*?)\]\((.*?)\)"
+    replaced_string = re.sub(pattern, lambda match: process_image_path(match, absolute_url), string)
+    return replaced_string
+
+def process_image_path(match, absolute_url):
+    alt_text = match.group(1)
+    image_path = match.group(2)
+
+    # github image paths need to be served from raw.githubusercontent.com, not the github.com
+    if image_path.startswith("https://github.com"):
+      image_path = image_path.replace("https://github.com", "https://raw.githubusercontent.com")
+      image_path = image_path.replace('/blob/', '/')
+      return "![{}]({})".format(alt_text, image_path)
+
+    # Skip processing if the image link already starts with "http" or "https" (maybe they're linking to their personal website)
+    if image_path.startswith("http"):
+        return match.group(0)
+
+    return "![{}]({}/{})".format(alt_text, absolute_url.rstrip("/"), image_path.lstrip("./"))
 
 # only allow alphanumeric, dashes, and underscores
 def sanitize(str):
@@ -362,7 +390,17 @@ def build_project_pages(community_data, projects_dist):
     readme_src = readmes_src + '/' + project.sanitized_name + '.md'
     if os.path.exists(readme_src):
       log('found readme for ' + project.raw_name + '...')
-      fp.write(open(readme_src).read())
+      # attempt to update relative links to raw github links
+      # this should leave us with something like northern-information/dronecaster
+      # note: we can't just look at the project.authors because we don't know who publishes the repo
+      github_author_and_project = project.project_url.replace('https://github.com/', '')
+      # remove trailing slash, if one exists:
+      github_author_and_project = github_author_and_project.rstrip('/')
+      this_github_raw_url_template = github_raw_url_template.replace('GITHUB_AUTHOR/GITHUB_PROJECT', github_author_and_project)
+      # reminder: this is still the raw readme, not the final _pages/scriptname.md file. fp is the final file.
+      readme = open(readme_src).read()
+      readme = replace_image_paths(readme, this_github_raw_url_template)
+      fp.write(readme)
     fp.close()
   log('done.')
 
@@ -420,7 +458,7 @@ def build_about_page(about_dist):
 
 build_setup()
 community_data = community_data_factory()
-fetch_covers(community_data)
+# fetch_covers(community_data)
 fetch_readmes(community_data)
 build_index_page(community_data)
 build_author_pages(community_data, authors_yml_dist)

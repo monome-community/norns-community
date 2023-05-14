@@ -2,7 +2,7 @@
 
 this document serves as both the README.md for [this repository](https://github.com/monome-community/norns-community) and the about page for [this website](https://norns.community/about).
 
-[norns.community](https://norns.community) is a collection of open source software for [norns](https://monome.org/docs/norns).
+[norns.community](https://norns.community) is a collection of open source software for the monome [norns](https://monome.org/docs/norns) sound computer.
 
 ## how do i get my script on norns.community?
 

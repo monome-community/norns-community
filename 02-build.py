@@ -458,7 +458,7 @@ def build_about_page(about_dist):
 
 build_setup()
 community_data = community_data_factory()
-# fetch_covers(community_data)
+fetch_covers(community_data)
 fetch_readmes(community_data)
 build_index_page(community_data)
 build_author_pages(community_data, authors_yml_dist)

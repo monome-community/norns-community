@@ -1,31 +1,46 @@
 ---
 layout: abstract
 ---
-<h1>{{ page.title }}</h1>
 {% if page.screenshot and page.screenshot != '' %}
   <img src="/assets/covers/{{ page.screenshot }}" alt="{{ page.title }}" />
 {% endif %}
 <br/>
-<ul>
-  <li>project_url: <a href="{{ page.project_url }}">{{ page.project_url }}</a></li>
-  {% if page.authors.size > 1 %}
-    <li>authors:
-      <ul>
-        {% for author in page.authors %}
-        <li><a href="/author#{{ author }}">{{ author }}</a></li>
-        {% endfor %}
-      </ul>
-  {% else %}
-    <li>author: <a href="/author#{{ page.authors }}">{{ page.authors }}</a></li>
-  {% endif %}
-  <li>description: {{ page.description }}</li>
-  <li>discussion_url: <a href="{{ page.discussion_url }}">{{ page.discussion_url }}</a></li>
-  <li>documentation_url: <a href="{{ page.documentation_url }}">{{ page.documentation_url }}</a></li>
-  <li>tags:
-    <ul>
-      {% for tag in page.tags %}
-      <li><a href="/tag/{{ tag }}">{{ tag }}</a></li>
-      {% endfor %}
-    </ul>
-  </li>
-</ul>
+<table>
+  <tr>
+    <td>project name:</td>
+    <td>{{ page.raw_name }}</td>
+  </tr>
+  <tr>
+    <td>project url:</td>
+    <td><a href="{{ page.project_url }}">{{ page.project_url }}</a></td>
+  </tr>
+  <tr>
+    {% if page.authors.size > 1 %}
+      <td>authors:</td>
+      <td>{% for author in page.authors %}<a href="/author#{{ author }}">{{ author }}</a>{% endfor %}</td>
+    {% else %}
+      <td>author:</td>
+      <td><a href="/author#{{ page.authors }}">{{ page.authors }}</a></td>
+    {% endif %}
+  </tr>
+  <tr>
+    <td>description:</td>
+    <td>{{ page.description }}</td>
+  </tr>
+  <tr>
+    <td>discussion url:</td>
+    <td><a href="{{ page.discussion_url }}">{{ page.discussion_url }}</a></td>
+  </tr>
+  <tr>
+    <td>documentation url:</td>
+    <td><a href="{{ page.documentation_url }}">{{ page.documentation_url }}</a></td>
+  </tr>
+  <tr>
+    <td>tags:</td> 
+    <td>{% for tag in page.tags %}<a href="/tag/{{ tag }}" class="tag">{{ tag }}</a>{% if forloop.last != true %} {% endif %}{% endfor %}</td>
+  </tr>
+</table>
+
+<hr/>
+
+{{ content }}

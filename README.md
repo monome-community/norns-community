@@ -34,6 +34,8 @@ READMEs are individually cached from your repository in the below cascading sequ
 2. ./doc/index.md
 ```
 
+to ensure maximum resilience, please use [absolute urls](https://en.wikipedia.org/wiki/HTTP_location) in your docs.
+
 covers (aka screenshots) are individually cached from your repository in the below cascading sequence. simply add a screenshot to your project at any of the following locations:
 
 ```txt
@@ -112,7 +114,7 @@ the architecture and technology of this site was inspired by [permacomputing](ht
 
 ## credits
 
-- [@tehn](https://github.com/tehn)
-- [@dndkrs](https://github.com/dndkrs)
-- [@p3r7](https://github.com/p3r7)
-- [@tyleretters](https://github.com/tyleretters)
+- [tehn](https://github.com/tehn)
+- [dndkrs](https://github.com/dndkrs)
+- [p3r7](https://github.com/p3r7)
+- [tyleretters](https://github.com/tyleretters)

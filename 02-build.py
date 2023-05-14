@@ -28,6 +28,7 @@ import requests
 community_json_src = 'community.json'
 covers_src = 'archive/covers'
 covers_dist = 'assets/covers'
+readmes_src = 'assets/readmes'
 authors_yml_dist = '_data/authors.yml'
 projects_dist = '_pages/projects'
 tags_dist = '_pages/tags'
@@ -187,6 +188,49 @@ class Covers():
             subprocess.Popen(command, shell=True)
             break
 
+class Readmes():
+
+  def __init__(self, community_data: CommunityData):
+    self.community_data = community_data
+    self.remote_fallbacks = {
+      1: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/README.md',
+      2: 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/index.md'
+    }
+
+  def fetch(self):
+    for project in self.community_data.get_projects_in_alphabetical_order():
+      log('#### ' + project.raw_name + ' ####')
+      remote_fallback_found = False
+      destination = './' + readmes_src + '/' + project.sanitized_name + '.md'
+      # try remote covers first
+      for fallback in sorted(self.remote_fallbacks.items()):
+        url = fallback[1].replace('GITHUB_AUTHOR', project.github_author).replace('GITHUB_PROJECT', project.github_project)
+        log('try ' + url)
+        try:
+          # test if exists (fast)
+          response = requests.head(url)
+          if response.status_code != 200:
+            continue
+          # download (slow)
+          response = requests.get(url)
+          if response.status_code == 200:
+            log('README found!')
+            with open(destination, 'wb') as f:
+              f.write(response.content)
+              log('saved to ' + destination)
+              remote_fallback_found = True
+            break
+        except requests.exceptions.RequestException as e:
+          log('request failed.')
+          log(e)
+          continue
+      # if remote fallbacks didn't work, make an empty file
+      if not remote_fallback_found:
+        log('no README found, making empty file at ' + destination)
+        with open(destination, 'w') as f:
+          f.write('<< no README found >>')
+          log('done.')
+
 # FUNCTIONS
 # FUNCTIONS
 # FUNCTIONS
@@ -207,6 +251,7 @@ def sanitize(str):
 # project yml front matter for jekyll
 def write_project_front_matter(fp, project):
   fp.write('screenshot: ' + project.sanitized_name + '.png' + '\n')
+  fp.write('raw_name: ' + project.raw_name + '\n')
   fp.write('sanitized_name: ' + project.sanitized_name + '\n')
   fp.write('project_url: ' + project.project_url + '\n')
   fp.write('description: ' + project.description + '\n')
@@ -261,12 +306,18 @@ def build_setup():
   mkdir(projects_dist)
   mkdir(tags_dist)
   mkdir(covers_dist)
+  mkdir(readmes_src)
 
-# fetch cover images
 def fetch_covers(community_data):
   log('fetching covers...')
   covers = Covers(community_data)
   covers.fetch()
+  log('done.')
+
+def fetch_readmes(community_data):
+  log('fetching readmes...')
+  readmes = Readmes(community_data)
+  readmes.fetch()
   log('done.')
 
 def build_index_page(community_data):
@@ -308,6 +359,11 @@ def build_project_pages(community_data, projects_dist):
     fp.write('permalink: ' + project.permalink + '\n')
     write_project_front_matter(fp, project)
     fp.write('---\n')
+    # check if a readme exists in assets/readmes and pull it in
+    readme_src = readmes_src + '/' + project.sanitized_name + '.md'
+    if os.path.exists(readme_src):
+      log('found readme for ' + project.raw_name + '...')
+      fp.write(open(readme_src).read())
     fp.close()
   log('done.')
 
@@ -365,10 +421,11 @@ def build_about_page(about_dist):
 
 build_setup()
 community_data = community_data_factory()
+fetch_covers(community_data)
+fetch_readmes(community_data)
 build_index_page(community_data)
 build_author_pages(community_data, authors_yml_dist)
 build_project_pages(community_data, projects_dist)
 build_tag_pages(community_data, tags_dist)
 build_explore_page(community_data, explore_dist)
 build_about_page(about_dist)
-fetch_covers(community_data)

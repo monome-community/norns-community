@@ -10,7 +10,6 @@ body {
   padding: 8px;
 }
 
-
 h1, h2, h3, h4, h5, h6 {
   font-weight: 800;
   font-size: 1.6em;
@@ -19,6 +18,22 @@ h1, h2, h3, h4, h5, h6 {
 
 .active {
   font-weight: 800;
+}
+
+a.tag {
+  background: #fff;
+  color: #222!important;
+  border: 1px solid #999;
+  border-radius: 4px;
+  margin: 0 .4em 0 0;
+  padding: .1em;
+  text-decoration: none;
+}
+
+a.tag:hover {
+  background: #222;
+  color: #fff!important;
+  border: 1px solid #fff;
 }
 
 code, pre {
@@ -53,6 +68,11 @@ hr {
 img {
   max-width: 100%;
   display: block;
+}
+
+table tr td {
+  padding-bottom: .8em;
+  padding-right: .8em;
 }
 
 /* negative space */

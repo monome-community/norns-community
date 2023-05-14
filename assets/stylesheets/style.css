@@ -102,6 +102,10 @@ ul li ul li {
   margin-bottom: .5em;
 }
 
+body.explore section {
+  max-width: 100%;
+}
+
 /* explore */
 
 .projects {

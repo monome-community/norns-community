@@ -6,7 +6,7 @@ layout: abstract
     {% assign tags = project.tags | join: ' ' %}
     <div class="project {{ tags }}">
       <a href="{{ project.url }}">
-        <img src="/assets/screenshots/{{ project.screenshot }}" alt="{{ project.raw_name }}" />
+        <img src="/assets/covers/{{ project.screenshot }}" alt="{{ project.raw_name }}" />
         <h1>{{ project.raw_name }}</h1>
         <p>{{ tags }}</p>
       </a>

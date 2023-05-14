@@ -1,4 +1,16 @@
-# norns.community
+# welcome to norns.community
+
+this document serves as both the README.md for [this repository](https://github.com/monome-community/norns-community) and the about page for [this website](https://norns.community/about).
+
+[norns.community](https://norns.community) is a collection of open source software for [norns](https://monome.org/docs/norns).
+
+## how do i get my script on norns.community?
+
+- how to contribute to the catalog
+- how this site works
+- credits
+
+## how do i help maintain norns.community?
 
 this repository fetches our [community catalog](https://github.com/monome/norns-community) and parses into a static website.
 
@@ -17,9 +29,11 @@ screenshots are individually cached from their respective repos in the following
 8. ./assets/images/dust.png
 ```
 
-[archived screenshots](https://github.com/monome-community/norns-community/tree/main/archive/screenshots) were archived from the original https://norns.community wiki.js site on february 5, 2023. one of our goals is to completely retire this step and push the responsibility of hosting script cover images to the authors.
+in february 2023 we [archived the screenshots](https://github.com/monome-community/norns-community/tree/main/archive/screenshots) from norns.community v1.0.
 
-in practice, this means script can simply add a screenshot their repos at any of the following locations:
+one of the goals with this v2.0 rebuild is to completely push the responsibility of hosting script documentation and cover images to the authors.
+
+in practice, this means scripts can simply add a screenshot their repos at any of the following locations:
 
 ```txt
 ./doc/cover.png
@@ -31,7 +45,7 @@ in practice, this means script can simply add a screenshot their repos at any of
 
 ## development setup instructions
 
-if you want to help maintain this site, you can run it locally and test your changes before submitting a pull request.
+if you want to help maintain this website, you can run it locally and test your changes before submitting a [pull request](https://github.com/monome-community/norns-community/pulls).
 
 1. clone repository to your computer
 2. install [ruby](https://www.ruby-lang.org/en/) and [bundle](https://bundler.io/)
@@ -50,3 +64,10 @@ this site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64
   - write up contribution guidelines
   - where docs go (/readme.md or /doc/index.md)
   - where cover image can go (list)
+
+## credits
+
+- [@tehn](https://github.com/tehn)
+- [@dndkrs](https://github.com/dndkrs)
+- [@p3r7](https://github.com/p3r7)
+- [@tyleretters](https://github.com/tyleretters)

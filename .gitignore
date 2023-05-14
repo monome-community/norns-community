@@ -7,7 +7,7 @@ _data/authors.yml
 _pages/projects
 _pages/tags
 _pages/explore.md
-assets/screenshots
+assets/covers
 
 # jekyll
 _site
@@ -19,5 +19,5 @@ _site
 .DS_Store
 
 # dev
-assets/screenshots_dev
+assets/covers_dev
 community-dev.json

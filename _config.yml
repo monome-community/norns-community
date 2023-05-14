@@ -1,6 +1,6 @@
 title: norns community
 description: a script index for the monome norns sound computer
-baseurl: /norns-community
+baseurl: /
 url: https://vaporwavemall.com
 permalink: pretty
 sort_by: year, month

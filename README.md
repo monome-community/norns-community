@@ -84,6 +84,12 @@ the local archive cache is from norns.community v1.0. it was archived in februar
 
 a [curl](https://github.com/monome-community/norns-community/blob/main/01-curl.sh) script fetches our [community catalog](https://github.com/monome/norns-community). then a [build](https://github.com/monome-community/norns-community/blob/main/02-build.py) script uses that data to construct this [jekyll](https://jekyllrb.com) website. it is hosted with [github pages](https://pages.github.com).
 
+additionally, these raw resources are available:
+
+- [https://norns.community/community.json](https://norns.community/community.json)
+- [https://norns.community/assets/covers/dronecaster.png](https://norns.community/assets/covers/dronecaster.png)
+- [https://norns.community/assets/readmes/dronecaster.md](https://norns.community/assets/readmes/dronecaster.md)
+
 ---
 
 ## how can i help maintain this website?

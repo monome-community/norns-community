@@ -227,9 +227,8 @@ class Readmes():
       # if remote fallbacks didn't work, make an empty file
       if not remote_fallback_found:
         log('no README found, making empty file at ' + destination)
-        with open(destination, 'w') as f:
-          f.write('<< no README found >>')
-          log('done.')
+        open(destination, 'a')
+        log('done.')
 
 # FUNCTIONS
 # FUNCTIONS

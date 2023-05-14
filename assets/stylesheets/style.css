@@ -11,7 +11,13 @@ body {
 }
 
 
-h1, h2, h3, h4, h5, h6, .active {
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  font-size: 1.6em;
+  line-height: 2.4em;
+}
+
+.active {
   font-weight: 800;
 }
 
@@ -21,13 +27,18 @@ code, pre {
 
 a,
 a:link,
-a:active {
+a:active,
+a:visited {
   color: #aaa;
 }
 
-a:hover,
-a:visited {
+a:hover {
   color: #ccc;
+}
+
+::selection {
+  background: #fff;
+  color: #222;
 }
 
 hr {
@@ -51,27 +62,33 @@ h1, h2, h3, h4, h5, h6, p, ul, ol {
   padding: 0;
 }
 
-nav, section, footer {
-  max-width: 800px;
+nav, footer {
+  max-width: 100%;
 }
 
 nav {
   margin: 0.8em 0.8em 1.6em 0.8em;
 }
 
+footer {
+  margin: 1.6em 0.8em 0.8em 0.8em;
+}
+
 section {
+  max-width: 800px;
   margin: 0.8em;
 }
 
-footer {
-  margin: 1.6em 0.8em 0.8em 0.8em;
+section hr {
+  margin: 1.6em 0;
 }
 
 section ul, section ol {
   padding: 0 0 0 0.8em;
 }
 
-ul li {
+ul li, ol li {
+  list-style-position: inside;
   margin: 0 0 .5em 0;
 }
 
@@ -86,12 +103,6 @@ ul li ul li {
 }
 
 /* explore */
-
-.explore nav,
-.explore section,
-.explore footer {
-  max-width: 100%
-}
 
 .projects {
   display: flex;
@@ -117,17 +128,11 @@ ul li ul li {
   .projects .project {
     width: 25%;
   }
-  .projects .project h1 {
-    font-size: 1.2em;
-  }
 }
 
 @media (min-width: 1400px) {
   .projects .project {
     width: 12.5%;
-  }
-  .projects .project h1 {
-    font-size: 1em;
   }
 }
 

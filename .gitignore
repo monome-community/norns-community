@@ -18,7 +18,3 @@ _site
 
 # macos
 .DS_Store
-
-# dev
-assets/covers_dev
-community-dev.json

@@ -1,49 +1,90 @@
 # welcome to norns.community
 
+[norns.community](https://norns.community) is a collection of open source software for the monome [norns](https://monome.org/docs/norns) sound computer.
+
 this document serves as both the README.md for [this repository](https://github.com/monome-community/norns-community) and the about page for [this website](https://norns.community/about).
 
-[norns.community](https://norns.community) is a collection of open source software for the monome [norns](https://monome.org/docs/norns) sound computer.
+---
 
 ## how do i get my script on norns.community?
 
-- how to contribute to the catalog
-- how this site works
-- credits
+after your PR is merged to the [community catalog](https://github.com/monome/norns-community) it will *automatically appear* on the website. the website refreshes nightly at 00:00 UTC. alternatively, an admin can run [this github action](https://github.com/monome-community/norns-community/actions/workflows/build.yml) for on-demand builds.
 
-## how do i help maintain norns.community?
+for script authors this means:
 
-this repository fetches our [community catalog](https://github.com/monome/norns-community) and parses into a static website.
+- your name will appear on the [index](https://norns.community) page
+- any of your scripts will appear under your name
+- your script will get its own page, [like this](https://norns.community/3d)
+  - your script's README will be displayed on the page
+  - your script's cover image will be displayed on the page
+- your script will be available for discovery via any tags, like [grid](https://norns.community/tag/grid)
+- your script will appear on the [explore](https://norns.community/explore) page
+- if you update your README or cover image, it will automatically refresh on the website within 24 hours
 
-[this github action](https://github.com/monome-community/norns-community/actions/workflows/jekyll.yml) runs the build and then deploys via github pages.
+---
 
-screenshots are individually cached from their respective repos in the following priority order:
+## how do i get my README and cover image on norns.community?
+
+these conventions was designed to "just work" with how most scripts are structured today.
+
+READMEs are individually cached from your repository in the below cascading sequence. simply add a README to your project at any of the following locations:
 
 ```txt
-1. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/cover.png
-2. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/GITHUB_PROJECT.png
-3. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/doc/screenshot.png
-4. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/cover.png
-5. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/GITHUB_PROJECT.png
-6. https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main/screenshot.png
-7. ./archive/screenshot/SANITIZED_NAME.png
+1. ./README.md
+2. ./doc/index.md
+```
+
+covers (aka screenshots) are individually cached from your repository in the below cascading sequence. simply add a screenshot to your project at any of the following locations:
+
+```txt
+1. ./doc/cover.png
+2. ./doc/<your_script_name>.png
+3. ./doc/screenshot.png
+4. ./cover.png
+5. ./<your_script_name>.png
+6. ./screenshot.png
+```
+
+if a cover image is not found in any of the above locations, we try the local archive before finally using a default image:
+
+```txt
+7. ./archive/screenshot/<your_script_name>.png
 8. ./assets/images/dust.png
 ```
 
-in february 2023 we [archived the screenshots](https://github.com/monome-community/norns-community/tree/main/archive/screenshots) from norns.community v1.0.
+the local archive cache is from norns.community v1.0. it was archived in february, 2023.
 
-one of the goals with this v2.0 rebuild is to completely push the responsibility of hosting script documentation and cover images to the authors.
+---
 
-in practice, this means scripts can simply add a screenshot their repos at any of the following locations:
+## can i see an example?
+
+[dronecaster](https://github.com/northern-information/dronecaster) is one of many possible examples of what a compatible script structure might look like:
 
 ```txt
-./doc/cover.png
-./doc/your-script-name.png
-./doc/screenshot.png
-./cover.png
-./your-script-name.png
+./doc/dronecaster.png (this cover will be used)
+./engine
+./lib
+./.gitignore
+./LICENSE
+./README.md (this README will be used)
+./dronecaster.lua
 ```
 
-## development setup instructions
+---
+
+## what if something is wrong?
+
+[please open an issue on github.](https://github.com/monome-community/norns-community/issues)
+
+---
+
+## how does this site work?
+
+a [curl](https://github.com/monome-community/norns-community/blob/main/01-curl.sh) script fetches our [community catalog](https://github.com/monome/norns-community). then a [build](https://github.com/monome-community/norns-community/blob/main/02-build.py) script uses that data to construct this [jekyll](https://jekyllrb.com) website. it is hosted with [github pages](https://pages.github.com).
+
+---
+
+## how can i help maintain this website?
 
 if you want to help maintain this website, you can run it locally and test your changes before submitting a [pull request](https://github.com/monome-community/norns-community/pulls).
 
@@ -58,12 +99,16 @@ if you want to help maintain this website, you can run it locally and test your 
 
 this site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64-darwin21]`
 
-## todo
+the architecture and technology of this site was inspired by [permacomputing](https://permacomputing.net/) concepts.
 
-- about page
-  - write up contribution guidelines
-  - where docs go (/readme.md or /doc/index.md)
-  - where cover image can go (list)
+---
+
+## links
+
+- [monome](https://monome.org)
+- [llllllll](https://llllllll.co)
+
+---
 
 ## credits
 

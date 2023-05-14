@@ -41,8 +41,6 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
-      - name: "|||||||| monome community 00-nuke.sh ||||||||"
-        run: ./00-nuke.sh
       - name: "|||||||| monome community 01-curl.sh ||||||||"
         run: ./01-curl.sh
       - name: "|||||||| monome community 02-build.sh ||||||||"

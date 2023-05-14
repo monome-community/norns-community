@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# note this script is only needed to make local development easier
+# github actions builds from scratch each time
+
 TARGETS=(
   "./_data/community.json"
   "./_data/authors.yml"

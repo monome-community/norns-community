@@ -96,16 +96,33 @@ additionally, these raw resources are available:
 
 if you want to help maintain this website, you can run it locally and test your changes before submitting a [pull request](https://github.com/monome-community/norns-community/pulls).
 
+### jekyll (ruby) / html / css
+
 1. clone repository to your computer
 2. install [ruby](https://www.ruby-lang.org/en/) and [bundle](https://bundler.io/)
 3. using a shell, navigate to the `norns-community` directory with `cd`
 4. in the directory execute: `bundle install`
 5. then execute: `bundle exec jekyll serve --baseurl ''`
-6. tip: if you're going to be working on this alot, save the above command as an alias
+6. tip: if you're going to be working on this alot, save the above command as an alias. this is also available as `npm run dev`.
 7. pull the latest community data and build with: `./00-nuke.sh && ./01-curl.sh && ./02-build.py`
 8. you can now visit [http://127.0.0.1:4000](http://127.0.0.1:4000) in your browser
 
 this site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64-darwin21]`
+
+### typescript / javascript
+
+there is a single typescript file that is used to enable filtering on the "explore" page.
+
+install typescript and watch the file with:
+
+1. `npm i`
+2. `npm run tsc`
+
+the build process assumes the transpiled javascript is already there. do all the npm stuff locally.
+
+---
+
+## philosophy
 
 the architecture and technology of this site was inspired by [permacomputing](https://permacomputing.net/) concepts.
 

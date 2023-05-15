@@ -1,10 +1,15 @@
 ---
 layout: abstract
 ---
+<div class="tags">
+  {% for tag in page.tags %}
+    <button class="tag" data-tag="{{ tag }}" data-toggle="off">{{ tag }}</button>
+  {% endfor %}
+</tags>
 <div class="projects">
   {% for project in page.projects %}
     {% assign tags = project.tags | join: ' ' %}
-    <div class="project {{ tags }}">
+    <div class="project show" data-tags="{{ tags }}">
       <a href="{{ project.url }}">
         <img src="/assets/covers/{{ project.screenshot }}" alt="{{ project.raw_name }}" />
         <h1>{{ project.raw_name }}</h1>

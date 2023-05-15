@@ -17,5 +17,8 @@ _site
 .jekyll-cache
 .jekyll-metadata
 
+# node
+node_modules
+
 # macos
 .DS_Store

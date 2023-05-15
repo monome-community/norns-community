@@ -430,6 +430,10 @@ def build_explore_page(community_data, explore_dist):
   fp.write('layout: explore\n')
   fp.write('title: explore\n')
   fp.write('permalink: explore\n')
+  fp.write('tags:\n')
+  for tag in community_data.get_deduped_tags():
+    fp.write('  - ' + tag + '\n')
+  fp.write('\n')
   fp.write('projects:\n')
   for project in community_data.get_projects_in_alphabetical_order():
     write_explore_front_matter(fp, project)

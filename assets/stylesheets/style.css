@@ -78,6 +78,7 @@ img {
 table tr td {
   padding-bottom: .8em;
   padding-right: .8em;
+  vertical-align: top;
 }
 
 /* negative space */

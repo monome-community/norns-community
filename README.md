@@ -8,7 +8,7 @@ This document serves as both the `README.md` for [this repository](https://githu
 
 ## how do I get my script on norns.community?
 
-After your pull request is merged to the [community catalog](https://github.com/monome/norns-community) it will *automatically appear* on [norns.community](https://norns.community). The website refreshes nightly at 00:00 UTC. Alternatively, an admin can run [this GitHub action](https://github.com/monome-community/norns-community/actions/workflows/build.yml) for on-demand builds.
+After your pull request is merged to the [community catalog](https://github.com/monome/norns-community) it will *automatically appear* on [norns.community](https://norns.community). The website refreshes nightly at 00:00 UTC, on every merge to `main`, or on demand by admins. [This GitHub action](https://github.com/monome-community/norns-community/actions/workflows/build.yml) has all the details.
 
 For script authors, this means:
 

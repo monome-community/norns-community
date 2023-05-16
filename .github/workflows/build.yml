@@ -44,9 +44,9 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
-      - name: "|||||||| monome community 01-curl.sh ||||||||"
+      - name: "|||||||| norns community 01-curl.sh ||||||||"
         run: ./01-curl.sh
-      - name: "|||||||| monome community 02-build.sh ||||||||"
+      - name: "|||||||| norns community 02-build.sh ||||||||"
         run: ./02-build.py
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default

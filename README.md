@@ -1,6 +1,6 @@
 # welcome to norns.community
 
-[![norns community build & deploy](https://github.com/monome-community/norns-community/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/monome-community/norns-community/actions/workflows/build.yml)
+[![monome community build & deploy](https://github.com/monome-community/norns-community/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/monome-community/norns-community/actions/workflows/build.yml)
 
 [norns.community](https://norns.community) is a collection of open source software for the monome [norns](https://monome.org/docs/norns) sound computer.
 

@@ -2,22 +2,20 @@
 
   // detect the theme on page load
   const detectColorScheme = () => {
-    let theme = "dark"; // default to light
+    let theme = 'dark'; // default to dark
     // local storage is used to override OS theme settings
-    if (localStorage.getItem("theme")) {
-      if (localStorage.getItem("theme") === "light") {
-        theme = "light";
+    if (localStorage.getItem('theme')) {
+      if (localStorage.getItem('theme') === 'light') {
+        theme = 'light';
       }
     } else if (!window.matchMedia) {
       // matchMedia method not supported
       return;
-    } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-      // OS theme setting detected as dark
-      theme = "light";
+    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+      theme = 'light';
     }
-    // light theme preferred
-    if (theme === "light") {
-      document.documentElement.setAttribute("data-theme", "light");
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
     }
   }
   detectColorScheme()
@@ -25,7 +23,7 @@
   // enable toggling the theme
   const toggleSwitch = document.querySelector<HTMLInputElement>('.theme-switch input[type="checkbox"]');
 
-  // Function that changes the theme, and sets a localStorage variable to track the theme between page loads
+  // sets a localStorage variable to track the theme between page loads
   function switchTheme(e: Event): void {
     if ((e.target as HTMLInputElement).checked) {
       localStorage.setItem('theme', 'light');
@@ -42,12 +40,12 @@
     }
   }
 
-  // Listener for changing themes
+  // event listener
   if (toggleSwitch != null) {
     toggleSwitch.addEventListener('change', switchTheme, false);
   }
 
-  // Pre-check the light-theme checkbox if light-theme is set
+  // keep checkbox in sync
   if (document.documentElement.getAttribute('data-theme') === 'light' && toggleSwitch != null) {
     toggleSwitch.checked = true;
   }

@@ -10,7 +10,7 @@ This document serves as both the `README.md` for [this repository](https://githu
 
 ## how do I get my script on norns.community?
 
-After your pull request is merged to the [community catalog](https://github.com/monome/norns-community) it will *automatically appear* on [norns.community](https://norns.community). The website refreshes nightly at 00:00 UTC, on every merge to `main`, or on demand by admins. [This GitHub action](https://github.com/monome-community/norns-community/actions/workflows/build.yml) has all the details.
+After your pull request is merged to the [community catalog](https://github.com/monome/norns-community) it will *automatically appear* on [norns.community](https://norns.community), provided the default branch of your script's repository is named `main`. The website refreshes nightly at 00:00 UTC, on every merge to its `main` branch, or on demand by admins. [This GitHub action](https://github.com/monome-community/norns-community/actions/workflows/build.yml) has all the details.
 
 For script authors, this means:
 
@@ -30,7 +30,7 @@ For script authors, this means:
 
 These conventions were designed to "just work" with how most scripts are structured today.
 
-READMEs are individually cached from each script's repository in the below cascading sequence. Simply add a README to your project at any of the following locations:
+READMEs are individually cached from each script's repository in the below cascading sequence. Simply add a README to your project's `main` branch at any of the following locations:
 
 ```txt
 1. ./README.md
@@ -58,6 +58,8 @@ If a cover image is not found in any of the above locations, we then try the loc
 ```
 
 The local archive cache is from norns.community v1.0. It was archived in February, 2023.
+
+If you do not see your README populate on your script's page, please check to make sure that your script's default branch is named `main`, as this is the only naming scheme norns.community supports.
 
 ---
 

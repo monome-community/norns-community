@@ -254,3 +254,7 @@ body.explore section {
 .projects .project a p {
   margin: 0 0 0.8em 0;
 }
+
+#no-results {
+  display: none;
+}

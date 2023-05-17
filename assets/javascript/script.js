@@ -52,6 +52,17 @@
     }
     // explore page tags
     let activeTags = [];
+    const countVisibleProjects = () => {
+        const projectElements = document.getElementsByClassName('project');
+        let count = 0;
+        for (let i = 0; i < projectElements.length; i++) {
+            const element = projectElements[i];
+            if (element.classList.contains('show')) {
+                count++;
+            }
+        }
+        return count;
+    };
     const refresh = () => {
         console.log(activeTags);
         // if there are no activeTags, show everything
@@ -73,7 +84,7 @@
                     return;
                 }
                 const projectTags = project.dataset.tags.split(' ');
-                if (activeTags.some(tag => projectTags.includes(tag))) {
+                if (activeTags.every(tag => projectTags.includes(tag))) {
                     project.classList.add('show');
                 }
                 else {
@@ -81,6 +92,16 @@
                 }
             }
         });
+        // display a "no results" message
+        const noResults = document.getElementById('no-results');
+        if (noResults != undefined) {
+            if (countVisibleProjects() == 0) {
+                noResults.classList.add('show');
+            }
+            else {
+                noResults.classList.remove('show');
+            }
+        }
     };
     const tagClick = (button) => {
         const activeClass = 'tag-active';

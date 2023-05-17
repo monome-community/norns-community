@@ -60,6 +60,7 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--color-alpha);
   border-width: 1px;
   border-style: solid;
+  cursor: pointer;
 }
 
 /* note: explore tags aren't anchors, but individual script page "tags" are */

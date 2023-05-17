@@ -64,7 +64,7 @@ layout: abstract
       <td>tags:</td>
       <td>
         {% for tag in page.tags %}
-          <a href="/tag/{{ tag }}" class="tag">{{ tag }}</a>
+          <a href="/tag/{{ tag }}" class="project-tag tag">{{ tag }}</a>
           {% if forloop.last != true %}{% endif %}
         {% endfor %}
       </td>

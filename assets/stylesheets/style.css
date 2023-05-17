@@ -1,10 +1,25 @@
-/* positive space */
+/* accessibility */
+
+:root {
+  --color-alpha: #fff;
+  --color-beta:#aaa;
+  --color-gamma: #222;
+}
+[data-theme="light"] {
+  --color-alpha: #333;
+  --color-beta:#555;
+  --color-gamma: #ddd;
+}
+
+/* (mostly) positive space */
 
 body {
   /* modified system-default font stack: https://www.digitalocean.com/community/tutorials/css-system-font-stack */
   font-family: "Roboto Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  background-color: #222;
+  background: #222;
+  background: var(--color-gamma);
   color: #fff;
+  color: var(--color-alpha);
   font-size: 0.8em;
   line-height: 1.2em;
   padding: 8px;
@@ -22,8 +37,13 @@ h1, h2, h3, h4, h5, h6 {
 
 .tag {
   background: #fff;
+  background: var(--color-alpha);
   color: #222!important;
-  border: 1px solid #999;
+  color: var(--color-gamma)!important;
+  border-color: #fff;
+  border-color: var(--color-alpha);
+  border-width: 1px;
+  border-style: solid;
   border-radius: 4px;
   margin: 0 .4em 1.2em 0;
   padding: .1em;
@@ -33,8 +53,18 @@ h1, h2, h3, h4, h5, h6 {
 .tag:hover,
 .tag.tag-active {
   background: #222;
+  background: var(--color-gamma);
   color: #fff!important;
-  border: 1px solid #fff;
+  color: var(--color-alpha)!important;
+  border-color: #fff;
+  border-color: var(--color-alpha);
+  border-width: 1px;
+  border-style: solid;
+}
+
+/* note: explore tags aren't anchors, but individual script page "tags" are */
+a.tag {
+  text-decoration: none!important;
 }
 
 .show {
@@ -42,30 +72,59 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 code, pre {
-  color: #999;
+  color: #aaa;
+  color: var(--color-beta);
 }
 
 a,
 a:link,
 a:active,
-a:visited {
+a:visited,
+.theme-switch span {
   color: #aaa;
+  color: var(--color-beta);
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-a:hover {
-  color: #ccc;
+a:hover,
+.theme-switch span:hover {
+  color: #fff!important;
+  color: var(--color-alpha)!important;
+  font-weight: 800;
+}
+
+/* hide the checkbox */
+#theme {
+  display: none;
+}
+
+[data-theme="light"] .theme-switch .dark {
+  display: none;
+}
+
+[data-theme="dark"] .theme-switch .light {
+  display: none;
+}
+
+.theme-switch {
+  float: right;
 }
 
 ::selection {
   background: #fff;
+  background: var(--color-alpha);
   color: #222;
+  color: var(--color-gamma);
 }
 
 hr {
   margin: 0.8em 0;
   border: none;
-  background-color: #555;
-  color: #555;
+  background-color: #aaa;
+  background-color: var(--color-beta);
+  color: #aaa;
+  color: var(--color-beta);
   height: 1px;
   opacity: 1;
 }
@@ -81,7 +140,7 @@ table tr td {
   vertical-align: top;
 }
 
-/* negative space */
+/* (mostly) negative space */
 
 h1, h2, h3, h4, h5, h6, p, ul, ol {
   margin: 0 0 0.8em 0;
@@ -132,7 +191,7 @@ body.explore section {
   max-width: 100%;
 }
 
-/* explore */
+/* explore page */
 
 .projects {
   display: flex;
@@ -171,12 +230,18 @@ body.explore section {
   display: block;
   text-decoration: none;
   color: #fff;
+  color: var(--color-alpha);
 }
 
 .projects .project a:hover {
-  border: 1.6em solid #fff;
+  border-width: 1.6em;
+  border-style: solid;
+  border-color: #fff;
+  border-color: var(--color-alpha);
   background: #fff;
-  color: #555;
+  background: var(--color-alpha);
+  color: #aaa!important;
+  color: var(--color-gamma)!important;
 }
 
 .projects .project a img {

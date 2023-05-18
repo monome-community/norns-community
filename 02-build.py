@@ -34,7 +34,7 @@ projects_dist = '_pages/projects'
 tags_dist = '_pages/tags'
 explore_dist = '_pages/explore.md'
 about_dist = '_pages/about.md'
-github_raw_url_template = 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/main'
+github_raw_url_template = 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/HEAD'
 
 # CLASSES
 # CLASSES

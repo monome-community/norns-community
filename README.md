@@ -8,7 +8,7 @@ This document serves as both the `README.md` for [this repository](https://githu
 
 ---
 
-## how do I get my script on norns.community?
+## How do I get my script on norns.community?
 
 After your pull request is merged to the [community catalog](https://github.com/monome/norns-community) it will *automatically appear* on [norns.community](https://norns.community), provided the default branch of your script's repository is named `main`. The website refreshes nightly at 00:00 UTC, on every merge to its `main` branch, or on demand by admins. [This GitHub action](https://github.com/monome-community/norns-community/actions/workflows/build.yml) has all the details.
 
@@ -26,7 +26,7 @@ For script authors, this means:
 
 ---
 
-## how do I get my README and cover image on norns.community?
+## How do I get my README and cover image on norns.community?
 
 These conventions were designed to "just work" with how most scripts are structured today.
 
@@ -63,7 +63,7 @@ If you do not see your README populate on your script's page, please check to ma
 
 ---
 
-## can I see an example?
+## Can I see an example?
 
 [dronecaster](https://github.com/northern-information/dronecaster) is one of many possible examples of what a compatible script structure might look like:
 
@@ -79,13 +79,13 @@ If you do not see your README populate on your script's page, please check to ma
 
 ---
 
-## what if something is wrong?
+## What if something is wrong?
 
 [Please open an issue on GitHub.](https://github.com/monome-community/norns-community/issues)
 
 ---
 
-## how does this site work?
+## How does this site work?
 
 A [curl](https://github.com/monome-community/norns-community/blob/main/01-curl.sh) script fetches our [community catalog](https://github.com/monome/norns-community). A [build](https://github.com/monome-community/norns-community/blob/main/02-build.py) script then uses that data to construct this [Jekyll](https://jekyllrb.com) website. It is hosted with [GitHub pages](https://pages.github.com).
 
@@ -97,7 +97,7 @@ Additionally, these raw resources are available:
 
 ---
 
-## how can I help maintain this website?
+## How can I help maintain this website?
 
 If you want to help maintain this website, you can run it locally and test your changes before submitting a [pull request](https://github.com/monome-community/norns-community/pulls).
 
@@ -127,20 +127,20 @@ The build process assumes the transpiled JavaScript is already there. Perform al
 
 ---
 
-## philosophy
+## Philosophy
 
 The architecture and technology of this site was inspired by [permacomputing](https://permacomputing.net/) concepts.
 
 ---
 
-## links
+## Links
 
 - [monome](https://monome.org)
 - [llllllll](https://llllllll.co)
 
 ---
 
-## credits
+## Credits
 
 - [tehn](https://github.com/tehn)
 - [tyleretters](https://github.com/tyleretters)

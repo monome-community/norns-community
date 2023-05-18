@@ -4,6 +4,7 @@ community.json
 # norns-community generated files
 index.md
 _data/authors.yml
+_data/hash.yml
 _pages/projects
 _pages/tags
 _pages/explore.md

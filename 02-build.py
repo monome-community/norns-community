@@ -324,6 +324,17 @@ def community_data_factory():
   log('done.')
   return community_data
 
+# expose the git hash to jekyll
+def build_hash():
+  # write the current git hash to a file for jekyll to use
+  log('writing git hash to ./_data/hash.yml...')
+  git_hash = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode('ascii').strip()
+  fp = open('./_data/hash.yml', 'w')
+  fp.write('full: ' + git_hash + '\n')
+  fp.write('short: ' + git_hash[:7])
+  fp.close()
+  log('done.')
+
 # create directories
 def build_setup():
   log('copying community.json to ./_data for jekyll...')
@@ -460,6 +471,7 @@ def build_about_page(about_dist):
 # MAIN
 # MAIN
 
+build_hash()
 build_setup()
 community_data = community_data_factory()
 fetch_covers(community_data)

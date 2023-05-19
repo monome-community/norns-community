@@ -5,6 +5,7 @@
   --color-beta:#aaa;
   --color-gamma: #222;
 }
+
 [data-theme="light"] {
   --color-alpha: #333;
   --color-beta:#555;
@@ -31,9 +32,70 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.7em;
 }
 
-.active {
+/*  `font-family: monospace, monospace;` corrects the inheritance and scaling of font size in all browsers */
+code, pre {
+  font-family: monospace, monospace;
+  color: #aaa;
+  color: var(--color-beta);
+}
+
+a,
+a:link,
+a:active,
+a:visited,
+.theme-switch span {
+  color: #aaa;
+  color: var(--color-beta);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+a.active,
+a.active:visited {
+  color: #fff;
   font-weight: 800;
 }
+
+a:hover,
+.theme-switch span:hover {
+  color: #fff!important;
+  color: var(--color-alpha)!important;
+  font-weight: 800;
+}
+/* note: explore tags aren't anchors, but individual script page "tags" are */
+a.tag {
+  text-decoration: none!important;
+}
+
+hr {
+  margin: 0.8em 0;
+  border: none;
+  background-color: #aaa;
+  background-color: var(--color-beta);
+  color: #aaa;
+  color: var(--color-beta);
+  height: 1px;
+  opacity: 1;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+table tr td {
+  padding-bottom: .8em;
+  padding-right: .8em;
+  vertical-align: top;
+}
+
+::selection {
+  background: #fff;
+  background: var(--color-alpha);
+  color: #222;
+  color: var(--color-gamma);
+}
+
 
 .tag {
   background: #fff;
@@ -63,38 +125,8 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
 }
 
-/* note: explore tags aren't anchors, but individual script page "tags" are */
-a.tag {
-  text-decoration: none!important;
-}
-
 .show {
   display: block!important;
-}
-
-/*  `font-family: monospace, monospace;` corrects the inheritance and scaling of font size in all browsers */
-code, pre {
-  font-family: monospace, monospace;
-  color: #aaa;
-  color: var(--color-beta);
-}
-
-a,
-a:link,
-a:active,
-a:visited,
-.theme-switch span {
-  color: #aaa;
-  color: var(--color-beta);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-a:hover,
-.theme-switch span:hover {
-  color: #fff!important;
-  color: var(--color-alpha)!important;
-  font-weight: 800;
 }
 
 /* hide the checkbox */
@@ -112,35 +144,6 @@ a:hover,
 
 .theme-switch {
   float: right;
-}
-
-::selection {
-  background: #fff;
-  background: var(--color-alpha);
-  color: #222;
-  color: var(--color-gamma);
-}
-
-hr {
-  margin: 0.8em 0;
-  border: none;
-  background-color: #aaa;
-  background-color: var(--color-beta);
-  color: #aaa;
-  color: var(--color-beta);
-  height: 1px;
-  opacity: 1;
-}
-
-img {
-  max-width: 100%;
-  display: block;
-}
-
-table tr td {
-  padding-bottom: .8em;
-  padding-right: .8em;
-  vertical-align: top;
 }
 
 /* (mostly) negative space */

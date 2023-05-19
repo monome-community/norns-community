@@ -175,7 +175,7 @@ section hr {
 }
 
 section ul, section ol {
-  padding: 0 0 0 0.8em;
+  padding: 0;
 }
 
 ul li, ol li {

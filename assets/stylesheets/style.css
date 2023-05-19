@@ -72,7 +72,9 @@ a.tag {
   display: block!important;
 }
 
+/*  `font-family: monospace, monospace;` corrects the inheritance and scaling of font size in all browsers */
 code, pre {
+  font-family: monospace, monospace;
   color: #aaa;
   color: var(--color-beta);
 }

@@ -194,8 +194,8 @@ class Readmes():
   def __init__(self, community_data: CommunityData):
     self.community_data = community_data
     self.remote_fallbacks = {
-      1: github_raw_url_template + '/README.md',
-      2: github_raw_url_template + '/doc/index.md'
+      1: github_raw_url_template + '/doc/index.md',
+      2: github_raw_url_template + '/README.md'
     }
 
   def fetch(self):

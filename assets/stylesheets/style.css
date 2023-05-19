@@ -12,7 +12,7 @@
   --color-gamma: #ddd;
 }
 
-/* (mostly) positive space */
+/* general styles */
 
 body {
   /* modified system-default font stack: https://www.digitalocean.com/community/tutorials/css-system-font-stack */
@@ -22,14 +22,31 @@ body {
   color: #fff;
   color: var(--color-alpha);
   font-size: 0.9em;
-  line-height: 1.2em;
+  line-height: 1.5em;
   padding: 8px;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 800;
+  margin: 0 0 0.8em 0;
+  padding: 0;
+  color: #aaa;
+  color: var(--color-beta);
+}
+
+h1 {
   font-size: 1.6em;
   line-height: 1.7em;
+}
+
+h2, h3, h4, h5, h6 {
+  font-size: 1.3em;
+  line-height: 1.4em;
+}
+
+p {
+  margin: 0 0 0.8em 0;
+  padding: 0;
 }
 
 /*  `font-family: monospace, monospace;` corrects the inheritance and scaling of font size in all browsers */
@@ -53,6 +70,7 @@ a:visited,
 a.active,
 a.active:visited {
   color: #fff;
+  color: var(--color-alpha);
   font-weight: 800;
 }
 
@@ -83,6 +101,56 @@ img {
   display: block;
 }
 
+nav, footer {
+  max-width: 100%;
+}
+
+nav {
+  margin: 0.8em 0.8em 1.6em 0.8em;
+}
+
+footer {
+  margin: 1.6em 0.8em 0.8em 0.8em;
+}
+
+section {
+  max-width: 800px;
+  margin: 0.8em;
+}
+
+section hr {
+  margin: 1.6em 0;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+}
+
+ul li, ol li {
+  list-style-position: outside;
+  margin: 0 0 .5em 0;
+}
+
+ul li {
+  list-style-type: disc;
+  margin-left: 1.2em;
+}
+
+ol li {
+  list-style-type: decimal;
+  margin-left: 1.9em;
+}
+
+ul li ul {
+  margin: 0;
+  padding-top: .5em;
+}
+
+ul li ul li {
+  margin-bottom: .5em;
+}
+
 table tr td {
   padding-bottom: .8em;
   padding-right: .8em;
@@ -96,6 +164,7 @@ table tr td {
   color: var(--color-gamma);
 }
 
+/* specialized styles */
 
 .tag {
   background: #fff;
@@ -146,58 +215,9 @@ table tr td {
   float: right;
 }
 
-/* (mostly) negative space */
-
-h1, h2, h3, h4, h5, h6, p, ul, ol {
-  margin: 0 0 0.8em 0;
-  padding: 0;
-}
-
-nav, footer {
-  max-width: 100%;
-}
-
-nav {
-  margin: 0.8em 0.8em 1.6em 0.8em;
-}
-
-footer {
-  margin: 1.6em 0.8em 0.8em 0.8em;
-}
-
-section {
-  max-width: 800px;
-  margin: 0.8em;
-}
-
-section hr {
-  margin: 1.6em 0;
-}
-
-section ul, section ol {
-  padding: 0;
-}
-
-ul li, ol li {
-  list-style-position: inside;
-  margin: 0 0 .5em 0;
-}
-
-ul li ul {
-  margin: 0;
-  padding-top: .5em;
-  padding-left: 0.8em;
-}
-
-ul li ul li {
-  margin-bottom: .5em;
-}
-
 body.explore section {
   max-width: 100%;
 }
-
-/* explore page */
 
 .projects {
   display: flex;
@@ -246,7 +266,17 @@ body.explore section {
   border-color: var(--color-alpha);
   background: #fff;
   background: var(--color-alpha);
-  color: #aaa!important;
+  color: #222!important;
+  color: var(--color-gamma)!important;
+}
+
+.projects .project a h1 {
+  color: #fff!important;
+  color: var(--color-alpha)!important;
+}
+
+.projects .project a:hover h1 {
+  color: #222!important;
   color: var(--color-gamma)!important;
 }
 

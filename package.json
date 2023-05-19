@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "bundle exec jekyll serve --baseurl ''",
-    "tsc": "tsc --watch"
+    "tsc": "tsc --watch",
+    "nuke": "./00-nuke.sh",
+    "curl": "./01-curl.sh",
+    "build": "./02-build.py",
+    "ncb": "npm run nuke && npm run curl && npm run build"
   },
   "repository": {
     "type": "git",

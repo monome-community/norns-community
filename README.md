@@ -33,8 +33,8 @@ These conventions were designed to "just work" with how most scripts are structu
 READMEs are individually cached from each script's repository in the below cascading sequence. Simply add a README to your project's `main` branch at any of the following locations:
 
 ```txt
-1. ./README.md
-2. ./doc/index.md
+1. ./doc/index.md
+2. ./README.md
 ```
 
 To ensure maximum resilience, please use [absolute URLs](https://en.wikipedia.org/wiki/HTTP_location) in your docs.
@@ -106,10 +106,10 @@ If you want to help maintain this website, you can run it locally and test your 
 1. clone repository to your computer
 2. install [Ruby](https://www.ruby-lang.org/en/) and [bundle](https://bundler.io/)
 3. using a shell, navigate to the `norns-community` directory with `cd`
-4. in the directory execute: `bundle install`
-5. then execute: `bundle exec jekyll serve --baseurl ''`
-6. tip: if you're going to be working on this a lot, save the above command as an alias. this is also available as `npm run dev`.
-7. pull the latest community data and build with: `./00-nuke.sh && ./01-curl.sh && ./02-build.py`
+4. pull the latest community data and build with: `./00-nuke.sh && ./01-curl.sh && ./02-build.py`
+5. in the directory execute: `bundle install`
+6. then execute: `bundle exec jekyll serve --baseurl ''` (save memory/energy and cancel this process while `./02-build.py` is running.)
+7. tip: see scripts `package.json` for various shortcuts of the above.
 8. you can now visit [http://127.0.0.1:4000](http://127.0.0.1:4000) in your browser
 
 This site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64-darwin21]`

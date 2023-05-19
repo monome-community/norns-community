@@ -20,7 +20,7 @@ body {
   background: var(--color-gamma);
   color: #fff;
   color: var(--color-alpha);
-  font-size: 0.8em;
+  font-size: 0.9em;
   line-height: 1.2em;
   padding: 8px;
 }

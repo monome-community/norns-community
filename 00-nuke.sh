@@ -11,8 +11,6 @@ TARGETS=(
   "./_pages/projects"
   "./_pages/tags"
   "./assets/screenshots"
-  "./package.json"
-  "./package-lock.json"
   "./node_modules"
 )
 

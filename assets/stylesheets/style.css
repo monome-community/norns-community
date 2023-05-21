@@ -116,7 +116,7 @@ footer {
 section {
   max-width: 800px;
   margin: 0.8em;
-  overflow: scroll;
+  overflow: auto;
 }
 
 section hr {

@@ -2,9 +2,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta property="og:description" content="{{ page_excerpt }}">
-<meta name="twitter:description" content="{{ page_excerpt }}">
 <title>{{ page_title }}</title>
+<meta property="og:title" content="{{ page_title }}">
+<meta name="twitter:title" content="{{ page_title }}">
+<meta name="description" content="{{ page_description }}">
+<meta property="og:description" content="{{ page_description }}">
+<meta name="twitter:description" content="{{ page_description }}">
+<meta property="og:image" content="{{ page_image }}">
+<meta name="twitter:image" content="{{ page_image }}">
 <link rel="stylesheet" href="{{ '/assets/stylesheets/style.css' | relative_url }}?{{ site.time | date: '%s%N' }}">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="mask-icon" href="/mask-icon.svg" color="#ffffff">

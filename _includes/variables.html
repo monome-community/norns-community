@@ -5,8 +5,13 @@
 {%- else -%}
   {%- assign page_title = site.title -%}
 {%- endif -%}
-{%- if page.excerpt -%}
-  {%- assign page_excerpt = page.excerpt | strip_html -%}
+{%- if page.description -%}
+  {%- assign page_description = page.description | strip_html -%}
 {%- else -%}
-  {%- assign page_excerpt = site.description -%}
+  {%- assign page_description = site.description -%}
+{%- endif -%}
+{%- if page.screenshot -%}
+  {%- assign page_image = '/assets/covers/' | append: page.screenshot -%}
+{%- else -%}
+  {%- assign page_image = '/assets/images/dust.png' -%}
 {%- endif -%}

@@ -3,6 +3,8 @@
 # note this script is only needed to make local development easier
 # github actions builds from scratch each time
 
+printf ">> starting at %s\n" "$(date)"
+
 TARGETS=(
   "./_data/community.json"
   "./_data/authors.yml"
@@ -10,7 +12,7 @@ TARGETS=(
   "./index.md"
   "./_pages/projects"
   "./_pages/tags"
-  "./assets/screenshots"
+  "./assets/covers"
   "./node_modules"
 )
 

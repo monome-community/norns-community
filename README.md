@@ -39,7 +39,7 @@ READMEs are individually cached from each script's repository in the below casca
 
 To ensure maximum resilience, please use [absolute URLs](https://en.wikipedia.org/wiki/HTTP_location) in your docs.
 
-Cover images (aka screenshots) are individually cached from each script's repository in the below cascading sequence. Simply add a screenshot to your project at any of the following locations:
+Cover images (aka screenshots) are individually cached from each script's repository in the below cascading sequence. Simply add a cover to your project at any of the following locations:
 
 ```txt
 1. ./doc/cover.png

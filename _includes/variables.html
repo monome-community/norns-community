@@ -10,8 +10,8 @@
 {%- else -%}
   {%- assign page_description = site.description -%}
 {%- endif -%}
-{%- if page.screenshot -%}
-  {%- assign page_image = '/assets/covers/' | append: page.screenshot -%}
+{%- if page.cover -%}
+  {%- assign page_image = '/assets/covers/' | append: page.cover -%}
 {%- else -%}
   {%- assign page_image = '/assets/images/dust.png' -%}
 {%- endif -%}

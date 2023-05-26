@@ -1,5 +1,7 @@
 #!/bin/bash
 
+printf ">> starting at %s\n" "$(date)"
+
 COMMUNITY_PATH="./community.json"
 
 printf ">> retrieving the latest canonical community.json file..."

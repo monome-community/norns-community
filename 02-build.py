@@ -20,6 +20,7 @@ import re
 import os
 import subprocess
 import requests
+import datetime
 
 # GLOBALS
 # GLOBALS
@@ -45,7 +46,7 @@ class Project():
   def __init__(self, entry):
     self.raw_name = entry['project_name']
     self.sanitized_name = sanitize(self.raw_name)
-    self.screenshot = '/' + covers_dist + '/' + self.sanitized_name + '.png'
+    self.cover = '/' + covers_dist + '/' + self.sanitized_name + '.png'
     self.permalink = '/' + self.sanitized_name
     self.authors = []
     self.description = entry['description'] if 'description' in entry else ''
@@ -57,7 +58,7 @@ class Project():
     self.tags = []
     for tag in unsanitized_tags:
       self.tags.append(sanitize(tag))
-    # github strings are needed build the screenshot fallback urls
+    # github strings are needed build the cover fallback urls
     github_strings = entry['project_url'].replace('https://github.com/', '').split('/')
     self.github_author = github_strings[0] # sometimes author names differ from github usernames
     self.github_project = github_strings[1] 
@@ -277,7 +278,7 @@ def sanitize(str):
 
 # project yml front matter for jekyll
 def write_project_front_matter(fp, project):
-  fp.write('screenshot: ' + project.sanitized_name + '.png' + '\n')
+  fp.write('cover: ' + project.sanitized_name + '.png' + '\n')
   fp.write('raw_name: ' + project.raw_name + '\n')
   fp.write('sanitized_name: ' + project.sanitized_name + '\n')
   fp.write('project_url: ' + project.project_url + '\n')
@@ -300,7 +301,7 @@ def write_explore_front_matter(fp, project):
   fp.write('\n') # newline for legibility only
   # these need to be indented 4 spaces for .yml:
   fp.write('  - raw_name: ' + project.raw_name + '\n')
-  fp.write('    screenshot: ' + project.sanitized_name + '.png' + '\n')
+  fp.write('    cover: ' + project.sanitized_name + '.png' + '\n')
   fp.write('    sanitized_name: ' + project.sanitized_name + '\n')
   fp.write('    url: ' + project.permalink + '\n')
   fp.write('    description: ' + project.description + '\n')
@@ -471,6 +472,7 @@ def build_about_page(about_dist):
 # MAIN
 # MAIN
 
+log('starting at ' + datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y"))
 build_hash()
 build_setup()
 community_data = community_data_factory()

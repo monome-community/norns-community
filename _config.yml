@@ -4,7 +4,7 @@ baseurl: /
 url: https://norns.community
 permalink: pretty
 sort_by: year, month
-markdown: kramdown
+markdown: GFM
 kramdown:
   parse_block_html: true
 plugins:

@@ -4,8 +4,9 @@ baseurl: /
 url: https://norns.community
 permalink: pretty
 sort_by: year, month
-markdown: GFM
+markdown: kramdown
 kramdown:
+  input: GFM
   parse_block_html: true
 plugins:
   - jekyll-feed

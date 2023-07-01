@@ -293,8 +293,10 @@ def write_project_front_matter(fp, project):
     fp.write(' - ' + author + '\n')
   # redirects to mitigate against link rot from wiki.js (aka norns.community v1.0)
   fp.write('redirect_from:\n')
+  author_project = author + '/' + project.sanitized_name + '\n'
   for author in project.authors:
-    fp.write(' - /authors/' + author + '/' + project.sanitized_name + '\n')
+    fp.write(' - /en/authors/' + author_project)
+    fp.write(' - /authors/' + author_project)
 
 # explore yml front matter for jekyll
 def write_explore_front_matter(fp, project):

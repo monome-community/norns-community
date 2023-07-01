@@ -36,6 +36,12 @@ tags_dist = '_pages/tags'
 explore_dist = '_pages/explore.md'
 about_dist = '_pages/about.md'
 github_raw_url_template = 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/HEAD'
+remote_cover_count = 0
+local_cover_count = 0
+missing_cover_count = 0
+remote_readme_count = 0
+missing_readme_count = 0
+
 
 # CLASSES
 # CLASSES
@@ -169,6 +175,7 @@ class Covers():
             with open(destination, 'wb') as f:
               f.write(response.content)
               log('saved to ' + destination)
+              remote_cover_count += 1
               cover_found = True
             break
         except requests.exceptions.RequestException as e:
@@ -182,11 +189,13 @@ class Covers():
           command = 'cp ' + path + ' ' + destination
           subprocess.Popen(command, shell=True)
           log('saved to ' + destination)
+          local_cover_count += 1
           cover_found = True
       if not cover_found:
         log('no cover found. using dust.')
         command = 'cp ./assets/images/dust.png' + ' ' + destination
         subprocess.Popen(command, shell=True)
+        missing_cover_count += 1
 
 class Readmes():
 
@@ -217,6 +226,7 @@ class Readmes():
             with open(destination, 'wb') as f:
               f.write(response.content)
               log('saved to ' + destination)
+              remote_readme_count += 1
               readme_found = True
             break
         except requests.exceptions.RequestException as e:
@@ -227,6 +237,7 @@ class Readmes():
       if not readme_found:
         log('could not find a readme')
         open(destination, 'a')
+        missing_readme_count += 1
 
 # FUNCTIONS
 # FUNCTIONS
@@ -466,11 +477,23 @@ def build_about_page(about_dist):
   fp.close()
   log('done.')
 
+def log_stats(community_data):
+  log('################################')
+  log('norns.community stats')
+  log('authors: ' + str(len(community_data.authors)))
+  log('projects: ' + str(len(community_data.projects)))
+  log('remote covers: ' + str(remote_cover_count))
+  log('local covers: ' + str(local_cover_count))
+  log('missing covers: ' + str(missing_cover_count))
+  log('remote readmes: ' + str(remote_readme_count))
+  log('missing readmes: ' + str(missing_readme_count))
+
 # MAIN
 # MAIN
 # MAIN
 
-log('starting at ' + datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y"))
+time_start = datetime.datetime.now()
+log('starting at ' + time_start.strftime("%a %b %d %H:%M:%S %Z %Y"))
 build_hash()
 build_setup()
 community_data = community_data_factory()
@@ -482,3 +505,7 @@ build_project_pages(community_data, projects_dist)
 build_tag_pages(community_data, tags_dist)
 build_explore_page(community_data, explore_dist)
 build_about_page(about_dist)
+log_stats(community_data)
+runtime = datetime.datetime.now() - time_start
+log('finishing at ' + datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y"))
+log('total runtime ' + runtime.__str__())

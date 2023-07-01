@@ -145,20 +145,17 @@ class Covers():
       5: github_raw_url_template + '/GITHUB_PROJECT.png',
       6: github_raw_url_template + '/screenshot.png'
     }
-    self.local_fallbacks = {
-      1: './archive/screenshots/SANITIZED_NAME.png',
-      2: './assets/images/dust.png'
-    }
-
 
   def fetch(self):
     for project in self.community_data.get_projects_in_alphabetical_order():
-      log('#### ' + project.raw_name + ' ####')
-      remote_fallback_found = False
+      log('################################')
+      log(project.raw_name)
+      filename = project.sanitized_name + '.png'
+      destination = './' + covers_dist + '/' + filename
+      cover_found = False
       # try remote covers first
       for fallback in sorted(self.remote_fallbacks.items()):
         url = fallback[1].replace('GITHUB_AUTHOR', project.github_author).replace('GITHUB_PROJECT', project.github_project)
-        log('try ' + url)
         try:
           # test if exists (fast)
           response = requests.head(url)
@@ -167,28 +164,29 @@ class Covers():
           # download (slow)
           response = requests.get(url)
           if response.status_code == 200:
-            log('image found!')
-            destination = './' + covers_dist + '/' + project.sanitized_name + '.png'
+            log('remote cover found at ' + url)
+            destination = './' + covers_dist + '/' + filename
             with open(destination, 'wb') as f:
               f.write(response.content)
               log('saved to ' + destination)
-              remote_fallback_found = True
+              cover_found = True
             break
         except requests.exceptions.RequestException as e:
           log('request failed.')
           log(e)
           continue
-      # if remote fallbacks didn't work, try local
-      if not remote_fallback_found:
-        for fallback in sorted(self.local_fallbacks.items()):
-          path = fallback[1].replace('SANITIZED_NAME', project.sanitized_name)
-          log('try ' + path)
-          if os.path.exists(path):
-            log('image found!')
-            command = 'cp ' + path + ' ./' + covers_dist + '/' + project.sanitized_name + '.png'
-            log(command)
-            subprocess.Popen(command, shell=True)
-            break
+      if not cover_found:
+        path = './archive/screenshots/' + filename
+        if os.path.exists(path):
+          log('local cover found at ' + path)
+          command = 'cp ' + path + ' ' + destination
+          subprocess.Popen(command, shell=True)
+          log('saved to ' + destination)
+          cover_found = True
+      if not cover_found:
+        log('no cover found. using dust.')
+        command = 'cp ./assets/images/dust.png' + ' ' + destination
+        subprocess.Popen(command, shell=True)
 
 class Readmes():
 
@@ -201,13 +199,12 @@ class Readmes():
 
   def fetch(self):
     for project in self.community_data.get_projects_in_alphabetical_order():
-      log('#### ' + project.raw_name + ' ####')
-      remote_fallback_found = False
+      log('################################')
+      log(project.raw_name)
+      readme_found = False
       destination = './' + readmes_src + '/' + project.sanitized_name + '.md'
-      # try remote covers first
       for fallback in sorted(self.remote_fallbacks.items()):
         url = fallback[1].replace('GITHUB_AUTHOR', project.github_author).replace('GITHUB_PROJECT', project.github_project)
-        log('try ' + url)
         try:
           # test if exists (fast)
           response = requests.head(url)
@@ -216,21 +213,20 @@ class Readmes():
           # download (slow)
           response = requests.get(url)
           if response.status_code == 200:
-            log('README found!')
+            log('readme found at ' + url)
             with open(destination, 'wb') as f:
               f.write(response.content)
               log('saved to ' + destination)
-              remote_fallback_found = True
+              readme_found = True
             break
         except requests.exceptions.RequestException as e:
-          log('request failed.')
+          log('request failed')
           log(e)
           continue
       # if remote fallbacks didn't work, make an empty file
-      if not remote_fallback_found:
-        log('no README found, making empty file at ' + destination)
+      if not readme_found:
+        log('could not find a readme')
         open(destination, 'a')
-        log('done.')
 
 # FUNCTIONS
 # FUNCTIONS

@@ -153,6 +153,9 @@ class Covers():
     }
 
   def fetch(self):
+    global remote_cover_count
+    global local_cover_count
+    global missing_cover_count
     for project in self.community_data.get_projects_in_alphabetical_order():
       log('################################')
       log(project.raw_name)
@@ -207,6 +210,8 @@ class Readmes():
     }
 
   def fetch(self):
+    global remote_readme_count
+    global missing_readme_count
     for project in self.community_data.get_projects_in_alphabetical_order():
       log('################################')
       log(project.raw_name)
@@ -508,4 +513,4 @@ build_about_page(about_dist)
 log_stats(community_data)
 runtime = datetime.datetime.now() - time_start
 log('finishing at ' + datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y"))
-log('total runtime ' + runtime.__str__())
+log('02-build.py runtime ' + runtime.__str__())

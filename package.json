@@ -4,8 +4,10 @@
   "description": "norns.community is a collection of open source software for the monome norns sound computer.",
   "main": "index.js",
   "scripts": {
-    "dev": "bundle exec jekyll serve --baseurl ''",
-    "tsc": "tsc --watch",
+    "dev": "npm run eleventy:watch",
+    "eleventy:base": "npx @11ty/eleventy",
+    "eleventy:build": "npm run eleventy:base",
+    "eleventy:watch": "npm run eleventy:base -- --serve --quiet",
     "nuke": "./00-nuke.sh",
     "curl": "./01-curl.sh",
     "build": "./02-build.py",
@@ -22,6 +24,11 @@
   },
   "homepage": "https://github.com/monome-community/norns-community#readme",
   "dependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "luxon": "^3.5.0",
+    "markdown-it-implicit-figures": "^0.12.0",
+    "memoize": "^10.1.0",
     "typescript": "^5.0.4"
-  }
+  },
+  "type": "module"
 }

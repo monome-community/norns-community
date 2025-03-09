@@ -3,12 +3,12 @@ community.json
 
 # norns-community generated files
 index.md
-_data/authors.yml
-_data/hash.yml
-_pages/projects
-_pages/tags
-_pages/explore.md
-_pages/about.md
+data/authors.yml
+data/hash.yml
+pages/projects
+pages/tags
+pages/explore.md
+pages/about.md
 assets/covers
 assets/readmes
 

@@ -27,14 +27,14 @@ import datetime
 # GLOBALS
 
 community_json_src = 'community.json'
-covers_src = 'archive/covers'
-covers_dist = 'assets/covers'
-readmes_src = 'assets/readmes'
-authors_yml_dist = '_data/authors.yml'
-projects_dist = '_pages/projects'
-tags_dist = '_pages/tags'
-explore_dist = '_pages/explore.md'
-about_dist = '_pages/about.md'
+covers_src = 'src/archive/covers'
+covers_dist = 'src/assets/covers'
+readmes_src = 'src/assets/readmes'
+authors_yml_dist = 'src/data/authors.yml'
+projects_dist = 'src/pages/projects'
+tags_dist = 'src/pages/tags'
+explore_dist = 'src/pages/explore.md'
+about_dist = 'src/pages/about.md'
 github_raw_url_template = 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/HEAD'
 remote_cover_count = 0
 local_cover_count = 0
@@ -342,9 +342,9 @@ def community_data_factory():
 # expose the git hash to jekyll
 def build_hash():
   # write the current git hash to a file for jekyll to use
-  log('writing git hash to ./_data/hash.yml...')
+  log('writing git hash to ./src/data/hash.yml...')
   git_hash = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode('ascii').strip()
-  fp = open('./_data/hash.yml', 'w')
+  fp = open('./src/data/hash.yml', 'w')
   fp.write('full: ' + git_hash + '\n')
   fp.write('short: ' + git_hash[:7])
   fp.close()
@@ -352,8 +352,8 @@ def build_hash():
 
 # create directories
 def build_setup():
-  log('copying community.json to ./_data for jekyll...')
-  subprocess.Popen('cp ./community.json ./_data/community.json', shell=True)
+  log('copying community.json to ./src/data for jekyll...')
+  subprocess.Popen('cp ./community.json ./src/data/community.json', shell=True)
   log('done.')
 
   mkdir(projects_dist)

@@ -12,12 +12,6 @@ _pages/about.md
 assets/covers
 assets/readmes
 
-# jekyll
-_site
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
-
 # node
 node_modules
 

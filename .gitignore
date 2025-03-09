@@ -12,6 +12,9 @@ _pages/about.md
 assets/covers
 assets/readmes
 
+# python
+venv
+
 # node
 node_modules
 

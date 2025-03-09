@@ -10,7 +10,7 @@ This document serves as both the `README.md` for [this repository](https://githu
 
 ## How do I get my script on norns.community?
 
-First, take a fork of the [community catalog](https://github.com/monome/norns-community), update `community.json` with your script's details, and make a pull request. After your pull request is accepted and merged it will *automatically appear* on [norns.community](https://norns.community). The website refreshes nightly at 00:00 UTC, on every merge to its `main` branch, or on demand by admins. [This GitHub action](https://github.com/monome-community/norns-community/actions/workflows/build.yml) has all the details.
+First, take a fork of the [community catalog](https://github.com/monome/norns-community), update `community.json` with your script's details, and make a pull request. After your pull request is accepted and merged it will _automatically appear_ on [norns.community](https://norns.community). The website refreshes nightly at 00:00 UTC, on every merge to its `main` branch, or on demand by admins. [This GitHub action](https://github.com/monome-community/norns-community/actions/workflows/build.yml) has all the details.
 
 For script authors, this means:
 
@@ -85,7 +85,7 @@ The local archive cache is from norns.community v1.0. It was archived in Februar
 
 ## How does this site work?
 
-A [curl](https://github.com/monome-community/norns-community/blob/main/01-curl.sh) script fetches our [community catalog](https://github.com/monome/norns-community). A [build](https://github.com/monome-community/norns-community/blob/main/02-build.py) script then uses that data to construct this [Jekyll](https://jekyllrb.com) website. It is hosted with [GitHub pages](https://pages.github.com).
+A [curl](https://github.com/monome-community/norns-community/blob/main/01-curl.sh) script fetches our [community catalog](https://github.com/monome/norns-community). A [build](https://github.com/monome-community/norns-community/blob/main/02-build.py) script then uses that data to construct this [Eleventy](https://www.11ty.dev/) website. It is hosted with Cloudflare Pages on under Tyler Etters's account (todo: transfer to monome).
 
 Additionally, these raw resources are available:
 
@@ -99,29 +99,17 @@ Additionally, these raw resources are available:
 
 If you want to help maintain this website, you can run it locally and test your changes before submitting a [pull request](https://github.com/monome-community/norns-community/pulls).
 
-### Jekyll (Ruby) / HTML / CSS
+### Eleventy / HTML / CSS
 
 1. clone repository to your computer
-2. install [Ruby](https://www.ruby-lang.org/en/) and [bundle](https://bundler.io/)
-3. using a shell, navigate to the `norns-community` directory with `cd`
-4. pull the latest community data and build with: `./00-nuke.sh && ./01-curl.sh && ./02-build.py`
-5. in the directory execute: `bundle install`
-6. then execute: `bundle exec jekyll serve --baseurl ''` (save memory/energy and cancel this process while `./02-build.py` is running.)
-7. tip: see scripts `package.json` for various shortcuts of the above.
-8. you can now visit [http://127.0.0.1:4000](http://127.0.0.1:4000) in your browser
-
-This site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64-darwin21]`
-
-### TypeScript / JavaScript
-
-There is a single TypeScript file that is used to enable filtering on the "explore" page.
-
-Install TypeScript and watch the file with:
-
-1. `npm i`
-2. `npm run tsc`
-
-The build process assumes the transpiled JavaScript is already there. Perform all the `npm` actions locally.
+1. using a shell, navigate to the `norns-community` directory with `cd`
+1. create a python virtual environment `python3 -m venv venv` & activate it with `source venv/bin/activate`
+1. install python dependencies `pip install -r requirements.txt`
+1. pull the latest community data and build with: `./00-nuke.sh && ./01-curl.sh && ./02-build.py`
+1. install the javascript dependencies `npm i`
+1. run the site `npm run dev`
+1. tip: see scripts `package.json` for various shortcuts of the above.
+1. you can now visit [todo](todo) in your browser
 
 ---
 

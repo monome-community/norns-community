@@ -1,0 +1,100 @@
+---
+layout: project
+title: strides
+permalink: /strides
+cover: strides.png
+raw_name: strides
+sanitized_name: strides
+project_url: https://github.com/notjustmat/strides
+description: a collection of pattern recorders
+discussion_url: https://llllllll.co/t/21101
+documentation_url: 
+tags:
+ - sampler
+ - sequencer
+ - grid
+ - midi
+authors:
+ - justmat
+redirect_from:
+ - /en/authors/justmat/strides
+ - /authors/justmat/strides
+---
+
+
+# strides v1.4
+
+---
+
+strides is a collection of 16 pattern recorders.
+
+8 are norns focused, expressed as encoder recorders sending midi cc's.
+
+8 are grid focused, allowing for finger drum style recording and looping (with optional midi note out).
+
+---
+
+## norns
+
+load samples, set midi notes and cc destinations in the PARAMETERS menu.
+
+
+there are two operating modes in strides, **grid** and **encoder**.
+to switch modes, hold **key1** and press **key3**.
+
+
+#### grid mode controls
+
+- enc1 - volume
+- enc2 - delay time
+- enc3 - delay feedback
+- key1 = hold to access secondary encoder/ key functions
+	* enc1 = distortion amount
+	* enc2 = delay level
+	* enc3 = delay send
+- key2 = half time
+- key3 = double time
+
+nb: delay send works on all samples and tracks. if you wish to send individual samples to delay, you can do so via the PARAMETERS menu.
+
+#### encoder mode controls
+
+- key2 = arm record
+- key3 = start/ stop pattern
+- enc1 = select active pattern
+- enc2 = turn to begin recording (if armed) and/or set cc value
+
+nb: set your cc destinations and midi output channels in the PARAMETERS menu.
+
+---
+
+## grid
+
+![](https://raw.githubusercontent.com/notjustmat/strides/HEAD/assets/strides-grid1.png)
+
+hold alt to access secondary grid functions.
+
+- a - track selection
+- b - arm record
+- c - start/stop selected track
+- d - alt
+	* a - track stop
+	* b - clear all patterns
+	* c - stop all tracks
+- e - sample pads
+
+
+
+nb: as of v1.2 a midi panic/ kill button was added just above alt. hold alt to expose.
+
+as well as secondary controls, holding alt will bring up several controls for pattern and playback speed manipulation.
+
+![](https://raw.githubusercontent.com/notjustmat/strides/HEAD/assets/strides-grid2.png)
+
+- f - toggle pattern linearization
+- g - double sample playback speed
+- h - half pattern speed
+- i - double pattern speed
+- j - half sample playback speed
+- k - restore pattern speed to original or linearized if selected
+- l - restore all sample playback speed to original

@@ -196,65 +196,10 @@ class Covers():
 
   def __init__(self, community_data: CommunityData):
     self.community_data = community_data
-    self.remote_fallbacks = {
-      1: github_raw_url_template + '/doc/cover.png',
-      2: github_raw_url_template + '/doc/GITHUB_PROJECT.png',
-      3: github_raw_url_template + '/doc/screenshot.png',
-      4: github_raw_url_template + '/cover.png',
-      5: github_raw_url_template + '/GITHUB_PROJECT.png',
-      6: github_raw_url_template + '/screenshot.png'
-    }
 
   def afetch(self):
     asyncio.run(afetch_covers(self.community_data.get_projects_in_alphabetical_order()))
 
-  def fetch(self):
-    global remote_cover_count
-    global local_cover_count
-    global missing_cover_count
-    for project in self.community_data.get_projects_in_alphabetical_order():
-      log('################################')
-      log(project.raw_name)
-      filename = project.sanitized_name + '.png'
-      destination = './' + covers_dist + '/' + filename
-      cover_found = False
-      # try remote covers first
-      for fallback in sorted(self.remote_fallbacks.items()):
-        url = fallback[1].replace('GITHUB_AUTHOR', project.github_author).replace('GITHUB_PROJECT', project.github_project)
-        try:
-          # test if exists (fast)
-          response = requests.head(url)
-          if response.status_code != 200:
-            continue
-          # download (slow)
-          response = requests.get(url)
-          if response.status_code == 200:
-            log('remote cover found at ' + url)
-            destination = './' + covers_dist + '/' + filename
-            with open(destination, 'wb') as f:
-              f.write(response.content)
-              log('saved to ' + destination)
-              remote_cover_count += 1
-              cover_found = True
-            break
-        except requests.exceptions.RequestException as e:
-          log('request failed.')
-          log(e)
-          continue
-      if not cover_found:
-        path = './archive/screenshots/' + filename
-        if os.path.exists(path):
-          log('local cover found at ' + path)
-          command = 'cp ' + path + ' ' + destination
-          subprocess.Popen(command, shell=True)
-          log('saved to ' + destination)
-          local_cover_count += 1
-          cover_found = True
-      if not cover_found:
-        log('no cover found. using dust.')
-        command = 'cp ./assets/images/dust.png' + ' ' + destination
-        subprocess.Popen(command, shell=True)
-        missing_cover_count += 1
 
 
 ## ------------------------------------------------------------------------
@@ -296,48 +241,9 @@ class Readmes():
 
   def __init__(self, community_data: CommunityData):
     self.community_data = community_data
-    self.remote_fallbacks = {
-      1: github_raw_url_template + '/doc/index.md',
-      2: github_raw_url_template + '/README.md'
-    }
 
   def afetch(self):
     asyncio.run(afetch_readmes(self.community_data.get_projects_in_alphabetical_order()))
-
-  def fetch(self):
-    global remote_readme_count
-    global missing_readme_count
-    for project in self.community_data.get_projects_in_alphabetical_order():
-      log('################################')
-      log(project.raw_name)
-      readme_found = False
-      destination = './' + readmes_src + '/' + project.sanitized_name + '.md'
-      for fallback in sorted(self.remote_fallbacks.items()):
-        url = fallback[1].replace('GITHUB_AUTHOR', project.github_author).replace('GITHUB_PROJECT', project.github_project)
-        try:
-          # test if exists (fast)
-          response = requests.head(url)
-          if response.status_code != 200:
-            continue
-          # download (slow)
-          response = requests.get(url)
-          if response.status_code == 200:
-            log('readme found at ' + url)
-            with open(destination, 'wb') as f:
-              f.write(response.content)
-              log('saved to ' + destination)
-              remote_readme_count += 1
-              readme_found = True
-            break
-        except requests.exceptions.RequestException as e:
-          log('request failed')
-          log(e)
-          continue
-      # if remote fallbacks didn't work, make an empty file
-      if not readme_found:
-        log('could not find a readme')
-        open(destination, 'a')
-        missing_readme_count += 1
 
 
 ## ------------------------------------------------------------------------

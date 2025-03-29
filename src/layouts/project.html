@@ -1,0 +1,78 @@
+---
+layout: base
+---
+
+{% if page.cover and page.cover != '' %}
+<img
+  src="/assets/covers/{{ page.cover }}"
+  alt="{{ page.title }}"
+/>
+{% endif %}
+<br />
+<table>
+  {% if page.raw_name != "" %}
+  <tr>
+    <td>project name:</td>
+    <td>{{ page.raw_name }}</td>
+  </tr>
+  {% endif %} {% if page.project_url != "" %}
+  <tr>
+    <td>project url:</td>
+    <td>
+      <a href="{{ page.project_url }}">{{ page.project_url }}</a>
+    </td>
+  </tr>
+  {% endif %} {% if page.authors and page.authors != "" %}
+  <tr>
+    {% if page.authors.size > 1 %}
+    <td>authors:</td>
+    <td>
+      {% for author in page.authors %}
+      <a href="/author#{{ author }}">{{ author }}</a>
+      {% endfor %}
+    </td>
+    {% else %}
+    <td>author:</td>
+    <td>
+      <a href="/author#{{ page.authors }}">{{ page.authors }}</a>
+    </td>
+    {% endif %}
+  </tr>
+  {% endif %} {% if page.description and page.description != "" %}
+  <tr>
+    <td>description:</td>
+    <td>{{ page.description }}</td>
+  </tr>
+  {% endif %} {% if page.discussion_url and page.discussion_url != "" %}
+  <tr>
+    <td>discussion url:</td>
+    <td>
+      <a href="{{ page.discussion_url }}">{{ page.discussion_url }}</a>
+    </td>
+  </tr>
+  {% endif %} {% if page.documentation_url and page.documentation_url != "" %}
+  <tr>
+    <td>documentation url:</td>
+    <td>
+      <a href="{{ page.documentation_url }}">{{ page.documentation_url }}</a>
+    </td>
+  </tr>
+  {% endif %} {% if page.tags and page.tags != "" %}
+  <tr>
+    <td>tags:</td>
+    <td>
+      {% for tag in page.tags %}
+      <a
+        href="/tag/{{ tag }}"
+        class="project-tag tag"
+        >{{ tag }}</a
+      >
+      {% if forloop.last != true %}{% endif %} {% endfor %}
+    </td>
+  </tr>
+  {% endif %}
+</table>
+<!-- don't display the README content or <hr> if empty -->
+{% assign test = page.content | strip_newlines %} {% if test != "" %}
+<hr />
+{{ content }} {% endif %}

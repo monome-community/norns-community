@@ -53,6 +53,8 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
+      - name: "|||||||| norns community 00-deps.sh ||||||||"
+        run: ./00-deps.sh
       - name: "|||||||| norns community 01-curl.sh ||||||||"
         run: ./01-curl.sh
       - name: "|||||||| norns community 02-build.sh ||||||||"

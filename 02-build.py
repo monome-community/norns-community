@@ -349,7 +349,6 @@ def build_setup():
 def fetch_covers(community_data):
   log('fetching covers...')
   asyncio.run(afetch_covers(community_data.get_projects_in_alphabetical_order()))
-  covers.afetch()
   log('done.')
 
 def fetch_readmes(community_data):

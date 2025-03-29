@@ -22,6 +22,10 @@ import subprocess
 import requests
 import datetime
 
+import aiohttp
+import asyncio
+import aiofiles
+
 # GLOBALS
 # GLOBALS
 # GLOBALS
@@ -67,7 +71,7 @@ class Project():
     # github strings are needed build the cover fallback urls
     github_strings = entry['project_url'].replace('https://github.com/', '').split('/')
     self.github_author = github_strings[0] # sometimes author names differ from github usernames
-    self.github_project = github_strings[1] 
+    self.github_project = github_strings[1]
 
   def associate_author(self, author_raw_name):
     self.authors.append(sanitize(author_raw_name))
@@ -78,7 +82,7 @@ class Project():
 class Author():
 
   def __init__(self, raw_name):
-    self.raw_name = raw_name 
+    self.raw_name = raw_name
     self.sanitized_name = sanitize(raw_name)
     self.permalink = '/author#' + self.sanitized_name
 
@@ -126,11 +130,11 @@ class CommunityData():
   # return a list of authors in alphabetical order
   def get_authors_in_alphabetical_order(self):
     return sorted(self.authors.values(), key=lambda author: author.raw_name.casefold())
-  
+
   # return a list of projects in alphabetical order
   def get_projects_in_alphabetical_order(self):
     return sorted(self.projects.values(), key=lambda project: project.raw_name.casefold())
-  
+
   def get_deduped_tags(self):
     tags = []
     for project in self.projects.values():
@@ -138,6 +142,55 @@ class CommunityData():
         if not tag in tags:
           tags.append(tag)
     return sorted(tags, key=lambda tag: tag.casefold())
+
+
+## ------------------------------------------------------------------------
+## COVERS
+
+URL_TMPLT_COVER = [
+  github_raw_url_template + '/doc/cover.png',
+  github_raw_url_template + '/doc/GITHUB_PROJECT.png',
+  github_raw_url_template + '/doc/screenshot.png',
+  github_raw_url_template + '/cover.png',
+  github_raw_url_template + '/GITHUB_PROJECT.png',
+  github_raw_url_template + '/screenshot.png'
+]
+
+async def afetch_cover(session, project, idx):
+  global remote_cover_count
+  global local_cover_count
+  global missing_cover_count
+
+  filename = project.sanitized_name + '.png'
+  destination = './' + covers_dist + '/' + filename
+
+  for url_tmplt in URL_TMPLT_COVER:
+    url = url_tmplt.replace('GITHUB_AUTHOR', project.github_author).replace('GITHUB_PROJECT', project.github_project)
+    async with session.get(url) as response:
+      if response.status == 200:
+        log(project.sanitized_name + ' - remote cover found at ' + url)
+        remote_cover_count += 1
+        content = await response.read()
+        async with aiofiles.open(destination, 'wb') as f:
+          await f.write(content)
+        return
+
+  archive_path = './archive/screenshots/' + filename
+  if os.path.exists(archive_path):
+    log(project.sanitized_name + ' - local cover found in archive.')
+    local_cover_count += 1
+    command = 'cp ' + archive_path + ' ' + destination
+    subprocess.Popen(command, shell=True)
+  else:
+    log(project.sanitized_name + ' - no cover found. using dust.')
+    missing_cover_count += 1
+    command = 'cp ./assets/images/dust.png' + ' ' + destination
+    subprocess.Popen(command, shell=True)
+
+async def afetch_covers(projects):
+  async with aiohttp.ClientSession() as session:
+    tasks = [afetch_cover(session, project, idx) for idx, project in enumerate(projects)]
+    await asyncio.gather(*tasks)
 
 class Covers():
 
@@ -151,6 +204,9 @@ class Covers():
       5: github_raw_url_template + '/GITHUB_PROJECT.png',
       6: github_raw_url_template + '/screenshot.png'
     }
+
+  def afetch(self):
+    asyncio.run(afetch_covers(self.community_data.get_projects_in_alphabetical_order()))
 
   def fetch(self):
     global remote_cover_count
@@ -200,6 +256,42 @@ class Covers():
         subprocess.Popen(command, shell=True)
         missing_cover_count += 1
 
+
+## ------------------------------------------------------------------------
+## READMES
+
+URL_TMPLT_README = [
+  github_raw_url_template + '/doc/index.md',
+  github_raw_url_template + '/README.md'
+]
+
+async def afetch_readme(session, project, idx):
+  global remote_readme_count
+  global missing_readme_count
+
+  filename = project.sanitized_name + '.md'
+  destination = './' + readmes_src + '/' + filename
+
+  for url_tmplt in URL_TMPLT_README:
+    url = url_tmplt.replace('GITHUB_AUTHOR', project.github_author).replace('GITHUB_PROJECT', project.github_project)
+    async with session.get(url) as response:
+      if response.status == 200:
+        log(project.sanitized_name + ' - remote readme found at ' + url)
+        remote_readme_count += 1
+        content = await response.read()
+        async with aiofiles.open(destination, 'wb') as f:
+          await f.write(content)
+        return
+
+  log(project.sanitized_name + ' - no readme found.')
+  missing_readme_count += 1
+
+async def afetch_readmes(projects):
+  async with aiohttp.ClientSession() as session:
+    tasks = [afetch_readme(session, project, idx) for idx, project in enumerate(projects)]
+    await asyncio.gather(*tasks)
+
+
 class Readmes():
 
   def __init__(self, community_data: CommunityData):
@@ -208,6 +300,9 @@ class Readmes():
       1: github_raw_url_template + '/doc/index.md',
       2: github_raw_url_template + '/README.md'
     }
+
+  def afetch(self):
+    asyncio.run(afetch_readmes(self.community_data.get_projects_in_alphabetical_order()))
 
   def fetch(self):
     global remote_readme_count
@@ -244,6 +339,8 @@ class Readmes():
         open(destination, 'a')
         missing_readme_count += 1
 
+
+## ------------------------------------------------------------------------
 # FUNCTIONS
 # FUNCTIONS
 # FUNCTIONS
@@ -299,7 +396,7 @@ def write_project_front_matter(fp, project):
   fp.write('documentation_url: ' + project.documentation_url + '\n')
   fp.write('tags:\n')
   for tag in project.tags:
-    fp.write(' - ' + tag + '\n')  
+    fp.write(' - ' + tag + '\n')
   fp.write('authors:\n')
   for author in project.authors:
     fp.write(' - ' + author + '\n')
@@ -321,7 +418,7 @@ def write_explore_front_matter(fp, project):
   fp.write('    description: ' + project.description + '\n')
   fp.write('    tags:\n')
   for tag in project.tags:
-    fp.write('     - ' + tag + '\n')  
+    fp.write('     - ' + tag + '\n')
   fp.write('    authors:\n')
   for author in project.authors:
     fp.write('     - ' + author + '\n')
@@ -364,13 +461,13 @@ def build_setup():
 def fetch_covers(community_data):
   log('fetching covers...')
   covers = Covers(community_data)
-  covers.fetch()
+  covers.afetch()
   log('done.')
 
 def fetch_readmes(community_data):
   log('fetching readmes...')
   readmes = Readmes(community_data)
-  readmes.fetch()
+  readmes.afetch()
   log('done.')
 
 def build_index_page(community_data):

@@ -192,15 +192,6 @@ async def afetch_covers(projects):
     tasks = [afetch_cover(session, project, idx) for idx, project in enumerate(projects)]
     await asyncio.gather(*tasks)
 
-class Covers():
-
-  def __init__(self, community_data: CommunityData):
-    self.community_data = community_data
-
-  def afetch(self):
-    asyncio.run(afetch_covers(self.community_data.get_projects_in_alphabetical_order()))
-
-
 
 ## ------------------------------------------------------------------------
 ## READMES
@@ -235,15 +226,6 @@ async def afetch_readmes(projects):
   async with aiohttp.ClientSession() as session:
     tasks = [afetch_readme(session, project, idx) for idx, project in enumerate(projects)]
     await asyncio.gather(*tasks)
-
-
-class Readmes():
-
-  def __init__(self, community_data: CommunityData):
-    self.community_data = community_data
-
-  def afetch(self):
-    asyncio.run(afetch_readmes(self.community_data.get_projects_in_alphabetical_order()))
 
 
 ## ------------------------------------------------------------------------
@@ -366,14 +348,13 @@ def build_setup():
 
 def fetch_covers(community_data):
   log('fetching covers...')
-  covers = Covers(community_data)
+  asyncio.run(afetch_covers(community_data.get_projects_in_alphabetical_order()))
   covers.afetch()
   log('done.')
 
 def fetch_readmes(community_data):
   log('fetching readmes...')
-  readmes = Readmes(community_data)
-  readmes.afetch()
+  asyncio.run(afetch_readmes(community_data.get_projects_in_alphabetical_order()))
   log('done.')
 
 def build_index_page(community_data):

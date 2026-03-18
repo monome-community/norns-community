@@ -48,8 +48,8 @@ jobs:
         run: ./01-curl.sh
       - name: "|||||||| norns community 02-build.py ||||||||"
         run: ./02-build.py
-      - name: Build with Zensical
-        run: zensical build --clean
+      - name: "|||||||| norns community 03-zensical.sh ||||||||"
+        run: ./03-zensical.sh
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:

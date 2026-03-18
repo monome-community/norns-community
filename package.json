@@ -9,8 +9,9 @@
     "nuke": "./00-nuke.sh",
     "curl": "./01-curl.sh",
     "build": "./02-build.py",
+    "zensical": "./03-zensical.sh",
     "serve": "zensical serve",
-    "ncb": "npm run nuke && npm run curl && npm run build"
+    "ncb": "npm run nuke && npm run curl && npm run build && npm run zensical"
   },
   "repository": {
     "type": "git",

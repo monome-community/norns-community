@@ -9,9 +9,10 @@ norns.community is a script index for the monome norns sound computer. It is a d
 **Static site generator:** [Zensical](https://zensical.org) (Python/Rust)
 
 **Build pipeline:**
-1. `01-curl.sh` - fetches `community.json` from GitHub
-2. `02-build.py` - parses JSON, async-fetches cover images & READMEs from GitHub, generates markdown pages with YAML front matter in `docs/`
-3. `zensical build` - compiles markdown pages into static HTML in `site/`
+1. `00-nuke.sh` - cleans generated files (local dev only)
+2. `01-curl.sh` - fetches `community.json` from GitHub
+3. `02-build.py` - parses JSON, async-fetches cover images & READMEs from GitHub, generates markdown pages with YAML front matter in `docs/`
+4. `03-zensical.sh` - compiles markdown pages into static HTML in `site/`
 
 **Key directories:**
 - `docs/` - Zensical content directory. Contains static assets (CSS, JS, images, icons, favicons) and generated markdown pages
@@ -39,16 +40,16 @@ norns.community is a script index for the monome norns sound computer. It is a d
 
 ```bash
 # Full rebuild from scratch
-./00-nuke.sh && ./01-curl.sh && ./02-build.py && zensical build --clean
+./00-nuke.sh && ./01-curl.sh && ./02-build.py && ./03-zensical.sh
 
 # Quick rebuild (skip fetch, reuse cached data)
-./02-build.py && zensical build
+./02-build.py && ./03-zensical.sh
 
 # Dev server with live reload
 zensical serve
 
 # npm shortcuts
-npm run ncb    # nuke + curl + build
+npm run ncb    # nuke + curl + build + zensical
 npm run dev    # zensical serve
 npm run tsc    # typescript watch
 ```

@@ -108,7 +108,7 @@ If you want to help maintain this website, you can run it locally and test your 
 ### Build & Serve
 
 1. fetch community data and build pages: `./01-curl.sh && ./02-build.py`
-2. build the site: `zensical build`
+2. build the site: `./03-zensical.sh`
 3. preview locally: `zensical serve`
 4. visit [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser
 

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "partials/nc_head.html" %}
+<body class="{{ page.title }}">
+{% include "partials/nc_nav.html" %}
+<section>
+<table id="index-table">
+  <thead>
+    <tr>
+      <th class="sortable active" data-sort="script">SCRIPT</th>
+      <th class="sortable" data-sort="author">AUTHOR</th>
+      <th>DESCRIPTION</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for project in page.meta.projects %}
+    <tr>
+      <td><a href="{{ project.url }}">{{ project.raw_name }}</a></td>
+      <td>{% for author in project.authors %}<a href="/#{{ author }}">{{ author }}</a>{% if not loop.last %} {% endif %}{% endfor %}</td>
+      <td>{{ project.description }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</section>
+{% include "partials/nc_footer.html" %}
+<script src="/javascripts/script.js"></script>
+</body>
+</html>

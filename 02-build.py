@@ -38,7 +38,6 @@ tags_dist = 'docs/tag'
 explore_dist = 'docs/explore.md'
 about_dist = 'docs/about.md'
 index_dist = 'docs/index.md'
-author_dist = 'docs/author.md'
 github_raw_url_template = 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/HEAD'
 remote_cover_count = 0
 local_cover_count = 0
@@ -84,7 +83,7 @@ class Author():
   def __init__(self, raw_name):
     self.raw_name = raw_name
     self.sanitized_name = sanitize(raw_name)
-    self.permalink = '/author#' + self.sanitized_name
+    self.permalink = '/#' + self.sanitized_name
 
 class CommunityData():
 
@@ -388,39 +387,33 @@ def build_index_page(community_data, build_meta):
   fp = open(index_dist, 'w')
   fp.write('---\n')
   fp.write('title: index\n')
-  fp.write('template: page.html\n')
+  fp.write('template: index.html\n')
   write_build_metadata(fp, build_meta)
-  fp.write('---\n')
+  fp.write('projects:\n')
   for project in community_data.get_projects_in_alphabetical_order():
-    link = '[' + project.raw_name + '](' + project.permalink + ')'
-    description = project.description
-    fp.write('- ' + link + ' - ' + description + '\n')
+    fp.write('  - raw_name: ' + yaml_escape(project.raw_name) + '\n')
+    fp.write('    url: ' + project.permalink + '\n')
+    fp.write('    description: ' + yaml_escape(project.description) + '\n')
+    if project.authors:
+      fp.write('    authors:\n')
+      for author in project.get_authors_in_alphabetical_order():
+        fp.write('      - ' + author + '\n')
+    else:
+      fp.write('    authors: []\n')
+  fp.write('---\n')
   fp.close()
   log('done.')
 
-def build_author_page(community_data, build_meta):
-  log('building author page...')
-  fp = open(author_dist, 'w')
-  fp.write('---\n')
-  fp.write('title: author\n')
-  fp.write('template: author.html\n')
-  write_build_metadata(fp, build_meta)
-  fp.write('authors_list:\n')
-  for author in community_data.get_authors_in_alphabetical_order():
-    fp.write('  - raw_name: ' + yaml_escape(author.raw_name) + '\n')
-    fp.write('    sanitized_name: ' + author.sanitized_name + '\n')
-    author_projects = []
-    for project in community_data.get_projects_in_alphabetical_order():
-      if author.raw_name in project.authors:
-        author_projects.append(project)
-    if author_projects:
-      fp.write('    projects:\n')
-      for project in author_projects:
-        fp.write('      - raw_name: ' + yaml_escape(project.raw_name) + '\n')
-        fp.write('        url: ' + project.permalink + '\n')
-    else:
-      fp.write('    projects: []\n')
-  fp.write('---\n')
+def build_author_redirect():
+  log('building author redirect...')
+  author_dir = 'docs/author'
+  mkdir(author_dir)
+  fp = open(author_dir + '/index.html', 'w')
+  fp.write('<!DOCTYPE html><html><head>')
+  fp.write('<meta http-equiv="refresh" content="0; url=/">')
+  fp.write('</head><body>')
+  fp.write('Redirecting to <a href="/">index</a>')
+  fp.write('</body></html>')
   fp.close()
   log('done.')
 
@@ -555,7 +548,7 @@ community_data = community_data_factory()
 fetch_covers(community_data)
 fetch_readmes(community_data)
 build_index_page(community_data, build_meta)
-build_author_page(community_data, build_meta)
+build_author_redirect()
 build_project_pages(community_data, build_meta)
 build_tag_pages(community_data, build_meta)
 build_explore_page(community_data, build_meta)

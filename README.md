@@ -85,13 +85,12 @@ The local archive cache is from norns.community v1.0. It was archived in Februar
 
 ## How does this site work?
 
-A [curl](https://github.com/monome-community/norns-community/blob/main/01-curl.sh) script fetches our [community catalog](https://github.com/monome/norns-community). A [build](https://github.com/monome-community/norns-community/blob/main/02-build.py) script then uses that data to construct this [Jekyll](https://jekyllrb.com) website. It is hosted with [GitHub pages](https://pages.github.com).
+A [curl](https://github.com/monome-community/norns-community/blob/main/01-curl.sh) script fetches our [community catalog](https://github.com/monome/norns-community). A [build](https://github.com/monome-community/norns-community/blob/main/02-build.py) script then uses that data to generate markdown pages. [Zensical](https://zensical.org) compiles those pages into a static website. It is hosted with [GitHub pages](https://pages.github.com).
 
 Additionally, these raw resources are available:
 
 - [https://norns.community/community.json](https://norns.community/community.json)
-- [https://norns.community/assets/covers/dronecaster.png](https://norns.community/assets/covers/dronecaster.png) (using `dronecaster` as example)
-- [https://norns.community/assets/readmes/dronecaster.md](https://norns.community/assets/readmes/dronecaster.md) (using `dronecaster` as example)
+- [https://norns.community/covers/dronecaster.png](https://norns.community/covers/dronecaster.png) (using `dronecaster` as example)
 
 ---
 
@@ -99,18 +98,21 @@ Additionally, these raw resources are available:
 
 If you want to help maintain this website, you can run it locally and test your changes before submitting a [pull request](https://github.com/monome-community/norns-community/pulls).
 
-### Jekyll (Ruby) / HTML / CSS
+### Setup
 
 1. clone repository to your computer
-2. install [Ruby](https://www.ruby-lang.org/en/) and [bundle](https://bundler.io/)
-3. using a shell, navigate to the `norns-community` directory with `cd`
-4. pull the latest community data and build with: `./00-nuke.sh && ./01-curl.sh && ./02-build.py`
-5. in the directory execute: `bundle install`
-6. then execute: `bundle exec jekyll serve --baseurl ''` (save memory/energy and cancel this process while `./02-build.py` is running.)
-7. tip: see scripts `package.json` for various shortcuts of the above.
-8. you can now visit [http://127.0.0.1:4000](http://127.0.0.1:4000) in your browser
+2. install [Python](https://www.python.org/) (3.10+)
+3. create a virtual environment: `python3 -m venv .venv && source .venv/bin/activate`
+4. install dependencies: `pip install zensical aiohttp aiofiles`
 
-This site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64-darwin21]`
+### Build & Serve
+
+1. fetch community data and build pages: `./01-curl.sh && ./02-build.py`
+2. build the site: `zensical build`
+3. preview locally: `zensical serve`
+4. visit [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser
+
+Tip: see `package.json` for shortcuts. `npm run ncb` runs nuke + curl + build. `npm run dev` starts the dev server.
 
 ### TypeScript / JavaScript
 
@@ -121,7 +123,7 @@ Install TypeScript and watch the file with:
 1. `npm i`
 2. `npm run tsc`
 
-The build process assumes the transpiled JavaScript is already there. Perform all the `npm` actions locally.
+The build process assumes the transpiled JavaScript is already in `docs/javascripts/`. Perform all the `npm` actions locally.
 
 ---
 

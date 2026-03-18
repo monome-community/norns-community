@@ -1,0 +1,13 @@
+[project]
+site_name = "norns community"
+site_description = "a script index for the monome norns sound computer"
+site_url = "https://norns.community"
+docs_dir = "docs"
+site_dir = "site"
+use_directory_urls = true
+
+[project.theme]
+custom_dir = "overrides"
+
+[project.markdown_extensions.toc]
+permalink = false

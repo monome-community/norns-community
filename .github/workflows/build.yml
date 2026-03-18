@@ -1,8 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: norns community build & deploy
 
 on:
@@ -39,34 +34,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          ruby-version: '3.0' # Not needed with a .ruby-version file
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-          cache-version: 0 # Increment this number if you need to re-download cached gems
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+          python-version: '3.x'
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v3
-      - name: "|||||||| norns community 00-deps.sh ||||||||"
-        run: ./00-deps.sh
+        uses: actions/configure-pages@v5
+      - name: Install dependencies
+        run: pip install zensical aiohttp aiofiles
       - name: "|||||||| norns community 01-curl.sh ||||||||"
         run: ./01-curl.sh
-      - name: "|||||||| norns community 02-build.sh ||||||||"
+      - name: "|||||||| norns community 02-build.py ||||||||"
         run: ./02-build.py
-      - name: Build with Jekyll
-        # Outputs to the './_site' directory by default
-        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
-        env:
-          JEKYLL_ENV: production
+      - name: Build with Zensical
+        run: zensical build --clean
       - name: Upload artifact
-        # Automatically uploads an artifact from the './_site' directory by default
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
 
   # Deployment job
   deploy:

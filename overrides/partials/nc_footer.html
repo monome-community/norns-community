@@ -1,0 +1,6 @@
+<footer>
+  <hr/>
+  <p>this page was last built at: {{ page.meta.build_time | default("") }}</p>
+  <p>norns community, {{ page.meta.build_year | default("") }}</p>
+  <p><a href="https://github.com/monome-community/norns-community">edit</a> <a href="https://github.com/monome-community/norns-community/commit/{{ page.meta.git_hash_full | default("") }}">{{ page.meta.git_hash_short | default("") }}</a></p>
+</footer>

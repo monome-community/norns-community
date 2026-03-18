@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "partials/nc_head.html" %}
+<body class="{{ page.title }}">
+{% include "partials/nc_nav.html" %}
+<section>
+<h1>tagged with "{{ page.title }}"</h1>
+<ul>
+  {% for project in page.meta.projects %}
+  <li><a href="{{ project.url }}">{{ project.raw_name }}</a> - {{ project.description }}</li>
+  {% endfor %}
+</ul>
+</section>
+{% include "partials/nc_footer.html" %}
+<script src="/javascripts/script.js"></script>
+</body>
+</html>

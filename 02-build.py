@@ -19,7 +19,6 @@ import json
 import re
 import os
 import subprocess
-import requests
 import datetime
 
 import aiohttp
@@ -32,13 +31,14 @@ import aiofiles
 
 community_json_src = 'community.json'
 covers_src = 'archive/covers'
-covers_dist = 'assets/covers'
-readmes_src = 'assets/readmes'
-authors_yml_dist = '_data/authors.yml'
-projects_dist = '_pages/projects'
-tags_dist = '_pages/tags'
-explore_dist = '_pages/explore.md'
-about_dist = '_pages/about.md'
+covers_dist = 'docs/covers'
+readmes_src = '.readmes'
+projects_dist = 'docs'
+tags_dist = 'docs/tag'
+explore_dist = 'docs/explore.md'
+about_dist = 'docs/about.md'
+index_dist = 'docs/index.md'
+author_dist = 'docs/author.md'
 github_raw_url_template = 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/HEAD'
 remote_cover_count = 0
 local_cover_count = 0
@@ -56,8 +56,8 @@ class Project():
   def __init__(self, entry):
     self.raw_name = entry['project_name']
     self.sanitized_name = sanitize(self.raw_name)
-    self.cover = '/' + covers_dist + '/' + self.sanitized_name + '.png'
-    self.permalink = '/' + self.sanitized_name
+    self.cover = self.sanitized_name + '.png'
+    self.permalink = '/' + self.sanitized_name + '/'
     self.authors = []
     self.description = entry['description'] if 'description' in entry else ''
     self.project_url = entry['project_url'] if 'project_url' in entry else ''
@@ -184,7 +184,7 @@ async def afetch_cover(session, project, idx):
   else:
     log(project.sanitized_name + ' - no cover found. using dust.')
     missing_cover_count += 1
-    command = 'cp ./assets/images/dust.png' + ' ' + destination
+    command = 'cp ./docs/images/dust.png' + ' ' + destination
     subprocess.Popen(command, shell=True)
 
 async def afetch_covers(projects):
@@ -273,43 +273,67 @@ def process_image_path(match, absolute_url):
 def sanitize(str):
   return re.sub('[^a-zA-Z0-9\-_]', '', str)
 
-# project yml front matter for jekyll
-def write_project_front_matter(fp, project):
+# escape a string for safe YAML output
+def yaml_escape(s):
+  if not s:
+    return '""'
+  # wrap in double quotes if it contains special yaml characters
+  if any(c in s for c in [':', '#', '{', '}', '[', ']', ',', '&', '*', '?', '|', '-', '<', '>', '=', '!', '%', '@', '`', '"', "'"]):
+    return '"' + s.replace('\\', '\\\\').replace('"', '\\"') + '"'
+  return s
+
+# write build metadata into front matter
+def write_build_metadata(fp, build_meta):
+  fp.write('build_time: "' + build_meta['build_time'] + '"\n')
+  fp.write('build_year: "' + build_meta['build_year'] + '"\n')
+  fp.write('git_hash_full: ' + build_meta['git_hash_full'] + '\n')
+  fp.write('git_hash_short: ' + build_meta['git_hash_short'] + '\n')
+
+# project yml front matter for zensical
+def write_project_front_matter(fp, project, build_meta):
+  fp.write('template: project.html\n')
   fp.write('cover: ' + project.sanitized_name + '.png' + '\n')
-  fp.write('raw_name: ' + project.raw_name + '\n')
+  fp.write('raw_name: ' + yaml_escape(project.raw_name) + '\n')
   fp.write('sanitized_name: ' + project.sanitized_name + '\n')
   fp.write('project_url: ' + project.project_url + '\n')
-  fp.write('description: ' + project.description + '\n')
-  fp.write('discussion_url: ' + project.discussion_url + '\n')
-  fp.write('documentation_url: ' + project.documentation_url + '\n')
-  fp.write('tags:\n')
-  for tag in project.tags:
-    fp.write(' - ' + tag + '\n')
-  fp.write('authors:\n')
-  for author in project.authors:
-    fp.write(' - ' + author + '\n')
-  # redirects to mitigate against link rot from wiki.js (aka norns.community v1.0)
-  fp.write('redirect_from:\n')
-  author_project = author + '/' + project.sanitized_name + '\n'
-  for author in project.authors:
-    fp.write(' - /en/authors/' + author_project)
-    fp.write(' - /authors/' + author_project)
+  fp.write('description: ' + yaml_escape(project.description) + '\n')
+  fp.write('discussion_url: ' + yaml_escape(project.discussion_url) + '\n')
+  fp.write('documentation_url: ' + yaml_escape(project.documentation_url) + '\n')
+  if project.tags:
+    fp.write('tags:\n')
+    for tag in project.tags:
+      fp.write(' - ' + tag + '\n')
+  else:
+    fp.write('tags: []\n')
+  if project.authors:
+    fp.write('authors:\n')
+    for author in project.authors:
+      fp.write(' - ' + author + '\n')
+  else:
+    fp.write('authors: []\n')
+  write_build_metadata(fp, build_meta)
 
-# explore yml front matter for jekyll
+# explore yml front matter for zensical
 def write_explore_front_matter(fp, project):
   fp.write('\n') # newline for legibility only
   # these need to be indented 4 spaces for .yml:
-  fp.write('  - raw_name: ' + project.raw_name + '\n')
-  fp.write('    cover: ' + project.sanitized_name + '.png' + '\n')
+  fp.write('  - raw_name: ' + yaml_escape(project.raw_name) + '\n')
+  fp.write('    cover: ' + project.cover + '\n')
   fp.write('    sanitized_name: ' + project.sanitized_name + '\n')
   fp.write('    url: ' + project.permalink + '\n')
-  fp.write('    description: ' + project.description + '\n')
-  fp.write('    tags:\n')
-  for tag in project.tags:
-    fp.write('     - ' + tag + '\n')
-  fp.write('    authors:\n')
-  for author in project.authors:
-    fp.write('     - ' + author + '\n')
+  fp.write('    description: ' + yaml_escape(project.description) + '\n')
+  if project.tags:
+    fp.write('    tags:\n')
+    for tag in project.tags:
+      fp.write('     - ' + tag + '\n')
+  else:
+    fp.write('    tags: []\n')
+  if project.authors:
+    fp.write('    authors:\n')
+    for author in project.authors:
+      fp.write('     - ' + author + '\n')
+  else:
+    fp.write('    authors: []\n')
 
 # prepare the raw community.json data
 def community_data_factory():
@@ -324,27 +348,30 @@ def community_data_factory():
   log('done.')
   return community_data
 
-# expose the git hash to jekyll
-def build_hash():
-  # write the current git hash to a file for jekyll to use
-  log('writing git hash to ./_data/hash.yml...')
+# compute build metadata (git hash, timestamps)
+def get_build_metadata():
+  log('computing build metadata...')
   git_hash = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode('ascii').strip()
-  fp = open('./_data/hash.yml', 'w')
-  fp.write('full: ' + git_hash + '\n')
-  fp.write('short: ' + git_hash[:7])
-  fp.close()
+  now = datetime.datetime.now()
+  meta = {
+    'git_hash_full': git_hash,
+    'git_hash_short': git_hash[:7],
+    'build_time': now.strftime("%a %b %d %H:%M:%S %Z %Y"),
+    'build_year': now.strftime("%Y"),
+  }
   log('done.')
+  return meta
 
 # create directories
 def build_setup():
-  log('copying community.json to ./_data for jekyll...')
-  subprocess.Popen('cp ./community.json ./_data/community.json', shell=True)
-  log('done.')
-
   mkdir(projects_dist)
   mkdir(tags_dist)
   mkdir(covers_dist)
   mkdir(readmes_src)
+  # serve community.json as a static file
+  log('copying community.json to docs/...')
+  subprocess.Popen('cp ./community.json ./docs/community.json', shell=True)
+  log('done.')
 
 def fetch_covers(community_data):
   log('fetching covers...')
@@ -356,11 +383,13 @@ def fetch_readmes(community_data):
   asyncio.run(afetch_readmes(community_data.get_projects_in_alphabetical_order()))
   log('done.')
 
-def build_index_page(community_data):
+def build_index_page(community_data, build_meta):
   log('building the index page...')
-  fp = open('index.md', 'w')
+  fp = open(index_dist, 'w')
   fp.write('---\n')
-  fp.write('layout: index\n')
+  fp.write('title: index\n')
+  fp.write('template: page.html\n')
+  write_build_metadata(fp, build_meta)
   fp.write('---\n')
   for project in community_data.get_projects_in_alphabetical_order():
     link = '[' + project.raw_name + '](' + project.permalink + ')'
@@ -369,35 +398,44 @@ def build_index_page(community_data):
   fp.close()
   log('done.')
 
-def build_author_pages(community_data, authors_yml_dist):
-  log('building ' + authors_yml_dist +'...')
-  fp = open(authors_yml_dist, 'w')
+def build_author_page(community_data, build_meta):
+  log('building author page...')
+  fp = open(author_dist, 'w')
+  fp.write('---\n')
+  fp.write('title: author\n')
+  fp.write('template: author.html\n')
+  write_build_metadata(fp, build_meta)
+  fp.write('authors_list:\n')
   for author in community_data.get_authors_in_alphabetical_order():
-    fp.write('- raw_name: ' + author.raw_name + '\n')
-    fp.write('  sanitized_name: ' + author.sanitized_name + '\n')
-    fp.write('  projects:\n\n')
+    fp.write('  - raw_name: ' + yaml_escape(author.raw_name) + '\n')
+    fp.write('    sanitized_name: ' + author.sanitized_name + '\n')
+    author_projects = []
     for project in community_data.get_projects_in_alphabetical_order():
       if author.raw_name in project.authors:
-        fp.write('    - raw_name: ' + project.raw_name + '\n')
-        fp.write('      url: ' + project.permalink + '\n\n')
+        author_projects.append(project)
+    if author_projects:
+      fp.write('    projects:\n')
+      for project in author_projects:
+        fp.write('      - raw_name: ' + yaml_escape(project.raw_name) + '\n')
+        fp.write('        url: ' + project.permalink + '\n')
+    else:
+      fp.write('    projects: []\n')
+  fp.write('---\n')
   fp.close()
   log('done.')
 
-def build_project_pages(community_data, projects_dist):
+def build_project_pages(community_data, build_meta):
   log('building project pages...')
   for project in community_data.get_projects_in_alphabetical_order():
     # write the project front matter
     fp = open(projects_dist + '/' + project.sanitized_name + '.md', 'w')
     fp.write('---\n')
-    # layout, title, and permalink are needed by jekyll
-    fp.write('layout: project\n')
-    fp.write('title: ' + project.raw_name + '\n')
-    fp.write('permalink: ' + project.permalink + '\n')
-    write_project_front_matter(fp, project)
+    fp.write('title: ' + yaml_escape(project.raw_name) + '\n')
+    write_project_front_matter(fp, project, build_meta)
     fp.write('---\n')
-    # check if a readme exists in assets/readmes and pull it in
-    readme_src = readmes_src + '/' + project.sanitized_name + '.md'
-    if os.path.exists(readme_src):
+    # check if a readme exists and pull it in
+    readme_path = readmes_src + '/' + project.sanitized_name + '.md'
+    if os.path.exists(readme_path):
       log('found readme for ' + project.raw_name + '...')
       # attempt to update relative links to raw github links
       # this should leave us with something like northern-information/dronecaster
@@ -406,39 +444,38 @@ def build_project_pages(community_data, projects_dist):
       # remove trailing slash, if one exists:
       github_author_and_project = github_author_and_project.rstrip('/')
       this_github_raw_url_template = github_raw_url_template.replace('GITHUB_AUTHOR/GITHUB_PROJECT', github_author_and_project)
-      # reminder: this is still the raw readme, not the final _pages/scriptname.md file. fp is the final file.
-      readme = open(readme_src).read()
+      readme = open(readme_path).read()
       readme = replace_image_paths(readme, this_github_raw_url_template)
       fp.write(readme)
     fp.close()
   log('done.')
 
-def build_tag_pages(community_data, tags_dist):
+def build_tag_pages(community_data, build_meta):
   log('building tag pages...')
   for tag in community_data.get_deduped_tags():
     log(tag + '...')
     fp = open(tags_dist + '/' + tag + '.md', 'w')
     fp.write('---\n')
-    fp.write('layout: tag\n')
     fp.write('title: ' + tag + '\n')
-    fp.write('permalink: /tag/' + tag + '\n')
-    fp.write('projects:\n\n')
+    fp.write('template: tag.html\n')
+    write_build_metadata(fp, build_meta)
+    fp.write('projects:\n')
     for project in community_data.get_projects_in_alphabetical_order():
       if tag in project.tags:
-        fp.write('  - raw_name: ' + project.raw_name + '\n')
+        fp.write('  - raw_name: ' + yaml_escape(project.raw_name) + '\n')
         fp.write('    url: ' + project.permalink + '\n')
-        fp.write('    description: ' + project.description + '\n\n')
+        fp.write('    description: ' + yaml_escape(project.description) + '\n')
     fp.write('---\n')
     fp.close()
   log('done.')
 
-def build_explore_page(community_data, explore_dist):
+def build_explore_page(community_data, build_meta):
   log('building explore page...')
   fp = open(explore_dist, 'w')
   fp.write('---\n')
-  fp.write('layout: explore\n')
   fp.write('title: explore\n')
-  fp.write('permalink: explore\n')
+  fp.write('template: explore.html\n')
+  write_build_metadata(fp, build_meta)
   fp.write('tags:\n')
   for tag in community_data.get_deduped_tags():
     fp.write('  - ' + tag + '\n')
@@ -450,19 +487,49 @@ def build_explore_page(community_data, explore_dist):
   fp.close()
   log('done.')
 
-def build_about_page(about_dist):
+def build_about_page(build_meta):
   log('building about page...')
   fp = open(about_dist, 'w')
   fp.write('---\n')
-  fp.write('layout: page\n')
   fp.write('title: about\n')
-  fp.write('permalink: about\n')
+  fp.write('template: page.html\n')
+  write_build_metadata(fp, build_meta)
   fp.write('---\n')
   # copy contents of ./README.md to about.md
   with open('README.md', 'r') as readme:
     for line in readme:
       fp.write(line)
   fp.close()
+  log('done.')
+
+def build_404_page(build_meta):
+  log('building 404 page...')
+  fp = open('docs/404.md', 'w')
+  fp.write('---\n')
+  fp.write('title: "404"\n')
+  fp.write('template: page.html\n')
+  write_build_metadata(fp, build_meta)
+  fp.write('---\n')
+  fp.write('<h1>404</h1>\n')
+  fp.write('<p>The requested page could not be found.</p>\n')
+  fp.close()
+  log('done.')
+
+def build_redirects(community_data):
+  log('building redirects...')
+  for project in community_data.get_projects_in_alphabetical_order():
+    for author in project.authors:
+      for prefix in ['en/authors', 'authors']:
+        redirect_dir = 'docs/' + prefix + '/' + author + '/' + project.sanitized_name
+        mkdir(redirect_dir)
+        redirect_path = redirect_dir + '/index.html'
+        fp = open(redirect_path, 'w')
+        fp.write('<!DOCTYPE html><html><head>')
+        fp.write('<meta http-equiv="refresh" content="0; url=' + project.permalink + '">')
+        fp.write('</head><body>')
+        fp.write('Redirecting to <a href="' + project.permalink + '">' + project.raw_name + '</a>')
+        fp.write('</body></html>')
+        fp.close()
   log('done.')
 
 def log_stats(community_data):
@@ -482,17 +549,19 @@ def log_stats(community_data):
 
 time_start = datetime.datetime.now()
 log('starting at ' + time_start.strftime("%a %b %d %H:%M:%S %Z %Y"))
-build_hash()
+build_meta = get_build_metadata()
 build_setup()
 community_data = community_data_factory()
 fetch_covers(community_data)
 fetch_readmes(community_data)
-build_index_page(community_data)
-build_author_pages(community_data, authors_yml_dist)
-build_project_pages(community_data, projects_dist)
-build_tag_pages(community_data, tags_dist)
-build_explore_page(community_data, explore_dist)
-build_about_page(about_dist)
+build_index_page(community_data, build_meta)
+build_author_page(community_data, build_meta)
+build_project_pages(community_data, build_meta)
+build_tag_pages(community_data, build_meta)
+build_explore_page(community_data, build_meta)
+build_about_page(build_meta)
+build_404_page(build_meta)
+build_redirects(community_data)
 log_stats(community_data)
 runtime = datetime.datetime.now() - time_start
 log('finishing at ' + datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y"))

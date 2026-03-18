@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "partials/nc_head.html" %}
+<body class="explore">
+{% include "partials/nc_nav.html" %}
+<section>
+<div class="tags">
+  {% for tag in page.meta.tags %}
+    <button class="tag" data-tag="{{ tag }}" data-toggle="off">{{ tag }}</button>
+  {% endfor %}
+</div>
+<div class="projects">
+  {% for project in page.meta.projects %}
+    <div class="project show" data-tags="{{ project.tags | join(" ") }}">
+      <a href="{{ project.url }}">
+        <img src="/covers/{{ project.cover }}" alt="{{ project.raw_name }}" />
+        <h1>{{ project.raw_name }}</h1>
+        <p>{{ project.tags | join(" ") }}</p>
+      </a>
+    </div>
+  {% endfor %}
+  <div id="no-results">
+    <h1>no results.</h1>
+  </div>
+</div>
+</section>
+{% include "partials/nc_footer.html" %}
+<script src="/javascripts/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "partials/nc_head.html" %}
+<body class="{{ page.title }}">
+{% include "partials/nc_nav.html" %}
+<section>
+{{ page.content }}
+</section>
+{% include "partials/nc_footer.html" %}
+<script src="/javascripts/script.js"></script>
+</body>
+</html>

@@ -1,3 +1,20 @@
+{%- if page.title == "index" or page.title is not defined -%}
+  {%- set page_title = "norns community | a script index for the monome norns sound computer" -%}
+{%- elif page.title -%}
+  {%- set page_title = page.title ~ " | norns community" -%}
+{%- else -%}
+  {%- set page_title = "norns community" -%}
+{%- endif -%}
+{%- if page.meta.description is defined and page.meta.description -%}
+  {%- set page_description = page.meta.description -%}
+{%- else -%}
+  {%- set page_description = "a script index for the monome norns sound computer" -%}
+{%- endif -%}
+{%- if page.meta.cover is defined and page.meta.cover -%}
+  {%- set page_image = "/covers/" ~ page.meta.cover -%}
+{%- else -%}
+  {%- set page_image = "/images/dust.png" -%}
+{%- endif -%}
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +27,7 @@
 <meta name="twitter:description" content="{{ page_description }}">
 <meta property="og:image" content="{{ page_image }}">
 <meta name="twitter:image" content="{{ page_image }}">
-<link rel="stylesheet" href="{{ '/assets/stylesheets/style.css' | relative_url }}?{{ site.time | date: '%s%N' }}">
+<link rel="stylesheet" href="/stylesheets/style.css">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="mask-icon" href="/mask-icon.svg" color="#ffffff">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">

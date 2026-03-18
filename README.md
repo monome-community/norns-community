@@ -4,15 +4,15 @@
 
 [norns.community](https://norns.community) is a collection of open source software for the monome [norns](https://monome.org/docs/norns) sound computer.
 
-This document serves as both the `README.md` for [this repository](https://github.com/monome-community/norns-community) and the 'about' page for [this website](https://norns.community/about).
+this document serves as both the `README.md` for [this repository](https://github.com/monome-community/norns-community) and the 'about' page for [this website](https://norns.community/about).
 
 ---
 
-## How do I get my script on norns.community?
+## how do i get my script on norns.community?
 
-First, take a fork of the [community catalog](https://github.com/monome/norns-community), update `community.json` with your script's details, and make a pull request. After your pull request is accepted and merged it will *automatically appear* on [norns.community](https://norns.community). The website refreshes nightly at 00:00 UTC, on every merge to its `main` branch, or on demand by admins. [This GitHub action](https://github.com/monome-community/norns-community/actions/workflows/build.yml) has all the details.
+first, take a fork of the [community catalog](https://github.com/monome/norns-community), update `community.json` with your script's details, and make a pull request. after your pull request is accepted and merged it will *automatically appear* on [norns.community](https://norns.community). the website refreshes nightly at 00:00 UTC, on every merge to its `main` branch, or on demand by admins. [this GitHub action](https://github.com/monome-community/norns-community/actions/workflows/build.yml) has all the details.
 
-For script authors, this means:
+for script authors, this means:
 
 - your script will appear on the [index](https://norns.community) page
 - your author name will appear on the [author](https://norns.community/author) page
@@ -26,20 +26,20 @@ For script authors, this means:
 
 ---
 
-## How do I get my README and cover image on norns.community?
+## how do i get my README and cover image on norns.community?
 
-These conventions were designed to "just work" with how most scripts are structured today.
+these conventions were designed to "just work" with how most scripts are structured today.
 
-READMEs are individually cached from each script's repository in the below cascading sequence. Simply add a README to your project at either of the following locations:
+READMEs are individually cached from each script's repository in the below cascading sequence. simply add a README to your project at either of the following locations:
 
 ```txt
 1. ./doc/index.md
 2. ./README.md
 ```
 
-To ensure maximum resilience, please use [absolute URLs](https://en.wikipedia.org/wiki/HTTP_location) in your docs.
+to ensure maximum resilience, please use [absolute URLs](https://en.wikipedia.org/wiki/HTTP_location) in your docs.
 
-Cover images (aka screenshots) are individually cached from each script's repository in the below cascading sequence. Simply add a cover to your project at any of the following locations:
+cover images (aka screenshots) are individually cached from each script's repository in the below cascading sequence. simply add a cover to your project at any of the following locations:
 
 ```txt
 1. ./doc/cover.png
@@ -50,18 +50,18 @@ Cover images (aka screenshots) are individually cached from each script's reposi
 6. ./screenshot.png
 ```
 
-If a cover image is not found in any of the above locations, we then try the local archive before finally using a default image:
+if a cover image is not found in any of the above locations, we then try the local archive before finally using a default image:
 
 ```txt
 7. ./archive/screenshot/<your_script_name>.png
 8. ./assets/images/dust.png
 ```
 
-The local archive cache is from norns.community v1.0. It was archived in February, 2023.
+the local archive cache is from norns.community v1.0. it was archived in February, 2023.
 
 ---
 
-## Can I see an example?
+## can i see an example?
 
 [dronecaster](https://github.com/northern-information/dronecaster) is one of many possible examples of what a compatible script structure might look like:
 
@@ -77,68 +77,70 @@ The local archive cache is from norns.community v1.0. It was archived in Februar
 
 ---
 
-## What if something is wrong?
+## what if something is wrong?
 
-[Please open an issue on GitHub.](https://github.com/monome-community/norns-community/issues)
+[please open an issue on GitHub.](https://github.com/monome-community/norns-community/issues)
 
 ---
 
-## How does this site work?
+## how does this site work?
 
-A [curl](https://github.com/monome-community/norns-community/blob/main/01-curl.sh) script fetches our [community catalog](https://github.com/monome/norns-community). A [build](https://github.com/monome-community/norns-community/blob/main/02-build.py) script then uses that data to construct this [Jekyll](https://jekyllrb.com) website. It is hosted with [GitHub pages](https://pages.github.com).
+a [curl](https://github.com/monome-community/norns-community/blob/main/01-curl.sh) script fetches our [community catalog](https://github.com/monome/norns-community). a [build](https://github.com/monome-community/norns-community/blob/main/02-build.py) script then uses that data to generate markdown pages. [Zensical](https://zensical.org) compiles those pages into a static website. it is hosted with [GitHub pages](https://pages.github.com).
 
-Additionally, these raw resources are available:
+additionally, these raw resources are available:
 
 - [https://norns.community/community.json](https://norns.community/community.json)
-- [https://norns.community/assets/covers/dronecaster.png](https://norns.community/assets/covers/dronecaster.png) (using `dronecaster` as example)
-- [https://norns.community/assets/readmes/dronecaster.md](https://norns.community/assets/readmes/dronecaster.md) (using `dronecaster` as example)
+- [https://norns.community/covers/dronecaster.png](https://norns.community/covers/dronecaster.png) (using `dronecaster` as example)
 
 ---
 
-## How can I help maintain this website?
+## how can i help maintain this website?
 
-If you want to help maintain this website, you can run it locally and test your changes before submitting a [pull request](https://github.com/monome-community/norns-community/pulls).
+if you want to help maintain this website, you can run it locally and test your changes before submitting a [pull request](https://github.com/monome-community/norns-community/pulls).
 
-### Jekyll (Ruby) / HTML / CSS
+### setup
 
 1. clone repository to your computer
-2. install [Ruby](https://www.ruby-lang.org/en/) and [bundle](https://bundler.io/)
-3. using a shell, navigate to the `norns-community` directory with `cd`
-4. pull the latest community data and build with: `./00-nuke.sh && ./01-curl.sh && ./02-build.py`
-5. in the directory execute: `bundle install`
-6. then execute: `bundle exec jekyll serve --baseurl ''` (save memory/energy and cancel this process while `./02-build.py` is running.)
-7. tip: see scripts `package.json` for various shortcuts of the above.
-8. you can now visit [http://127.0.0.1:4000](http://127.0.0.1:4000) in your browser
+2. install [Python](https://www.python.org/) (3.10+)
+3. create a virtual environment: `python3 -m venv .venv && source .venv/bin/activate`
+4. install dependencies: `pip install zensical aiohttp aiofiles`
 
-This site was built with `ruby 2.7.2p137 (2020-10-01 revision 5445e04352) [arm64-darwin21]`
+### build & serve
+
+1. fetch community data and build pages: `./01-curl.sh && ./02-build.py`
+2. build the site: `./03-zensical.sh`
+3. preview locally: `zensical serve`
+4. visit [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser
+
+tip: see `package.json` for shortcuts. `npm run ncb` runs nuke + curl + build. `npm run dev` starts the dev server.
 
 ### TypeScript / JavaScript
 
-There is a single TypeScript file that is used to enable filtering on the "explore" page.
+there is a single TypeScript file that is used to enable filtering on the "explore" page.
 
-Install TypeScript and watch the file with:
+install TypeScript and watch the file with:
 
 1. `npm i`
 2. `npm run tsc`
 
-The build process assumes the transpiled JavaScript is already there. Perform all the `npm` actions locally.
+the build process assumes the transpiled JavaScript is already in `docs/javascripts/`. perform all the `npm` actions locally.
 
 ---
 
-## Philosophy
+## philosophy
 
-The architecture and technology of this site was inspired by [permacomputing](https://permacomputing.net/) concepts.
+the architecture and technology of this site was inspired by [permacomputing](https://permacomputing.net/) concepts.
 
 ---
 
-## Links
+## links
 
 - [monome](https://monome.org)
 - [llllllll](https://llllllll.co)
 
 ---
 
-## Credits
+## credits
 
 - [tehn](https://github.com/tehn)
 - [tyleretters](https://github.com/tyleretters)

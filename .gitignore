@@ -1,25 +1,24 @@
 # norns-community data
 community.json
 
-# norns-community generated files
-index.md
-_data/authors.yml
-_data/hash.yml
-_pages/projects
-_pages/tags
-_pages/explore.md
-_pages/about.md
-assets/covers
-assets/readmes
+# norns-community generated files (all .md in docs/ root are generated)
+docs/*.md
+docs/covers
+docs/tag
+docs/community.json
+docs/en
+docs/authors
+.readmes
 
-# jekyll
-_site
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
+# zensical
+site/
+.cache/
 
 # node
 node_modules
 
 # macos
 .DS_Store
+
+# ai
+.claude

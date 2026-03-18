@@ -4,12 +4,14 @@
   "description": "norns.community is a collection of open source software for the monome norns sound computer.",
   "main": "index.js",
   "scripts": {
-    "dev": "bundle exec jekyll serve --baseurl ''",
+    "dev": "zensical serve",
     "tsc": "tsc --watch",
     "nuke": "./00-nuke.sh",
     "curl": "./01-curl.sh",
     "build": "./02-build.py",
-    "ncb": "npm run nuke && npm run curl && npm run build"
+    "zensical": "./03-zensical.sh",
+    "serve": "zensical serve",
+    "ncb": "npm run nuke && npm run curl && npm run build && npm run zensical"
   },
   "repository": {
     "type": "git",

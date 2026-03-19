@@ -1,13 +1,8 @@
 # norns-community data
 community.json
 
-# norns-community generated files (all .md in docs/ root are generated)
-docs/*.md
-docs/covers
-docs/tag
-docs/community.json
-docs/en
-docs/authors
+# norns-community assembled content (copied from src/ + generated files)
+dist/
 .readmes
 
 # zensical
@@ -22,3 +17,6 @@ node_modules
 
 # ai
 .claude
+
+# python
+.venv

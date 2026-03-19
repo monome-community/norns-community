@@ -53,8 +53,8 @@ cover images (aka screenshots) are individually cached from each script's reposi
 if a cover image is not found in any of the above locations, we then try the local archive before finally using a default image:
 
 ```txt
-7. ./archive/screenshot/<your_script_name>.png
-8. ./assets/images/dust.png
+7. ./archive/screenshots/<your_script_name>.png
+8. dust.png
 ```
 
 the local archive cache is from norns.community v1.0. it was archived in February, 2023.
@@ -85,7 +85,17 @@ the local archive cache is from norns.community v1.0. it was archived in Februar
 
 ## how does this site work?
 
-a [curl](https://github.com/monome-community/norns-community/blob/main/01-curl.sh) script fetches our [community catalog](https://github.com/monome/norns-community). a [build](https://github.com/monome-community/norns-community/blob/main/02-build.py) script then uses that data to generate markdown pages. [Zensical](https://zensical.org) compiles those pages into a static website. it is hosted with [GitHub pages](https://pages.github.com).
+this site is built with [Zensical](https://zensical.org), a static site generator. the project is organized into three directories:
+
+- **`src/`** — hand-maintained source files: static assets (CSS, JS, images, icons, favicons), [MiniJinja](https://github.com/mitsuhiko/minijinja) templates, and TypeScript source. this is what you edit.
+- **`dist/`** — assembled content directory for Zensical. the [build script](https://github.com/monome-community/norns-community/blob/main/02-build.py) copies `src/` assets here, then generates markdown pages (project pages, tag pages, explore, index, etc.) from `community.json`. this directory is ephemeral and not committed.
+- **`site/`** — final HTML output. Zensical compiles everything in `dist/` into static HTML here. this is what gets deployed to [GitHub Pages](https://pages.github.com).
+
+the build pipeline:
+
+1. `01-curl.sh` — fetches `community.json` from the [community catalog](https://github.com/monome/norns-community)
+2. `02-build.py` — copies `src/` to `dist/`, fetches cover images and READMEs from GitHub, generates markdown pages in `dist/`
+3. `03-zensical.sh` — runs `zensical build` to compile `dist/` into `site/`
 
 additionally, these raw resources are available:
 
@@ -116,14 +126,14 @@ tip: see `package.json` for shortcuts. `npm run ncb` runs nuke + curl + build. `
 
 ### TypeScript / JavaScript
 
-there is a single TypeScript file that is used to enable filtering on the "explore" page.
+there is a single TypeScript file (`src/javascripts/script.ts`) that is used to enable filtering on the "explore" page. it compiles to `src/javascripts/script.js` in the same directory.
 
 install TypeScript and watch the file with:
 
 1. `npm i`
 2. `npm run tsc`
 
-the build process assumes the transpiled JavaScript is already in `docs/javascripts/`. perform all the `npm` actions locally.
+the build process assumes the transpiled JavaScript is already in `src/javascripts/` (it gets copied to `dist/` during the build). perform all the `npm` actions locally.
 
 ---
 

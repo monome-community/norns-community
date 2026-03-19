@@ -1,3 +1,0 @@
-Sitemap: https://norns.community/sitemap.xml
-User-agent: *
-Allow: /

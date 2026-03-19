@@ -18,6 +18,7 @@ see README.md for more information.
 import json
 import re
 import os
+import shutil
 import subprocess
 import datetime
 
@@ -30,14 +31,13 @@ import aiofiles
 # GLOBALS
 
 community_json_src = 'community.json'
-covers_src = 'archive/covers'
-covers_dist = 'docs/covers'
+covers_dist = 'dist/covers'
 readmes_src = '.readmes'
-projects_dist = 'docs'
-tags_dist = 'docs/tag'
-explore_dist = 'docs/explore.md'
-about_dist = 'docs/about.md'
-index_dist = 'docs/index.md'
+projects_dist = 'dist'
+tags_dist = 'dist/tag'
+explore_dist = 'dist/explore.md'
+about_dist = 'dist/about.md'
+index_dist = 'dist/index.md'
 github_raw_url_template = 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/HEAD'
 remote_cover_count = 0
 local_cover_count = 0
@@ -183,7 +183,7 @@ async def afetch_cover(session, project, idx):
   else:
     log(project.sanitized_name + ' - no cover found. using dust.')
     missing_cover_count += 1
-    command = 'cp ./docs/images/dust.png' + ' ' + destination
+    command = 'cp ./src/images/dust.png' + ' ' + destination
     subprocess.Popen(command, shell=True)
 
 async def afetch_covers(projects):
@@ -361,15 +361,18 @@ def get_build_metadata():
   log('done.')
   return meta
 
-# create directories
+# create directories and assemble dist/ from src/ static assets
 def build_setup():
-  mkdir(projects_dist)
+  log('assembling dist/ from src/ static assets...')
+  if os.path.exists('dist'):
+    shutil.rmtree('dist')
+  shutil.copytree('src', 'dist', ignore=shutil.ignore_patterns('overrides'))
   mkdir(tags_dist)
   mkdir(covers_dist)
   mkdir(readmes_src)
   # serve community.json as a static file
-  log('copying community.json to docs/...')
-  subprocess.Popen('cp ./community.json ./docs/community.json', shell=True)
+  log('copying community.json to dist/...')
+  shutil.copy2('community.json', 'dist/community.json')
   log('done.')
 
 def fetch_covers(community_data):
@@ -406,7 +409,7 @@ def build_index_page(community_data, build_meta):
 
 def build_author_redirects(community_data):
   log('building author redirects...')
-  author_dir = 'docs/author'
+  author_dir = 'dist/author'
   mkdir(author_dir)
   # /author/ -> /
   fp = open(author_dir + '/index.html', 'w')
@@ -509,7 +512,7 @@ def build_about_page(build_meta):
 
 def build_404_page(build_meta):
   log('building 404 page...')
-  fp = open('docs/404.md', 'w')
+  fp = open('dist/404.md', 'w')
   fp.write('---\n')
   fp.write('title: "404"\n')
   fp.write('template: page.html\n')
@@ -525,7 +528,7 @@ def build_redirects(community_data):
   for project in community_data.get_projects_in_alphabetical_order():
     for author in project.authors:
       for prefix in ['en/authors', 'authors']:
-        redirect_dir = 'docs/' + prefix + '/' + author + '/' + project.sanitized_name
+        redirect_dir = 'dist/' + prefix + '/' + author + '/' + project.sanitized_name
         mkdir(redirect_dir)
         redirect_path = redirect_dir + '/index.html'
         fp = open(redirect_path, 'w')

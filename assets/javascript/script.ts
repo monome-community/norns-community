@@ -50,6 +50,70 @@
     toggleSwitch.checked = true;
   }
 
+  // index page table sorting
+  const indexTable = document.getElementById('index-table')
+  if (indexTable) {
+    const tbody = indexTable.querySelector('tbody')
+    const headers = indexTable.querySelectorAll('th.sortable')
+
+    const sortTable = (colIndex: number) => {
+      if (!tbody) return
+      const rows = Array.from(tbody.querySelectorAll('tr'))
+      rows.sort((a, b) => {
+        const aText = (a.cells[colIndex].textContent || '').toLowerCase()
+        const bText = (b.cells[colIndex].textContent || '').toLowerCase()
+        return aText.localeCompare(bText)
+      })
+      rows.forEach(row => {
+        // clear old author anchors
+        row.removeAttribute('id')
+        tbody.appendChild(row)
+      })
+      // set anchors on first occurrence of each author when sorted by author
+      if (colIndex === 1) {
+        const seen: Record<string, boolean> = {}
+        rows.forEach(row => {
+          const authorLinks = row.cells[1].querySelectorAll('a')
+          authorLinks.forEach(link => {
+            const name = link.textContent || ''
+            if (!seen[name]) {
+              seen[name] = true
+              row.id = name
+            }
+          })
+        })
+      }
+    }
+
+    const setActiveHeader = (target: Element) => {
+      headers.forEach(h => h.classList.remove('active'))
+      target.classList.add('active')
+    }
+
+    headers.forEach((header, _idx) => {
+      header.addEventListener('click', () => {
+        const sort = (header as HTMLElement).dataset.sort
+        const colIndex = sort === 'author' ? 1 : 0
+        setActiveHeader(header)
+        sortTable(colIndex)
+      })
+    })
+
+    // handle hash navigation: sort by author and scroll to anchor
+    const hash = window.location.hash.substring(1)
+    if (hash) {
+      sortTable(1)
+      setActiveHeader(indexTable.querySelector('th[data-sort="author"]')!)
+      // scroll to the author anchor after sort
+      requestAnimationFrame(() => {
+        const target = document.getElementById(hash)
+        if (target) {
+          target.scrollIntoView()
+        }
+      })
+    }
+  }
+
   // explore page tags
   let activeTags : string[] = []
 

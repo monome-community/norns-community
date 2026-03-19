@@ -29,13 +29,13 @@
         <td>authors:</td>
         <td>
           {% for author in page.meta.authors %}
-            <a href="/author/#{{ author }}">{{ author }}</a>
+            <a href="/#{{ author }}">{{ author }}</a>
           {% endfor %}
         </td>
       {% else %}
         <td>author:</td>
         <td>
-          <a href="/author/#{{ page.meta.authors[0] }}">{{ page.meta.authors[0] }}</a>
+          <a href="/#{{ page.meta.authors[0] }}">{{ page.meta.authors[0] }}</a>
         </td>
       {% endif %}
     </tr>

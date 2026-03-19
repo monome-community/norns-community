@@ -158,6 +158,32 @@ table tr td {
   vertical-align: top;
 }
 
+#index-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#index-table th {
+  text-align: left;
+  padding-bottom: .8em;
+  padding-right: .8em;
+  font-weight: 800;
+  color: var(--color-beta);
+}
+
+#index-table th.sortable {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+#index-table th.sortable.active {
+  color: var(--color-alpha);
+}
+
+#index-table th.sortable:hover {
+  color: var(--color-alpha);
+}
+
 ::selection {
   background: #fff;
   background: var(--color-alpha);
@@ -216,6 +242,7 @@ table tr td {
   float: right;
 }
 
+body.index section,
 body.explore section {
   max-width: 100%;
 }

@@ -8,7 +8,7 @@ printf ">> starting at %s\n" "$(date)"
 TARGETS=(
   "./community.json"
   "./docs/index.md"
-  "./docs/author.md"
+  "./docs/author"
   "./docs/explore.md"
   "./docs/about.md"
   "./docs/404.md"

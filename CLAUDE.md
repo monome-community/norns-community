@@ -18,7 +18,7 @@ norns.community is a script index for the monome norns sound computer. It is a d
 - `src/` - Hand-maintained source files: static assets (CSS, JS, images, icons, favicons) and MiniJinja templates
   - `overrides/` - MiniJinja templates. Standalone HTML documents (not extending Zensical's base theme)
   - `overrides/partials/` - Shared template partials (prefixed `nc_` to avoid collisions with Zensical's default theme partials)
-  - `javascripts/` - TypeScript source (`script.ts`) and compiled JS (`script.js`)
+  - `javascript/` - TypeScript source (`script.ts`) and compiled JS (`script.js`)
 - `dist/` - Assembled Zensical content directory (not committed). Built by `02-build.py` from `src/` static assets + generated markdown pages
 - `.readmes/` - Temp cache for fetched README files (not served, not committed)
 - `site/` - Build output (not committed)
@@ -66,7 +66,7 @@ GitHub Actions (`.github/workflows/build.yml`). Triggers on push to main, nightl
 
 ## Important Notes
 
-- `src/` contains only hand-maintained static assets (stylesheets, javascripts, images, icons, favicons, robots.txt, site.webmanifest) and templates
+- `src/` contains only hand-maintained static assets (stylesheets, javascript, images, icons, favicons, robots.txt, site.webmanifest) and templates
 - `dist/` is entirely generated — `02-build.py` copies `src/` assets there, then generates all `.md` files, covers, tags, and redirects
 - The `yaml_escape()` function in `02-build.py` handles YAML-unsafe characters in descriptions
 - Redirects from old wiki.js URLs (`/en/authors/...`, `/authors/...`) are generated as static HTML files with meta-refresh

@@ -126,14 +126,14 @@ tip: see `package.json` for shortcuts. `npm run ncb` runs nuke + curl + build. `
 
 ### TypeScript / JavaScript
 
-there is a single TypeScript file (`src/javascripts/script.ts`) that is used to enable filtering on the "explore" page. it compiles to `src/javascripts/script.js` in the same directory.
+there is a single TypeScript file (`src/javascript/script.ts`) that is used to enable filtering on the "explore" page. it compiles to `src/javascript/script.js` in the same directory.
 
 install TypeScript and watch the file with:
 
 1. `npm i`
 2. `npm run tsc`
 
-the build process assumes the transpiled JavaScript is already in `src/javascripts/` (it gets copied to `dist/` during the build). perform all the `npm` actions locally.
+the build process assumes the transpiled JavaScript is already in `src/javascript/` (it gets copied to `dist/` during the build). perform all the `npm` actions locally.
 
 ---
 

@@ -100,14 +100,8 @@
             sortTable(1);
             setActiveHeader(indexTable.querySelector('th[data-sort="author"]'));
             // scroll to the author anchor after sort
-            // supports both composite slugs (license-tyleretters) and individual author names
             requestAnimationFrame(() => {
-                let target = document.getElementById(hash);
-                if (!target && tbody) {
-                    // find first row whose composite anchor contains this author
-                    const rows = Array.from(tbody.querySelectorAll('tr[id]'));
-                    target = rows.find(row => row.id.split('-').includes(hash)) || null;
-                }
+                const target = document.getElementById(hash);
                 if (target) {
                     target.scrollIntoView();
                 }

@@ -184,6 +184,25 @@ table tr td {
   color: var(--color-alpha);
 }
 
+/* index table: mobile layout */
+@media (max-width: 576px) {
+  #index-table th.description-col,
+  #index-table td.description-col {
+    display: none;
+  }
+
+  #index-table th,
+  #index-table tr td {
+    padding-right: .4em;
+    padding-bottom: .6em;
+  }
+
+  #index-table tr td a {
+    display: inline-block;
+    padding: .15em 0;
+  }
+}
+
 ::selection {
   background: #fff;
   background: var(--color-alpha);

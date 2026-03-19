@@ -11,3 +11,5 @@ custom_dir = "overrides"
 
 [project.markdown_extensions.toc]
 permalink = false
+
+[project.markdown_extensions.fenced_code]

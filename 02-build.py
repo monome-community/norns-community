@@ -404,10 +404,11 @@ def build_index_page(community_data, build_meta):
   fp.close()
   log('done.')
 
-def build_author_redirect():
-  log('building author redirect...')
+def build_author_redirects(community_data):
+  log('building author redirects...')
   author_dir = 'docs/author'
   mkdir(author_dir)
+  # /author/ -> /
   fp = open(author_dir + '/index.html', 'w')
   fp.write('<!DOCTYPE html><html><head>')
   fp.write('<meta http-equiv="refresh" content="0; url=/">')
@@ -415,6 +416,17 @@ def build_author_redirect():
   fp.write('Redirecting to <a href="/">index</a>')
   fp.write('</body></html>')
   fp.close()
+  # /author/name/ -> /#name
+  for author in community_data.get_authors_in_alphabetical_order():
+    this_author_dir = author_dir + '/' + author.raw_name
+    mkdir(this_author_dir)
+    fp = open(this_author_dir + '/index.html', 'w')
+    fp.write('<!DOCTYPE html><html><head>')
+    fp.write('<meta http-equiv="refresh" content="0; url=/#' + author.raw_name + '">')
+    fp.write('</head><body>')
+    fp.write('Redirecting to <a href="/#' + author.raw_name + '">' + author.raw_name + '</a>')
+    fp.write('</body></html>')
+    fp.close()
   log('done.')
 
 def build_project_pages(community_data, build_meta):
@@ -548,7 +560,7 @@ community_data = community_data_factory()
 fetch_covers(community_data)
 fetch_readmes(community_data)
 build_index_page(community_data, build_meta)
-build_author_redirect()
+build_author_redirects(community_data)
 build_project_pages(community_data, build_meta)
 build_tag_pages(community_data, build_meta)
 build_explore_page(community_data, build_meta)

@@ -7,16 +7,16 @@
 <table id="index-table">
   <thead>
     <tr>
-      <th class="sortable active" data-sort="script">SCRIPT</th>
-      <th class="sortable" data-sort="author">AUTHOR</th>
-      <th>DESCRIPTION</th>
+      <th class="sortable active" data-sort="script">script</th>
+      <th class="sortable" data-sort="author">author</th>
+      <th>description</th>
     </tr>
   </thead>
   <tbody>
     {% for project in page.meta.projects %}
     <tr>
       <td><a href="{{ project.url }}">{{ project.raw_name }}</a></td>
-      <td>{% for author in project.authors %}<a href="/#{{ author }}">{{ author }}</a>{% if not loop.last %} {% endif %}{% endfor %}</td>
+      <td><a href="/#{{ project.authors | join('-') }}">{% for author in project.authors %}{{ author }}{% if not loop.last %}, {% endif %}{% endfor %}</a></td>
       <td>{{ project.description }}</td>
     </tr>
     {% endfor %}

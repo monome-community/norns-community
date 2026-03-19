@@ -65,22 +65,20 @@
         return aText.localeCompare(bText)
       })
       rows.forEach(row => {
-        // clear old author anchors
         row.removeAttribute('id')
         tbody.appendChild(row)
       })
-      // set anchors on first occurrence of each author when sorted by author
+      // set anchors when sorted by author: composite slug of all authors joined with -
       if (colIndex === 1) {
         const seen: Record<string, boolean> = {}
         rows.forEach(row => {
-          const authorLinks = row.cells[1].querySelectorAll('a')
-          authorLinks.forEach(link => {
-            const name = link.textContent || ''
-            if (!seen[name]) {
-              seen[name] = true
-              row.id = name
-            }
-          })
+          const link = row.cells[1].querySelector('a')
+          if (!link) return
+          const slug = link.getAttribute('href')?.replace('/#', '') || ''
+          if (slug && !seen[slug]) {
+            seen[slug] = true
+            row.id = slug
+          }
         })
       }
     }

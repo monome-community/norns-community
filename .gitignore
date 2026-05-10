@@ -1,5 +1,6 @@
 # norns-community data
 community.json
+.upstream/
 
 # norns-community assembled content (copied from src/ + generated files)
 dist/

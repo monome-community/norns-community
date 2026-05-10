@@ -31,6 +31,7 @@ import aiofiles
 # GLOBALS
 
 community_json_src = 'community.json'
+upstream_repo_src = '.upstream'
 covers_dist = 'dist/covers'
 readmes_src = '.readmes'
 projects_dist = 'dist'
@@ -38,6 +39,10 @@ tags_dist = 'dist/tag'
 explore_dist = 'dist/explore.md'
 about_dist = 'dist/about.md'
 index_dist = 'dist/index.md'
+feed_new_dist = 'dist/feed-new.xml'
+feed_updated_dist = 'dist/feed-updated.xml'
+feed_max_items = 50
+site_url = 'https://norns.community'
 github_raw_url_template = 'https://raw.githubusercontent.com/GITHUB_AUTHOR/GITHUB_PROJECT/HEAD'
 remote_cover_count = 0
 local_cover_count = 0
@@ -71,6 +76,9 @@ class Project():
     github_strings = entry['project_url'].replace('https://github.com/', '').split('/')
     self.github_author = github_strings[0] # sometimes author names differ from github usernames
     self.github_project = github_strings[1]
+    # filled-in later by feed pipeline. 
+    self.added_at = None    # first appearance in community.json git history
+    self.pushed_at = None   # last push to the upstream github repo
 
   def associate_author(self, author_raw_name):
     self.authors.append(sanitize(author_raw_name))
@@ -551,6 +559,186 @@ def log_stats(community_data):
   log('remote readmes: ' + str(remote_readme_count))
   log('missing readmes: ' + str(missing_readme_count))
 
+
+'''
+FEEDS
+
+2 atom feeds, annoyingly requiring 2 date sources:
+
+ - feed-new.xml      
+  "new on the index" - based on the git history of
+  monome/norns-community's community.json. each entry's
+  added_at is the commit date of the commit that first
+  introduced its project_name.
+
+ - feed-updated.xml
+  "recently updated upstream" - based on the github api's
+  pushed_at for each project's repo. Set on any commit, including 
+  readme typos and dependabot bumps so might be too busy.
+'''
+
+
+def collect_added_dates(community_data):
+  '''
+  check the upstream repo's git log of community.json. record the earliest
+  commit date that mentions each project_name. uses a `+name` line match
+  against the diff.
+  '''
+  log('collecting added_at from upstream git history...')
+  if not os.path.exists(upstream_repo_src + '/.git'):
+    log('warning. ' + upstream_repo_src + ' not found. skipping added_at.')
+    log('did ./01-curl.sh run successfully?')
+    return
+  # `git log --reverse` walks oldest first, so the first hit per name is caught.
+  # `-G` filters commits whose diff contains the regex. `--name-only` is
+  # avoided in favour of inspecting the patch itself for project_name lines.
+  try:
+    out = subprocess.check_output(
+      ['git', '-C', upstream_repo_src, 'log', '--reverse',
+       '--pretty=format:%H %cI', '--unified=0', '-p', '--', 'community.json'],
+      stderr=subprocess.DEVNULL,
+    ).decode('utf-8', errors='replace')
+  except subprocess.CalledProcessError as e:
+    log('warning. git log failed: ' + str(e))
+    return
+  # build a name -> sanitized lookup so we can match the names in the diff
+  # against our Project objects.
+  by_sanitized = {}
+  for project in community_data.projects.values():
+    by_sanitized[project.sanitized_name] = project
+  current_date = None
+  pn_pattern = re.compile(r'^\+\s*"project_name"\s*:\s*"([^"]+)"')
+  for line in out.splitlines():
+    if line and line[0] != '+' and line[0] != '-' and ' ' in line and len(line.split(' ', 1)[0]) == 40:
+      # commit header line: "<sha> <iso-date>"
+      parts = line.split(' ', 1)
+      current_date = parts[1].strip()
+      continue
+    m = pn_pattern.match(line)
+    if not m or not current_date:
+      continue
+    raw_name = m.group(1)
+    sanitized = sanitize(raw_name)
+    project = by_sanitized.get(sanitized)
+    if project is not None and project.added_at is None:
+      project.added_at = current_date
+  unknown = sum(1 for p in community_data.projects.values() if p.added_at is None)
+  log('added_at resolved for ' + str(len(community_data.projects) - unknown) +
+      '/' + str(len(community_data.projects)) + ' projects.')
+
+# fetch pushed_at from the github api for each project repo. In github actions the token 
+# is meant to be at $GITHUB_TOKEN, raising the allowed request rate.
+async def afetch_pushed_at(session, project, headers):
+  url = 'https://api.github.com/repos/' + project.github_author + '/' + project.github_project
+  try:
+    async with session.get(url, headers=headers) as response:
+      if response.status == 200:
+        data = await response.json()
+        project.pushed_at = data.get('pushed_at')
+        return
+      log(project.sanitized_name + ' - pushed_at fetch failed: http ' + str(response.status))
+  except Exception as e:
+    log(project.sanitized_name + ' - pushed_at fetch error: ' + str(e))
+
+async def afetch_pushed_ats(projects):
+  headers = {'Accept': 'application/vnd.github+json',
+             'User-Agent': 'norns-community-build'}
+  token = os.environ.get('GITHUB_TOKEN')
+  if token:
+    headers['Authorization'] = 'Bearer ' + token
+  else:
+    log('warning. no GITHUB_TOKEN in env. github api will be rate-limited.')
+  # ddon't slam the api.
+  sem = asyncio.Semaphore(8)
+  async def bound(p):
+    async with sem:
+      await afetch_pushed_at(session, p, headers)
+  async with aiohttp.ClientSession() as session:
+    tasks = [bound(p) for p in projects]
+    await asyncio.gather(*tasks)
+
+def fetch_pushed_ats(community_data):
+  log('fetching pushed_at from github api...')
+  asyncio.run(afetch_pushed_ats(community_data.get_projects_in_alphabetical_order()))
+  resolved = sum(1 for p in community_data.projects.values() if p.pushed_at is not None)
+  log('pushed_at resolved for ' + str(resolved) +
+      '/' + str(len(community_data.projects)) + ' projects.')
+  log('done.')
+
+# minimal xml escaping for atom feed text content. 🤞
+def xml_escape(s):
+  if not s:
+    return ''
+  return (s.replace('&', '&amp;')
+           .replace('<', '&lt;')
+           .replace('>', '&gt;')
+           .replace('"', '&quot;')
+           .replace("'", '&apos;'))
+
+def write_atom_feed(path, title, subtitle, projects, date_attr, build_meta):
+  log('writing ' + path + '...')
+  # newest first, drop entries with no date, cap to feed_max_items.
+  dated = [p for p in projects if getattr(p, date_attr) is not None]
+  dated.sort(key=lambda p: getattr(p, date_attr), reverse=True)
+  items = dated[:feed_max_items]
+  feed_id = site_url + '/' + os.path.basename(path)
+  # feed-level updated = newest entry date, or build time as fallback.
+  if items:
+    feed_updated = getattr(items[0], date_attr)
+  else:
+    feed_updated = datetime.datetime.now(datetime.timezone.utc).isoformat()
+  fp = open(path, 'w', encoding='utf-8')
+  fp.write('<?xml version="1.0" encoding="utf-8"?>\n')
+  fp.write('<feed xmlns="http://www.w3.org/2005/Atom">\n')
+  fp.write('  <title>' + xml_escape(title) + '</title>\n')
+  fp.write('  <subtitle>' + xml_escape(subtitle) + '</subtitle>\n')
+  fp.write('  <link href="' + site_url + '/" />\n')
+  fp.write('  <link rel="self" href="' + feed_id + '" />\n')
+  fp.write('  <id>' + feed_id + '</id>\n')
+  fp.write('  <updated>' + feed_updated + '</updated>\n')
+  fp.write('  <generator>norns.community build (' + build_meta['git_hash_short'] + ')</generator>\n')
+  for project in items:
+    entry_url = site_url + project.permalink
+    # entry id is stable per (project, date_attr) so the two feeds don't collide.
+    entry_id = entry_url + '#' + date_attr
+    fp.write('  <entry>\n')
+    fp.write('    <title>' + xml_escape(project.raw_name) + '</title>\n')
+    fp.write('    <link href="' + entry_url + '" />\n')
+    fp.write('    <id>' + entry_id + '</id>\n')
+    fp.write('    <updated>' + getattr(project, date_attr) + '</updated>\n')
+    if project.authors:
+      for author in project.get_authors_in_alphabetical_order():
+        fp.write('    <author><name>' + xml_escape(author) + '</name></author>\n')
+    if project.description:
+      fp.write('    <summary>' + xml_escape(project.description) + '</summary>\n')
+    for tag in project.tags:
+      fp.write('    <category term="' + xml_escape(tag) + '" />\n')
+    fp.write('  </entry>\n')
+  fp.write('</feed>\n')
+  fp.close()
+
+def build_feeds(community_data, build_meta):
+  log('building atom feeds...')
+  projects = community_data.get_projects_in_alphabetical_order()
+  write_atom_feed(
+    feed_new_dist,
+    'norns.community - new scripts',
+    'scripts as they are added to the norns.community index',
+    projects,
+    'added_at',
+    build_meta,
+  )
+  write_atom_feed(
+    feed_updated_dist,
+    'norns.community - recently updated',
+    'most recent upstream activity for scripts in the norns.community index',
+    projects,
+    'pushed_at',
+    build_meta,
+  )
+  log('done.')
+
+
 # MAIN
 # MAIN
 # MAIN
@@ -560,8 +748,10 @@ log('starting at ' + time_start.strftime("%a %b %d %H:%M:%S %Z %Y"))
 build_meta = get_build_metadata()
 build_setup()
 community_data = community_data_factory()
+collect_added_dates(community_data)
 fetch_covers(community_data)
 fetch_readmes(community_data)
+fetch_pushed_ats(community_data)
 build_index_page(community_data, build_meta)
 build_author_redirects(community_data)
 build_project_pages(community_data, build_meta)
@@ -570,6 +760,7 @@ build_explore_page(community_data, build_meta)
 build_about_page(build_meta)
 build_404_page(build_meta)
 build_redirects(community_data)
+build_feeds(community_data, build_meta)
 log_stats(community_data)
 runtime = datetime.datetime.now() - time_start
 log('finishing at ' + datetime.datetime.now().strftime("%a %b %d %H:%M:%S %Z %Y"))

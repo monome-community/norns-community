@@ -22,6 +22,7 @@ for script authors, this means:
   - your script's cover image will be displayed on the page
 - your script will be available for discovery via any tags you added to its community catalog entry, like ["grid"](https://norns.community/tag/grid)
 - your script and its tags will appear on the [explore](https://norns.community/explore) page
+- your script will appear in the [new scripts](https://norns.community/feed-new.xml) and [recently updated](https://norns.community/feed-updated.xml) Atom feeds
 - if you update your README or cover image in your repository, it will automatically refresh on [norns.community](https://norns.community) within 24 hours
 
 ---
@@ -101,6 +102,8 @@ additionally, these raw resources are available:
 
 - [https://norns.community/community.json](https://norns.community/community.json)
 - [https://norns.community/covers/dronecaster.png](https://norns.community/covers/dronecaster.png) (using `dronecaster` as example)
+- [https://norns.community/feed-new.xml](https://norns.community/feed-new.xml) — scripts as they are added to the index
+- [https://norns.community/feed-updated.xml](https://norns.community/feed-updated.xml) — recent upstream activity
 
 ---
 
@@ -156,3 +159,4 @@ the architecture and technology of this site was inspired by [permacomputing](ht
 - [tyleretters](https://github.com/tyleretters)
 - [p3r7](https://github.com/p3r7)
 - [dndrks](https://github.com/dndrks)
+- [radian](https://github.com/r4dian)

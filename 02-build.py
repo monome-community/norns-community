@@ -61,6 +61,7 @@ class Project():
     self.raw_name = entry['project_name']
     self.sanitized_name = sanitize(self.raw_name)
     self.cover = self.sanitized_name + '.png'
+    self.has_cover = False
     self.permalink = '/' + self.sanitized_name + '/'
     self.authors = []
     self.description = entry['description'] if 'description' in entry else ''
@@ -177,6 +178,7 @@ async def afetch_cover(session, project, idx):
       if response.status == 200:
         log(project.sanitized_name + ' - remote cover found at ' + url)
         remote_cover_count += 1
+        project.has_cover = True
         content = await response.read()
         async with aiofiles.open(destination, 'wb') as f:
           await f.write(content)
@@ -186,6 +188,7 @@ async def afetch_cover(session, project, idx):
   if os.path.exists(archive_path):
     log(project.sanitized_name + ' - local cover found in archive.')
     local_cover_count += 1
+    project.has_cover = True
     command = 'cp ' + archive_path + ' ' + destination
     subprocess.Popen(command, shell=True)
   else:
@@ -709,7 +712,12 @@ def write_atom_feed(path, title, subtitle, projects, date_attr, build_meta):
     if project.authors:
       for author in project.get_authors_in_alphabetical_order():
         fp.write('    <author><name>' + xml_escape(author) + '</name></author>\n')
-    if project.description:
+    if project.has_cover:
+      fp.write('    <content type="html">&lt;img src="/covers/' + project.cover + '" alt="' + xml_escape(project.raw_name) + '" /&gt;')
+      if project.description:
+        fp.write('&lt;br /&gt;' + xml_escape(project.description))
+      fp.write('</content>\n')
+    elif project.description:
       fp.write('    <summary>' + xml_escape(project.description) + '</summary>\n')
     for tag in project.tags:
       fp.write('    <category term="' + xml_escape(tag) + '" />\n')

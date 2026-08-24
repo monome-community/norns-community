@@ -23,7 +23,7 @@ As of v3.0, Compass can be controlled via grid, which opens it up to many new pe
 ![1c3148501994b511661d7cda54d3b121d6211b63.jpeg](/community/olivier/compass/1c3148501994b511661d7cda54d3b121d6211b63.jpeg)
 
 ## manual
-[compass-manual.glitch.me](https://compass-manual.glitch.me/)
+[compass-manual (pdf)](https://llllllll.co/uploads/short-url/xTmDEmuYQCdnpRh1coL886NqbxP.pdf)
 
 ## requirements
 [200424](https://llllllll.co/t/norns-update-200424/31644)
